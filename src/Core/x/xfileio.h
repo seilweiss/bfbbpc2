@@ -1,0 +1,12 @@
+#pragma once
+
+#include <types.h>
+
+typedef enum en_FIOERRCODES
+{
+	FIOERR_NONE,
+	FIOERR_READFAIL,
+	FIOERR_WRITEFAIL,
+	FIOERR_SEEKFAIL,
+	FIOERR_USERABORT
+} FIOERRCODES;
