@@ -18,3 +18,5 @@ struct zAssetPickup
 	uint32 modelID;
 	uint32 animID;
 };
+
+void zPickupTableInit();
