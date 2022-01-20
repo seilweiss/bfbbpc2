@@ -43,6 +43,6 @@ void xMovePointSplineDestroy(xMovePoint* m);
 float32 xMovePointGetNext(const xMovePoint* m, const xMovePoint* prev, xMovePoint** next, xVec3* hdng);
 xVec3* xMovePointGetPos(const xMovePoint* m);
 
-
 inline uint16 xMovePointGetNumPoints(const xMovePoint*) STUB
 inline xMovePoint* xMovePointGetPoint(const xMovePoint*, uint16) STUB
+inline float32 xMovePointGetDelay(const xMovePoint*) STUB
