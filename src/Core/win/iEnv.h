@@ -20,4 +20,5 @@ struct iEnv
 	int32 memlvl;
 };
 
+inline void iEnvStartup() {}
 inline xBBox* iEnvGetBBox(iEnv*) STUB
