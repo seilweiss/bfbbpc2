@@ -98,7 +98,7 @@ namespace xhud {
 
 	class widget
 	{
-	private:
+	protected:
 		struct
 		{
 			bool visible;
@@ -144,6 +144,10 @@ namespace xhud {
 		bool visible() const WIP { return flag.visible && enabled(); }
 		void show();
 		void hide();
+		bool showing() const STUB;
+		bool hiding() const STUB;
+
+		bool changing() const STUB;
 
 		void add_motive(const motive& m);
 		void clear_motives();

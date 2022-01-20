@@ -44,6 +44,8 @@ namespace xhud {
 	public:
 		font_meter_widget(const font_meter_asset&);
 
+		font_meter_asset* get_asset() WIP { return (font_meter_asset*)a; }
+
 		virtual void destroy();
 		void destruct();
 
