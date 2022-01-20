@@ -207,6 +207,7 @@
     <ClInclude Include="src\Game\zActionLine.h" />
     <ClInclude Include="src\Game\zAnimList.h" />
     <ClInclude Include="src\Game\zAssetTypes.h" />
+    <ClInclude Include="src\Game\zBase.h" />
     <ClInclude Include="src\Game\zBusStop.h" />
     <ClInclude Include="src\Game\zCamera.h" />
     <ClInclude Include="src\Game\zCameraFly.h" />

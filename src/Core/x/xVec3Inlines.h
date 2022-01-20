@@ -10,6 +10,7 @@ inline void xVec3AddTo(xVec3*, const xVec3*) STUB_VOID
 inline void xVec3AddScaled(xVec3*, const xVec3*, float32) STUB_VOID
 inline void xVec3Sub(xVec3* o, const xVec3* a, const xVec3* b) STUB_VOID
 inline void xVec3SubFrom(xVec3*, const xVec3*) STUB_VOID
+inline void xVec3ScaleC(xVec3*, const xVec3*, float32, float32, float32) STUB_VOID
 inline void xVec3SMul(xVec3* o, const xVec3* v, float32 s) STUB_VOID
 inline void xVec3SMulBy(xVec3* v, float32 s) STUB_VOID
 inline void xVec3Inv(xVec3* o, const xVec3* v) STUB_VOID

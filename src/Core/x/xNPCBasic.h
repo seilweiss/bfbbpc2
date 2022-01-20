@@ -4,6 +4,108 @@
 #include "xFactory.h"
 #include "xShadowSimple.h"
 
+// not in dwarf data
+typedef enum en_npcdcat
+{
+} npcdcat;
+
+// not in dwarf data
+typedef enum en_npcperf
+{
+} npcperf;
+
+typedef enum en_npcbtyp
+{
+	NPCP_BASIS_NONE,
+	NPCP_BASIS_EVILROBOT,
+	NPCP_BASIS_FRIENDLYROBOT,
+	NPCP_BASIS_LOVINGCITIZEN,
+	NPCP_BASIS_GRUMPYCITIZEN,
+	NPCP_BASIS_NOMORE,
+	NPCP_BASIS_FORCE = FORCEENUMSIZEINT
+} npcbtyp;
+
+typedef enum en_dupowavmod
+{
+	NPCP_DUPOWAVE_CONTINUOUS,
+	NPCP_DUPOWAVE_DISCREET,
+	NPCP_DUPOWAVE_NOMORE,
+	NPCP_DUPOWAVE_FORCE = FORCEENUMSIZEINT
+} dupowavmod;
+
+typedef enum en_npcparm
+{
+	NPC_PARM_NONE,
+	NPC_PARM_MOVERATE,
+	NPC_PARM_TURNRATE,
+	NPC_PARM_ACCEL,
+	NPC_PARM_DRIFT,
+	NPC_PARM_MASS,
+	NPC_PARM_TOSSGRAV,
+	NPC_PARM_TOSSELASTIC,
+	NPC_PARM_BND_ISBOX,
+	NPC_PARM_BND_CENTER,
+	NPC_PARM_BND_EXTENT,
+	NPC_PARM_HITPOINTS,
+	NPC_PARM_MODELSCALE,
+	NPC_PARM_DETECT_RAD,
+	NPC_PARM_DETECT_HYT,
+	NPC_PARM_DETECT_OFF,
+	NPC_PARM_ATTACK_RAD,
+	NPC_PARM_ATTACK_FOV,
+	NPC_PARM_SND_RAD,
+	NPC_PARM_TIMEFIDGET,
+	NPC_PARM_TIMEATTACK,
+	NPC_PARM_TIMESTUN,
+	NPC_PARM_TIMEALERT,
+	NPC_PARM_VTX_ATTACKBASE,
+	NPC_PARM_VTX_ATTACK,
+	NPC_PARM_VTX_ATTACK1,
+	NPC_PARM_VTX_ATTACK2,
+	NPC_PARM_VTX_ATTACK3,
+	NPC_PARM_VTX_ATTACK4,
+	NPC_PARM_VTX_EYEBALL,
+	NPC_PARM_VTX_DMGSMOKEA,
+	NPC_PARM_VTX_DMGSMOKEB,
+	NPC_PARM_VTX_DMGSMOKEC,
+	NPC_PARM_VTX_DMGFLAMEA,
+	NPC_PARM_VTX_DMGFLAMEB,
+	NPC_PARM_VTX_DMGFLAMEC,
+	NPC_PARM_VTX_PROPEL,
+	NPC_PARM_VTX_EXHAUST,
+	NPC_PARM_VTX_GEN01,
+	NPC_PARM_VTX_GEN02,
+	NPC_PARM_VTX_GEN03,
+	NPC_PARM_VTX_GEN04,
+	NPC_PARM_VTX_GEN05,
+	NPC_PARM_ATK_SIZE01,
+	NPC_PARM_ATK_FRAMES01,
+	NPC_PARM_ATK_FRAMES01A,
+	NPC_PARM_ATK_FRAMES01B,
+	NPC_PARM_ATK_FRAMES02,
+	NPC_PARM_ATK_FRAMES02A,
+	NPC_PARM_ATK_FRAMES02B,
+	NPC_PARM_ATK_FRAMES03,
+	NPC_PARM_ATK_FRAMES03A,
+	NPC_PARM_ATK_FRAMES03B,
+	NPC_PARM_ESTEEM_A,
+	NPC_PARM_ESTEEM_B,
+	NPC_PARM_ESTEEM_C,
+	NPC_PARM_ESTEEM_D,
+	NPC_PARM_ESTEEM_E,
+	NPC_PARM_SHADOW_CASTDIST,
+	NPC_PARM_SHADOW_RADCACHE,
+	NPC_PARM_SHADOW_RADRASTER,
+	NPC_PARAM_TEST_COUNT,
+	NPC_PARM_ENDTAG_INI,
+	NPC_PARM_FIRSTMVPT,
+	NPC_PARM_ENDTAG_PROPS,
+	NPC_PARM_BOGUSSHARE,
+	NPC_PARM_ENDTAG_SHARE,
+	NPC_PARM_NOMORE,
+	NPC_PARM_FORCEINT = FORCEENUMSIZEINT
+} npcparm;
+
 class xNPCBasic : public xEnt, public xFactoryInst
 {
 private:
@@ -28,5 +130,33 @@ private:
 	xShadowSimpleCache simpShadow_embedded;
 
 public:
-	int32 SelfType() const STUB;
+	xNPCBasic(int32 myType) WIP : xFactoryInst(), myNPCType(myType) {}
+
+	virtual void Init(xEntAsset* asset);
+	virtual void PostInit() WIP {}
+	virtual void Setup() WIP {}
+	virtual void PostSetup() WIP {}
+	virtual void Reset();
+	virtual void Process(xScene* xscn, float32 dt);
+	virtual void BUpdate(xVec3* pos) WIP { xEntDefaultBoundUpdate(this, pos); }
+	virtual void NewTime(xScene*, float32);
+	virtual void Move(xScene*, float32, xEntFrame*) WIP {}
+	virtual bool32 SysEvent(xBase*, xBase*, uint32, const float32*, xBase*, int32*) WIP { return TRUE; }
+	virtual void Render() WIP { xEntRender(this); }
+	virtual void Save(xSerial*) const WIP {}
+	virtual void Load(xSerial*) WIP {}
+	virtual void CollideReview();
+	virtual uint8 ColChkFlags() const WIP { return 0; }
+	virtual uint8 ColPenFlags() const WIP { return 0; }
+	virtual uint8 ColChkByFlags() const WIP { return 0; }
+	virtual uint8 ColPenByFlags() const WIP { return 0; }
+	virtual uint8 PhysicsFlags() const WIP { return 0; }
+
+	int32 SelfType() const WIP { return myNPCType; }
+	void RestoreColFlags() STUB_VOID;
+	bool32 DBG_IsNormLog(npcdcat, int32) WIP { return FALSE; }
+	void DBG_PStatOn(npcperf) WIP {}
+	void DBG_PStatCont(npcperf) WIP {}
+	void DBG_PStatClear() WIP {}
+	void DBG_HaltOnMe(uint32, char*) WIP {}
 };

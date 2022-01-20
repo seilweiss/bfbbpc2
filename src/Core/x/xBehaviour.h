@@ -3,6 +3,7 @@
 #include "xListItem.h"
 #include "xFactory.h"
 
+class xGoal;
 struct xPsyche;
 struct xBase;
 
@@ -35,6 +36,10 @@ typedef enum en_trantype
 	GOAL_TRAN_FORCE = FORCEENUMSIZEINT
 } trantype;
 
+typedef bool32(*xGoalProcessCallback)(xGoal*, void*, trantype*, float32, void*);
+typedef bool32(*xGoalPrecalcCallback)(xGoal*, void*, float32, void*);
+typedef bool32(*xGoalChkRuleCallback)(xGoal*, void*, trantype*, float32, void*);
+
 class xGoal : public xListItem<xGoal>, public xFactoryInst
 {
 private:
@@ -42,9 +47,9 @@ private:
 	int32 goalID;
 	GOALSTATE stat;
 	int32 flg_able;
-	bool32(*fun_process)(xGoal*, void*, trantype*, float32, void*);
-	bool32(*fun_precalc)(xGoal*, void*, float32, void*);
-	bool32(*fun_chkRule)(xGoal*, void*, trantype*, float32, void*);
+	xGoalProcessCallback fun_process;
+	xGoalPrecalcCallback fun_precalc;
+	xGoalChkRuleCallback fun_chkRule;
 	void* cbdata;
 
 public:

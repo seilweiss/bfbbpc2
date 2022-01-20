@@ -141,6 +141,7 @@ inline void xMat3x3Rot(xMat3x3* m, const xVec3* a, float32 t) STUB_VOID
 inline void xMat3x3LookAt(xMat3x3*, const xVec3*, const xVec3*) STUB_VOID
 inline float32 xMat3x3LookVec3(xMat3x3&, const xVec3&) STUB
 inline void xMat3x3MulRotC(xMat3x3*, xMat3x3*, float32, float32, float32, float32) STUB_VOID
+inline void xMat3x3SMul(xMat3x3*, const xMat3x3*, float32) STUB_VOID
 static inline void xMat3x3RMulVec(xVec3* o, const xMat3x3* m, const xVec3* v) STUB_VOID
 inline void xMat4x3Copy(xMat4x3*, const xMat4x3*) STUB_VOID
 inline void xMat4x3Identity(xMat4x3*) STUB_VOID
