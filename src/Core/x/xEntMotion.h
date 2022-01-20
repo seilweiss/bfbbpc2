@@ -184,6 +184,7 @@ inline uint32 xEntERIsRetracting(const xEntMotion*) STUB
 inline uint32 xEntERIsRetracted(const xEntMotion*) STUB
 
 inline void xEntMPSetSpeed(xEntMotion*, float32) STUB_VOID
+inline void xEntMPAccelerate(xEntMotion*, float32) STUB_VOID
 
 inline void xEntMotionStop(xEntMotion*) STUB_VOID
 inline void xEntMotionRun(xEntMotion*) STUB_VOID
