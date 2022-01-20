@@ -90,6 +90,7 @@ void xModelAnimCollRefresh(const xModelInstance& cm);
 xVec3 xModelGetBoneLocation(const xModelInstance& model, ulong32 index);
 void xModelGetBoneMat(xMat4x3& mat, const xModelInstance& model, ulong32 index);
 
+inline void xModelSetScale(xModelInstance*, const xVec3&) STUB_VOID
 inline xMat4x3* xModelGetFrame(xModelInstance*) STUB
 inline void xModelSetFrame(xModelInstance*, const xMat4x3*) STUB_VOID
 inline xSphere* xModelGetLocalSBound(xModelInstance*) STUB

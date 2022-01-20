@@ -56,18 +56,31 @@ struct tweak_info
 	};
 };
 
+typedef void(*tweak_on_change_callback)(const tweak_info&);
+typedef void(*tweak_on_select_callback)(const tweak_info&);
+typedef void(*tweak_on_unselect_callback)(const tweak_info&);
+typedef void(*tweak_on_start_edit_callback)(const tweak_info&);
+typedef void(*tweak_on_stop_edit_callback)(const tweak_info&);
+typedef void(*tweak_on_expand_callback)(const tweak_info&);
+typedef void(*tweak_on_collapse_callback)(const tweak_info&);
+typedef void(*tweak_on_update_callback)(const tweak_info&);
+typedef void(*tweak_convert_mem_to_tweak_callback)(const tweak_info&, void*);
+typedef void(*tweak_convert_tweak_to_mem_callback)(const tweak_info&, void*);
+
 struct tweak_callback
 {
-	void(*on_change)(tweak_info&);
-	void(*on_select)(tweak_info&);
-	void(*on_unselect)(tweak_info&);
-	void(*on_start_edit)(tweak_info&);
-	void(*on_stop_edit)(tweak_info&);
-	void(*on_expand)(tweak_info&);
-	void(*on_collapse)(tweak_info&);
-	void(*on_update)(tweak_info&);
-	void(*convert_mem_to_tweak)(tweak_info&, void*);
-	void(*convert_tweak_to_mem)(tweak_info&, void*);
+	tweak_on_change_callback on_change;
+	tweak_on_select_callback on_select;
+	tweak_on_unselect_callback on_unselect;
+	tweak_on_start_edit_callback on_start_edit;
+	tweak_on_stop_edit_callback on_stop_edit;
+	tweak_on_expand_callback on_expand;
+	tweak_on_collapse_callback on_collapse;
+	tweak_on_update_callback on_update;
+	tweak_convert_mem_to_tweak_callback convert_mem_to_tweak;
+	tweak_convert_tweak_to_mem_callback convert_tweak_to_mem;
+
+	static tweak_callback create_change(tweak_on_change_callback) STUB;
 };
 
 typedef void(*xDebugModeCallback)();
@@ -79,5 +92,6 @@ void xDebugUpdate();
 void xDebugExit();
 void xDebugTimestampScreen();
 
+inline void xDebugAddTweak(const char*, const char*, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddTweak(const char*, float32*, float32, float32, const tweak_callback*, void*, uint32) {}
 inline void xDebugRemoveTweak(const char*) {}
