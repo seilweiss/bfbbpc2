@@ -48,3 +48,5 @@ void zCameraSetReward(bool32 on);
 void zCameraMinTargetHeightSet(float32 height);
 void zCameraMinTargetHeightClear();
 uint32 zCamera_FlyOnly();
+
+inline void zCameraTranslate(xCamera*, xVec3*) STUB_VOID
