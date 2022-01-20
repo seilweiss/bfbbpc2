@@ -3,6 +3,8 @@
 #include "xMath3.h"
 #include "xColor.h"
 
+inline void xDrawBegin() {}
+inline void xDrawEnd() {}
 inline void xDrawSetColor(xColor) {}
 inline void xDrawSetColor(uint8, uint8, uint8, uint8) {}
 inline void xDrawBox(const xBox*) {}
