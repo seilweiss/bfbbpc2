@@ -138,6 +138,7 @@ inline void xBoxUnion(xBox&, const xBox&, const xBox&) STUB_VOID
 inline void xMat3x3Copy(xMat3x3*, const xMat3x3*) STUB_VOID
 inline void xMat3x3Identity(xMat3x3*) STUB_VOID
 inline void xMat3x3Rot(xMat3x3* m, const xVec3* a, float32 t) STUB_VOID
+inline void xMat3x3Scale(xMat3x3*, const xVec3*) STUB_VOID
 inline void xMat3x3LookAt(xMat3x3*, const xVec3*, const xVec3*) STUB_VOID
 inline float32 xMat3x3LookVec3(xMat3x3&, const xVec3&) STUB
 inline void xMat3x3MulRotC(xMat3x3*, xMat3x3*, float32, float32, float32, float32) STUB_VOID

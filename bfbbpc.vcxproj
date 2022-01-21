@@ -163,6 +163,7 @@
     <ClInclude Include="src\Core\x\xMath3.h" />
     <ClInclude Include="src\Core\x\xMathInlines.h" />
     <ClInclude Include="src\Core\x\xMemMgr.h" />
+    <ClInclude Include="src\Core\x\xMgr.h" />
     <ClInclude Include="src\Core\x\xModel.h" />
     <ClInclude Include="src\Core\x\xModelBucket.h" />
     <ClInclude Include="src\Core\x\xMorph.h" />
