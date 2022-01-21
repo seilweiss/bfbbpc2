@@ -100,12 +100,14 @@ typedef struct st_XSAVEGAME_DATA
 
 struct XSGAutoData
 {
+private:
 	int32 flg_autodata;
 	int32 lastTarg;
 	int32 lastGame;
 	int32 lastPhysicalSlot;
 	st_ISGSESSION* isg_monitor;
 
+public:
 	bool32 IsValid();
 	void MarkInvalid();
 	bool32 SetCache(int32 targ, int32 game, int32 physicalSlot);
@@ -113,6 +115,9 @@ struct XSGAutoData
 	st_ISGSESSION* HWConnect(int32);
 	void HWDisconnect(st_ISGSESSION*);
 	bool32 HWCheckConnect(int32);
+	int32 LastTarget() WIP { return lastTarg; }
+	int32 LastGame() WIP { return lastGame; }
+	int32 LastPhysicalSlot() WIP { return lastPhysicalSlot; }
 };
 
 int32 xSGStartup();
