@@ -45,3 +45,4 @@ inline void xBaseValidate(xBase*) STUB_VOID
 inline bool xBaseIsEnabled(const xBase*) STUB
 inline void xBaseDisable(xBase*) STUB_VOID
 inline void xBaseEnable(xBase*) STUB_VOID
+inline uint32 xBaseIsValid(xBase*) STUB
