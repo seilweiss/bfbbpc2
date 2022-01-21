@@ -60,6 +60,11 @@ struct xModelTag
 	float32 wt[4];
 };
 
+struct xModelTagWithNormal : xModelTag
+{
+	xVec3 normal;
+};
+
 struct xModelAssetParam
 {
 	uint32 HashID;
