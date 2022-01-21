@@ -64,5 +64,23 @@ public:
 	virtual bool32 EvalRules(trantype* trantype, float32 dt, void* updCtxt);
 	virtual bool32 Process(trantype* trantype, float32 dt, void* ctxt);
 	virtual bool32 SysEvent(xBase*, xBase*, uint32, const float32*, xBase*, int32*) WIP { return TRUE; }
-	virtual const char* Name() = 0 { return NULL; }
+
+	xBase* GetOwner() const;
+	xPsyche* GetPsyche() const WIP { return psyche; }
+	void SetPsyche(xPsyche* p) WIP { psyche = p; }
+	int32 GetID() const WIP { return goalID; }
+	GOALSTATE GetState() const WIP { return stat; }
+	void SetState(GOALSTATE s) WIP { stat = s; }
+	int32 GetFlags() const WIP { return flg_able; }
+	void SetFlags(int32 flags) WIP { flg_able = flags; }
+	void AddFlags(int32 flags) WIP { flg_able |= flags; }
+	const char* Name() WIP { return NULL; }
+
+	void SetCallbacks(xGoalProcessCallback process, xGoalPrecalcCallback precalc, xGoalChkRuleCallback chkRule, void* data) WIP
+	{
+		fun_process = process;
+		fun_precalc = precalc;
+		fun_chkRule = chkRule;
+		cbdata = data;
+	}
 };
