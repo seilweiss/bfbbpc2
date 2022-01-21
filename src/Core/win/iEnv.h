@@ -7,6 +7,7 @@
 
 struct xJSPHeader;
 struct xBBox;
+struct xEnvAsset;
 
 struct iEnv
 {
@@ -19,6 +20,13 @@ struct iEnv
 	RwFrame* light_frame[2];
 	int32 memlvl;
 };
+
+void iEnvLoad(iEnv* env, const void* data, uint32, int32 dataType);
+void iEnvFree(iEnv* env);
+void iEnvDefaultLighting(iEnv*);
+void iEnvLightingBasics(iEnv*, xEnvAsset*);
+void iEnvRender(iEnv* env);
+void iEnvEndRenderFX(iEnv*);
 
 inline void iEnvStartup() {}
 inline xBBox* iEnvGetBBox(iEnv*) STUB
