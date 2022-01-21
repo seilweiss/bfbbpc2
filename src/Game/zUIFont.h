@@ -26,3 +26,14 @@ struct zUIFont : zUI
 	uint32 text_index;
 	const char* text;
 };
+
+void zUIFontInit();
+void zUIFont_Init(void* ent, void* asset);
+void zUIFont_Init(zUIFont* ent, xEntAsset* asset);
+void zUIFont_Save(zUIFont* ent, xSerial* s);
+void zUIFont_Load(zUIFont* ent, xSerial* s);
+void zUIFont_Reset(zUIFont*);
+void zUIFont_PreUpdate(zUIFont* ent, xScene* sc, float32 dt);
+void zUIFont_Update(zUIFont* ent, xScene*, float32);
+bool32 zUIFontEventCB(xBase* from, xBase* to, uint32 toEvent, const float32* toParam, xBase* toParamWidget);
+void zUIFont_Render(xEnt* e);

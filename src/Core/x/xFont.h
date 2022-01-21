@@ -145,6 +145,7 @@ struct xtextbox
 	void set_text(const char** texts, const ulong32* text_sizes, ulong32 size);
 	layout& temp_layout(bool cache) const;
 	float32 yextent(float32 max, int32& size, const layout& l, int32 begin_jot, int32 end_jot) const;
+	float32 yextent(float32, int32&, bool) const STUB;
 	float32 yextent(const layout&, int32, int32) const STUB;
 	float32 yextent(bool) const STUB;
 
