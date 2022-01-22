@@ -1,6 +1,7 @@
 #pragma once
 
 #include "zNPCTypeCommon.h"
+#include "zNPCTypes.h"
 
 class zMovePoint;
 
@@ -152,3 +153,19 @@ struct NPCMsg
 	NPCMsg* next;
 	float32 tmr_delay;
 };
+
+void zNPCMsg_Startup();
+void zNPCMsg_Shutdown();
+void zNPCMsg_ScenePrepare();
+void zNPCMsg_SceneFinish();
+void zNPCMsg_SceneReset();
+void zNPCMsg_Timestep(xScene*, float32 dt);
+void zNPCMsg_SendMsg(en_NPC_MSG_ID msgevent, uint32 sendto);
+void zNPCMsg_SendMsg(en_NPC_MSG_ID msgevent, zNPCCommon* npc_sendto);
+void zNPCMsg_SendMsg(NPCMsg* inmsg, zNPCCommon* npc_sendto);
+void zNPCMsg_SendMsg(NPCMsg* inmsg, float32 delay, zNPCCommon* npc_sendto);
+void zNPCMsg_AreaNotify(zNPCCommon* sender, en_NPC_MSG_ID msgid, float32 rad, int32 filter, en_NPCTYPES toNPCType);
+void zNPCMsg_AreaNotify(zNPCCommon* sender, en_NPC_MSG_ID msgid, float32 rad, int32 filter, en_NPCTYPES* npcTypeList);
+void zNPCMsg_AreaNotify(zNPCCommon* sender, NPCMsg* msg, float32 radius, int32 filter, en_NPCTYPES* npcTypeList);
+void zNPCMsg_AreaPlayerStun(float32 stuntime, float32 radius, xVec3* pos);
+void zNPCMsg_AreaNPCExplodeNoRobo(zNPCCommon* who, float32 radius, const xVec3* pos_fromHere);
