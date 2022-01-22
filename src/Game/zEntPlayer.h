@@ -285,7 +285,7 @@ void SetPlayerKillsVillainTimer(float32 time);
 bool32 zEntPlayer_InBossBattle();
 void zEntPlayerSpeakStart(uint32 sndid, int32 anim);
 void zEntPlayerSpeakStop();
-void zEntPlayer_LassoNotify(LASSO_EVENT event);
+void zEntPlayer_LassoNotify(en_LASSO_EVENT event);
 bool32 zEntPlayer_IsSneaking();
 void zEntPlayer_Init(xEnt* ent, xEntAsset* asset);
 void zEntPlayer_RestoreSounds();

@@ -2,14 +2,14 @@
 
 #include "xsavegame.h"
 
-typedef struct st_SERIAL_CLIENTINFO SERIAL_CLIENTINFO;
+struct st_SERIAL_CLIENTINFO;
 
 class xSerial
 {
 private:
 	uint32 idtag;
 	int32 baseoff;
-	SERIAL_CLIENTINFO* ctxtdata;
+	st_SERIAL_CLIENTINFO* ctxtdata;
 	int32 warned;
 	int32 curele;
 	int32 bitidx;
@@ -40,16 +40,16 @@ public:
 	void prepare(uint32);
 };
 
-typedef struct st_SERIAL_PERCID_SIZE
+struct st_SERIAL_PERCID_SIZE
 {
 	uint32 idtag;
 	int32 needsize;
-} SERIAL_PERCID_SIZE;
+};
 
 typedef bool32(*xSerialTraverseCallback)(uint32, xSerial*);
 
-int32 xSerialStartup(int32 count, SERIAL_PERCID_SIZE* sizeinfo);
+int32 xSerialStartup(int32 count, st_SERIAL_PERCID_SIZE* sizeinfo);
 int32 xSerialShutdown();
 void xSerialTraverse(xSerialTraverseCallback func);
 void xSerialWipeMainBuffer();
-bool32 xSerial_svgame_register(XSAVEGAME_DATA* sgctxt, SAVEGAME_MODE mode);
+bool32 xSerial_svgame_register(st_XSAVEGAME_DATA* sgctxt, en_SAVEGAME_MODE mode);

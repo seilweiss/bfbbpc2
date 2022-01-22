@@ -4,7 +4,7 @@
 
 class zMovePoint;
 
-typedef enum en_NPC_MSG_ID
+enum en_NPC_MSG_ID
 {
 	NPC_MID_NONE,
 	NPC_MID_SYSEVENT,
@@ -41,9 +41,9 @@ typedef enum en_NPC_MSG_ID
 	NPC_MID_DEV_DONE,
 	NPC_MID_NOMORE,
 	NPC_MID_FORCE = FORCEENUMSIZEINT
-} NPC_MSG_ID;
+};
 
-typedef enum en_NPC_MSG_DATA
+enum en_NPC_MSG_DATA
 {
 	NPC_MDAT_BLANK,
 	NPC_MDAT_SYSEVENT,
@@ -58,7 +58,7 @@ typedef enum en_NPC_MSG_DATA
 	NPC_MDAT_AREANOTIFY,
 	NPC_MDAT_NOMORE,
 	NPC_MDAT_FORCE = FORCEENUMSIZEINT
-} NPC_MSG_DATA;
+};
 
 struct NPCSysEvent
 {
@@ -100,7 +100,7 @@ struct NPCTargetInfo
 
 struct NPCDamageInfo
 {
-	NPC_DAMAGE_TYPE dmg_type;
+	en_NPC_DAMAGE_TYPE dmg_type;
 	xBase* dmg_from;
 	xVec3 vec_dmghit;
 };
@@ -108,7 +108,7 @@ struct NPCDamageInfo
 struct NPCStunInfo
 {
 	float32 tym_stuntime;
-	NPC_CARRY_STATE carrystate;
+	en_NPC_CARRY_STATE carrystate;
 	int32 allowStun;
 };
 
@@ -131,10 +131,10 @@ struct NPCAreaInfo
 
 struct NPCMsg
 {
-	NPC_MSG_ID msgid;
+	en_NPC_MSG_ID msgid;
 	uint32 sendto;
 	uint32 from;
-	NPC_MSG_DATA infotype;
+	en_NPC_MSG_DATA infotype;
 	union
 	{
 		NPCSysEvent sysevent;

@@ -16,7 +16,7 @@ struct zShrapnelAsset;
 struct NPCMsg;
 struct xSFX;
 
-typedef enum en_LASSO_EVENT
+enum en_LASSO_EVENT
 {
 	LASS_EVNT_BEGIN,
 	LASS_EVNT_ENDED,
@@ -26,9 +26,9 @@ typedef enum en_LASSO_EVENT
 	LASS_EVNT_ABORT,
 	LASS_EVNT_NOMORE,
 	LASS_EVNT_FORCEINT = FORCEENUMSIZEINT
- } LASSO_EVENT;
+ };
 
-typedef enum en_LASSO_STATUS
+enum en_LASSO_STATUS
 {
 	LASS_STAT_DONE,
 	LASS_STAT_PENDING,
@@ -36,16 +36,16 @@ typedef enum en_LASSO_STATUS
 	LASS_STAT_TOSSING,
 	LASS_STAT_NOMORE,
 	LASS_STAT_FORCEINT = FORCEENUMSIZEINT
-} LASSO_STATUS;
+};
 
-typedef enum en_lassanim
+enum en_lassanim
 {
 	LASS_ANIM_UNKNOWN,
 	LASS_ANIM_GRAB,
 	LASS_ANIM_HOLD,
 	LASS_ANIM_NOMORE,
 	LASS_ANIM_FORCEINT = FORCEENUMSIZEINT
-} lassanim;
+};
 
 struct xEntNPCAsset
 {
@@ -59,7 +59,7 @@ struct xEntNPCAsset
 
 struct zNPCSettings : xDynAsset
 {
-	npcbtyp basisType;
+	en_npcbtyp basisType;
 	int8 allowDetect;
 	int8 allowPatrol;
 	int8 allowWander;
@@ -70,12 +70,12 @@ struct zNPCSettings : xDynAsset
 	int8 allowAttack;
 	int8 assumeLOS;
 	int8 assumeFOV;
-	dupowavmod duploWaveMode;
+	en_dupowavmod duploWaveMode;
 	float32 duploSpawnDelay;
 	int32 duploSpawnLifeMax;
 };
 
-typedef enum en_NPC_SOUND
+enum en_NPC_SOUND
 {
 	NPC_STYP_BOGUS = -2,
 	NPC_STYP_LISTEND = 0,
@@ -106,9 +106,9 @@ typedef enum en_NPC_SOUND
 	NPC_STYP_ONELINERTOO,
 	NPC_STYP_NOMORE,
 	NPC_STYP_FORCE = FORCEENUMSIZEINT
-} NPC_SOUND;
+};
 
-typedef enum en_NPC_DAMAGE_TYPE
+enum en_NPC_DAMAGE_TYPE
 {
 	DMGTYP_UNDECIDED,
 	DMGTYP_ABOVE,
@@ -129,18 +129,18 @@ typedef enum en_NPC_DAMAGE_TYPE
 	DMGTYP_SURFACE,
 	DMGTYP_NOMORE,
 	DMGTYP_FORCEINT = FORCEENUMSIZEINT
-} NPC_DAMAGE_TYPE;
+};
 
-typedef enum en_NPC_CARRY_STATE
+enum en_NPC_CARRY_STATE
 {
 	zNPCCARRY_NONE,
 	zNPCCARRY_PICKUP,
 	zNPCCARRY_THROW,
 	zNPCCARRY_ATTEMPTPICKUP,
 	zNPCCARRY_FORCEINT = FORCEENUMSIZEINT
-} NPC_CARRY_STATE;
+};
 
-typedef enum en_mdlvert
+enum en_mdlvert
 {
 	NPC_MDLVERT_ATTACKBASE,
 	NPC_MDLVERT_ATTACK,
@@ -164,9 +164,9 @@ typedef enum en_mdlvert
 	NPC_MDLVERT_GEN05,
 	NPC_MDLVERT_NOMORE,
 	NPC_MDLVERT_FORCEINT = FORCEENUMSIZEINT
-} mdlvert;
+};
 
-typedef enum en_npcvibe
+enum en_npcvibe
 {
 	NPC_VIBE_SOFT,
 	NPC_VIBE_NORM,
@@ -176,11 +176,11 @@ typedef enum en_npcvibe
 	NPC_VIBE_BUILD_C,
 	NPC_VIBE_NOMORE,
 	NPC_VIBE_FORCE = FORCEENUMSIZEINT
-} npcvibe;
+};
 
 struct NPCSndTrax
 {
-	NPC_SOUND typ_sound;
+	en_NPC_SOUND typ_sound;
 	char* nam_sound;
 	uint32 aid_sound;
 };
@@ -188,7 +188,7 @@ struct NPCSndTrax
 struct NPCSndQueue
 {
 	uint32 sndDirect;
-	NPC_SOUND sndtype;
+	en_NPC_SOUND sndtype;
 	int32 flg_snd;
 	float32 tmr_delay;
 	float32 radius;
@@ -238,14 +238,14 @@ struct NPCConfig : xListItem<NPCConfig>
 
 struct NPCSndProp
 {
-	NPC_SOUND sndtype;
+	en_NPC_SOUND sndtype;
 	int32 flg_snd;
 	float32 tym_delayNext;
 };
 
 struct zNPCLassoInfo
 {
-	LASSO_STATUS stage;
+	en_LASSO_STATUS stage;
 	xEnt* lassoee;
 	xAnimState* holdGuideAnim;
 	xModelInstance* holdGuideModel;
@@ -318,21 +318,21 @@ public:
 	virtual void SelfDestroy();
 	virtual bool32 IsHealthy() WIP { return TRUE; }
 	virtual bool32 IsAlive() WIP { return TRUE; }
-	virtual void Damage(NPC_DAMAGE_TYPE damtype, xBase* who, const xVec3* vec_hit);
+	virtual void Damage(en_NPC_DAMAGE_TYPE damtype, xBase* who, const xVec3* vec_hit);
 	virtual bool32 Respawn(const xVec3* pos, zMovePoint* mvptFirst, zMovePoint* mvptSpawnRef);
 	virtual void DuploOwner(zNPCCommon* duper) WIP { npc_duplodude = duper; }
-	virtual void DuploNotice(SM_NOTICES, void*) WIP {}
+	virtual void DuploNotice(en_SM_NOTICES, void*) WIP {}
 	virtual bool32 CanRope() STUB;
-	virtual void LassoNotify(LASSO_EVENT event);
-	virtual bool32 SetCarryState(NPC_CARRY_STATE) WIP { return FALSE; }
+	virtual void LassoNotify(en_LASSO_EVENT event);
+	virtual bool32 SetCarryState(en_NPC_CARRY_STATE) WIP { return FALSE; }
 	virtual void Stun(float32) WIP {}
 	virtual void SpeakBegin() WIP {}
 	virtual void SpeakEnd() WIP {}
 	virtual void SpeakStart(uint32, uint32, int32) WIP {}
 	virtual void SpeakStop() WIP {}
-	virtual uint32 AnimPick(int32, NPC_GOAL_SPOT, xGoal*) WIP { return 0; }
-	virtual void GetParm(npcparm pid, void* val);
-	virtual bool32 GetParmDefault(npcparm pid, void* val);
+	virtual uint32 AnimPick(int32, en_NPC_GOAL_SPOT, xGoal*) WIP { return 0; }
+	virtual void GetParm(en_npcparm pid, void* val);
+	virtual bool32 GetParmDefault(en_npcparm pid, void* val);
 	virtual float32 GenShadCacheRad() WIP { return 2.4f; }
 	virtual xEntDrive* PRIV_GetDriverData() WIP { return NULL; }
 	virtual zNPCLassoInfo* PRIV_GetLassoData() { return NULL; }
@@ -358,9 +358,9 @@ public:
 	float32 ThrottleAccel(float32 dt, bool32 speedup, float32 pct_max);
 	float32 ThrottleApply(float32 dt, const xVec3* dir, bool32 force3D);
 	float32 TurnToFace(float32 dt, const xVec3* dir_want, float32 useTurnRate);
-	bool32 IsMountableType(ZBASETYPE);
+	bool32 IsMountableType(en_ZBASETYPE);
 	void TagVerts();
-	bool32 GetVertPos(mdlvert vid, xVec3* pos);
+	bool32 GetVertPos(en_mdlvert vid, xVec3* pos);
 	int32 IsAttackFrame(float32 tym_anim, int32 series);
 	void GiveReward();
 	void PlayerKiltMe();
@@ -368,9 +368,9 @@ public:
 	void ConfigSceneDone();
 	NPCConfig* ConfigCreate(uint32);
 	NPCConfig* ConfigFind(uint32);
-	void GetParm(npcparm pid, int32* val);
-	void GetParm(npcparm, float32*);
-	void GetParm(npcparm, xVec3*);
+	void GetParm(en_npcparm pid, int32* val);
+	void GetParm(en_npcparm, float32*);
+	void GetParm(en_npcparm, xVec3*);
 	void GetParm(en_npcparm pid, zMovePoint** val);
 	bool32 CanDoSplines();
 	zMovePoint* FirstAssigned();
@@ -391,13 +391,13 @@ public:
 	float32 AnimTimeRemain(xAnimState* ast);
 	float32 AnimTimeCurrent();
 	void Vibrate(float32 ds2_cur, float32 ds2_max);
-	void Vibrate(npcvibe vibe, float32 duration);
+	void Vibrate(en_npcvibe vibe, float32 duration);
 	xVec3* MatPosSet(xVec3* pos);
 	void WonderOfTalking(bool32 inprogress, xBase* owner);
 	int32 SomethingWonderful();
 	int32 SndPlayFromAFX(zAnimFxSound* afxsnd, uint32* sid_played);
 	int32 SndPlayFromSFX(xSFX* sfx, uint32* sid_played);
-	int32 SndPlayRandom(NPC_SOUND sndtype);
+	int32 SndPlayRandom(en_NPC_SOUND sndtype);
 	uint32 SndStart(uint32 aid_toplay, NPCSndProp* sprop, float32 radius);
 	bool32 SndIsAnyPlaying();
 	bool32 SndChanIsBusy(int32 flg_chan);
@@ -406,7 +406,7 @@ public:
 	bool32 LassoInit();
 	bool32 LassoUseGuides(int32 idx_grabmdl, int32 idx_holdmdl);
 	bool32 LassoGetAnims(xModelInstance* modgrab, xModelInstance* modhold);
-	void LassoSyncAnims(lassanim lassanim);
+	void LassoSyncAnims(en_lassanim lassanim);
 	zNPCLassoInfo* GimmeLassInfo();
 	void AddBaseline(xPsyche* psy, xGoalProcessCallback eval_idle, xGoalProcessCallback eval_patrol, xGoalProcessCallback eval_wander, xGoalProcessCallback eval_waiting, xGoalProcessCallback eval_fidget);
 	void AddScripting(xPsyche* psy, xGoalProcessCallback eval_script, xGoalProcessCallback eval_playanim, xGoalProcessCallback eval_attack, xGoalProcessCallback eval_move, xGoalProcessCallback eval_follow, xGoalProcessCallback eval_lead, xGoalProcessCallback eval_wait);

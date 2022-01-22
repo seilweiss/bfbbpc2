@@ -17,7 +17,7 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalLoopAnim : public zNPCGoalCommon
@@ -35,7 +35,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void MolestLoopAnim();
 	void UnmolestAnim();
@@ -57,7 +57,7 @@ public:
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Suspend(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 NPCMessage(NPCMsg* msg);
 };
 
@@ -75,10 +75,10 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void DoOnArriveStuff();
-	void PickTransition(int32*, trantype*);
+	void PickTransition(int32*, en_trantype*);
 	void MoveNormal(float32 dt);
 	void MoveSpline(float32 dt);
 	void Chk_AutoSmooth();
@@ -110,7 +110,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void VerticalWander(float32 spd_dt, const xVec3* vec_dest);
 	void CalcNewDir();
@@ -128,7 +128,7 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 };
 
 class zNPCGoalDead : public zNPCGoalCommon
@@ -170,7 +170,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	xAnimState* ASTGetNext(xAnimState*);
@@ -187,7 +187,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	void ASTMolestAnim(xAnimState*);
@@ -201,7 +201,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 };
 

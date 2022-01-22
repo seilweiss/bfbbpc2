@@ -3,14 +3,14 @@
 #include "xBehaviour.h"
 #include "xBase.h"
 
-typedef enum en_psynote
+enum en_psynote
 {
 	PSY_NOTE_HASRESUMED,
 	PSY_NOTE_HASENTERED,
 	PSY_NOTE_ANIMCHANGED,
 	PSY_NOTE_NOMORE,
 	PSY_NOTE_FORCE = FORCEENUMSIZEINT
-} psynote;
+};
 
 enum PSY_BRAIN_STATUS
 {
@@ -22,7 +22,7 @@ enum PSY_BRAIN_STATUS
 	PSY_STAT_FORCE = FORCEENUMSIZEINT
 };
 
-typedef enum en_pendtype
+enum en_pendtype
 {
 	PEND_TRAN_NONE,
 	PEND_TRAN_SET,
@@ -33,14 +33,14 @@ typedef enum en_pendtype
 	PEND_TRAN_SWAP,
 	PEND_TRAN_INPROG,
 	PEND_TRAN_NOMORE
-} pendtype;
+};
 
 class xPSYNote
 {
 public:
 	xPSYNote() WIP {}
 
-	void Notice(psynote, xGoal*, void*) WIP {}
+	void Notice(en_psynote, xGoal*, void*) WIP {}
 };
 
 class xPsyche : public RyzMemData
@@ -54,7 +54,7 @@ private:
 	float32 tmr_stack[1][5];
 	int32 staktop;
 	xGoal* pendgoal;
-	pendtype pendtype;
+	en_pendtype pendtype;
 	int32 gid_safegoal;
 	void(*fun_remap)(int32*, en_trantype*);
 	void* userContext;

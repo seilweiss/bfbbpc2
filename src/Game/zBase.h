@@ -1,6 +1,6 @@
 #pragma once
 
-typedef enum en_ZBASETYPE
+enum en_ZBASETYPE
 {
 	eBaseTypeUnknown,
 	eBaseTypeTrigger,
@@ -75,4 +75,4 @@ typedef enum en_ZBASETYPE
 	eBaseTypeSlideProps,
 	eBaseTypeHUD_text,
 	eBaseTypeCount
-} ZBASETYPE;
+};

@@ -68,10 +68,10 @@ public:
 	virtual bool32 IsHealthy() STUB;
 	virtual bool32 IsAlive() STUB;
 	virtual void DuploOwner(zNPCCommon* duper);
-	virtual void LassoNotify(LASSO_EVENT event);
-	virtual bool32 SetCarryState(NPC_CARRY_STATE stat);
+	virtual void LassoNotify(en_LASSO_EVENT event);
+	virtual bool32 SetCarryState(en_NPC_CARRY_STATE stat);
 	virtual void Stun(float32 stuntime);
-	virtual uint32 AnimPick(int32 gid, NPC_GOAL_SPOT gspot, xGoal*);
+	virtual uint32 AnimPick(int32 gid, en_NPC_GOAL_SPOT gspot, xGoal*);
 	virtual float32 GenShadCacheRad();
 	virtual xEntDrive* PRIV_GetDriverData() STUB;
 	virtual zNPCLassoInfo* PRIV_GetLassoData() STUB;

@@ -8,7 +8,7 @@ struct xPsyche;
 struct xBase;
 struct xScene;
 
-typedef enum en_GOALSTATE
+enum en_GOALSTATE
 {
 	GOAL_STAT_UNKNOWN,
 	GOAL_STAT_PROCESS,
@@ -20,9 +20,9 @@ typedef enum en_GOALSTATE
 	GOAL_STAT_DONE,
 	GOAL_STAT_NOMORE,
 	GOAL_STAT_FORCE = FORCEENUMSIZEINT
-} GOALSTATE;
+};
 
-typedef enum en_trantype
+enum en_trantype
 {
 	GOAL_TRAN_NONE,
 	GOAL_TRAN_SET,
@@ -35,18 +35,18 @@ typedef enum en_trantype
 	GOAL_TRAN_SWAP,
 	GOAL_TRAN_NOMORE,
 	GOAL_TRAN_FORCE = FORCEENUMSIZEINT
-} trantype;
+};
 
-typedef bool32(*xGoalProcessCallback)(xGoal*, void*, trantype*, float32, void*);
+typedef bool32(*xGoalProcessCallback)(xGoal*, void*, en_trantype*, float32, void*);
 typedef bool32(*xGoalPrecalcCallback)(xGoal*, void*, float32, void*);
-typedef bool32(*xGoalChkRuleCallback)(xGoal*, void*, trantype*, float32, void*);
+typedef bool32(*xGoalChkRuleCallback)(xGoal*, void*, en_trantype*, float32, void*);
 
 class xGoal : public xListItem<xGoal>, public xFactoryInst
 {
 private:
 	xPsyche* psyche;
 	int32 goalID;
-	GOALSTATE stat;
+	en_GOALSTATE stat;
 	int32 flg_able;
 	xGoalProcessCallback fun_process;
 	xGoalPrecalcCallback fun_precalc;
@@ -62,16 +62,16 @@ public:
 	virtual bool32 Suspend(float32 dt, void* updCtxt) WIP { return FALSE; }
 	virtual bool32 Resume(float32 dt, void* updCtxt) WIP { return FALSE; }
 	virtual bool32 PreCalc(float32 dt, void* updCtxt);
-	virtual bool32 EvalRules(trantype* trantype, float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* ctxt, xScene*);
+	virtual bool32 EvalRules(en_trantype* trantype, float32 dt, void* updCtxt);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* ctxt, xScene*);
 	virtual bool32 SysEvent(xBase*, xBase*, uint32, const float32*, xBase*, int32*) WIP { return TRUE; }
 
 	xBase* GetOwner() const;
 	xPsyche* GetPsyche() const WIP { return psyche; }
 	void SetPsyche(xPsyche* p) WIP { psyche = p; }
 	int32 GetID() const WIP { return goalID; }
-	GOALSTATE GetState() const WIP { return stat; }
-	void SetState(GOALSTATE s) WIP { stat = s; }
+	en_GOALSTATE GetState() const WIP { return stat; }
+	void SetState(en_GOALSTATE s) WIP { stat = s; }
 	int32 GetFlags() const WIP { return flg_able; }
 	void SetFlags(int32 flags) WIP { flg_able = flags; }
 	void AddFlags(int32 flags) WIP { flg_able |= flags; }

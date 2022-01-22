@@ -9,8 +9,8 @@ void zSaveLoadInit() STUB_VOID
 void zSaveLoadGameTableInit(zSaveLoadGame*) STUB_VOID
 void zSaveLoadUITableInit(zSaveLoadUI*) STUB_VOID
 void zSaveLoad_UIEvent(int32, uint32) STUB_VOID
-XSAVEGAME_DATA* zSaveLoadSGInit(SAVEGAME_MODE) STUB
-int32 zSaveLoadSGDone(XSAVEGAME_DATA*) STUB
+st_XSAVEGAME_DATA* zSaveLoadSGInit(en_SAVEGAME_MODE) STUB
+int32 zSaveLoadSGDone(st_XSAVEGAME_DATA*) STUB
 int32 zSaveLoad_getgame() STUB
 int32 zSaveLoad_getcard() STUB
 int32 zSaveLoad_getMCavailable() STUB
@@ -36,11 +36,11 @@ int32 zSaveLoad_CardYankedErrorPrompt(int32) STUB
 int32 zSaveLoad_ErrorFormatPrompt(int32) STUB
 int32 zSaveLoad_CardCheckSingle(int32 num) STUB
 int32 zSaveLoad_CardCheckFormattedSingle(int32 num) STUB
-int32 zSaveLoad_CardCheckSpaceSingle_doCheck(XSAVEGAME_DATA* xsgdata, int32 num) STUB
+int32 zSaveLoad_CardCheckSpaceSingle_doCheck(st_XSAVEGAME_DATA* xsgdata, int32 num) STUB
 int32 zSaveLoad_CardCheckSpaceSingle(int32 num) STUB
-int32 zSaveLoad_CardCheckGamesSingle_doCheck(XSAVEGAME_DATA*, int32) STUB
+int32 zSaveLoad_CardCheckGamesSingle_doCheck(st_XSAVEGAME_DATA*, int32) STUB
 int32 zSaveLoad_CardCheckGamesSingle(int32 num) STUB
-int32 zSaveLoad_CardCheckSlotEmpty_hasGame_doCheck(XSAVEGAME_DATA* xsgdata, int32 num, int32 game) STUB
+int32 zSaveLoad_CardCheckSlotEmpty_hasGame_doCheck(st_XSAVEGAME_DATA* xsgdata, int32 num, int32 game) STUB
 int32 zSaveLoad_CardCheckSlotEmpty_hasGame(int32 num, int32 game) STUB
 int32 zSaveLoad_CardCheckSlotOverwrite_Free(int32, int32) STUB
 int32 zSaveLoad_CardCheck(int32 cardNumber, int32 mode) STUB
@@ -65,10 +65,10 @@ int32 zSaveLoad_LoadGame() STUB
 uint32 zSaveLoad_LoadLoop() STUB
 uint32 zSaveLoad_SaveLoop() STUB
 void zSaveLoad_DispatchCB(uint32 dispatchEvent, const float32* toParam) STUB_VOID
-bool32 xSGT_SaveInfoCB(void*, XSAVEGAME_DATA*, int32* need, int32* most) STUB
-bool32 xSGT_SaveProcCB(void*, XSAVEGAME_DATA* xsgdata, XSAVEGAME_WRITECONTEXT* wctxt) STUB
-bool32 xSGT_SaveInfoPrefsCB(void*, XSAVEGAME_DATA*, int32* need, int32* most) STUB
-bool32 xSGT_SaveProcPrefsCB(void*, XSAVEGAME_DATA* xsgdata, XSAVEGAME_WRITECONTEXT* wctxt) STUB
-bool32 xSGT_LoadLoadCB(void*, XSAVEGAME_DATA* xsgdata, XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
-bool32 xSGT_LoadPrefsCB(void*, XSAVEGAME_DATA* xsgdata, XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
+bool32 xSGT_SaveInfoCB(void*, st_XSAVEGAME_DATA*, int32* need, int32* most) STUB
+bool32 xSGT_SaveProcCB(void*, st_XSAVEGAME_DATA* xsgdata, st_XSAVEGAME_WRITECONTEXT* wctxt) STUB
+bool32 xSGT_SaveInfoPrefsCB(void*, st_XSAVEGAME_DATA*, int32* need, int32* most) STUB
+bool32 xSGT_SaveProcPrefsCB(void*, st_XSAVEGAME_DATA* xsgdata, st_XSAVEGAME_WRITECONTEXT* wctxt) STUB
+bool32 xSGT_LoadLoadCB(void*, st_XSAVEGAME_DATA* xsgdata, st_XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
+bool32 xSGT_LoadPrefsCB(void*, st_XSAVEGAME_DATA* xsgdata, st_XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
 uint32 zSaveLoad_slotIsEmpty(uint32 i) STUB

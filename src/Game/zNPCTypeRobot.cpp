@@ -13,10 +13,10 @@ bool32 zNPCRobot::NPCMessage(NPCMsg* mail) STUB
 void zNPCRobot::ParseINI() STUB_VOID
 void zNPCRobot::SelfSetup() STUB_VOID
 void zNPCRobot::DuploOwner(zNPCCommon* duper) STUB_VOID
-void zNPCRobot::LassoNotify(LASSO_EVENT event) STUB_VOID
-bool32 zNPCRobot::SetCarryState(NPC_CARRY_STATE stat) STUB
+void zNPCRobot::LassoNotify(en_LASSO_EVENT event) STUB_VOID
+bool32 zNPCRobot::SetCarryState(en_NPC_CARRY_STATE stat) STUB
 void zNPCRobot::Stun(float32 stuntime) STUB_VOID
-uint32 zNPCRobot::AnimPick(int32 gid, NPC_GOAL_SPOT gspot, xGoal*) STUB
+uint32 zNPCRobot::AnimPick(int32 gid, en_NPC_GOAL_SPOT gspot, xGoal*) STUB
 float32 zNPCRobot::GenShadCacheRad() STUB
 bool32 zNPCRobot::LassoSetup() STUB
 bool32 zNPCRobot::RoboHandleMail(NPCMsg* mail) STUB

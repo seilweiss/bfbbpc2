@@ -5,16 +5,16 @@
 #include "xShadowSimple.h"
 
 // not in dwarf data
-typedef enum en_npcdcat
+enum en_npcdcat
 {
-} npcdcat;
+};
 
 // not in dwarf data
-typedef enum en_npcperf
+enum en_npcperf
 {
-} npcperf;
+};
 
-typedef enum en_npcbtyp
+enum en_npcbtyp
 {
 	NPCP_BASIS_NONE,
 	NPCP_BASIS_EVILROBOT,
@@ -23,17 +23,17 @@ typedef enum en_npcbtyp
 	NPCP_BASIS_GRUMPYCITIZEN,
 	NPCP_BASIS_NOMORE,
 	NPCP_BASIS_FORCE = FORCEENUMSIZEINT
-} npcbtyp;
+};
 
-typedef enum en_dupowavmod
+enum en_dupowavmod
 {
 	NPCP_DUPOWAVE_CONTINUOUS,
 	NPCP_DUPOWAVE_DISCREET,
 	NPCP_DUPOWAVE_NOMORE,
 	NPCP_DUPOWAVE_FORCE = FORCEENUMSIZEINT
-} dupowavmod;
+};
 
-typedef enum en_npcparm
+enum en_npcparm
 {
 	NPC_PARM_NONE,
 	NPC_PARM_MOVERATE,
@@ -104,7 +104,7 @@ typedef enum en_npcparm
 	NPC_PARM_ENDTAG_SHARE,
 	NPC_PARM_NOMORE,
 	NPC_PARM_FORCEINT = FORCEENUMSIZEINT
-} npcparm;
+};
 
 class xNPCBasic : public xEnt, public xFactoryInst
 {
@@ -154,9 +154,9 @@ public:
 
 	int32 SelfType() const WIP { return myNPCType; }
 	void RestoreColFlags() STUB_VOID;
-	bool32 DBG_IsNormLog(npcdcat, int32) WIP { return FALSE; }
-	void DBG_PStatOn(npcperf) WIP {}
-	void DBG_PStatCont(npcperf) WIP {}
+	bool32 DBG_IsNormLog(en_npcdcat, int32) WIP { return FALSE; }
+	void DBG_PStatOn(en_npcperf) WIP {}
+	void DBG_PStatCont(en_npcperf) WIP {}
 	void DBG_PStatClear() WIP {}
 	void DBG_HaltOnMe(uint32, char*) WIP {}
 };

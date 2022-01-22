@@ -16,7 +16,7 @@ public:
 		SetFlags(0x2);
 	}
 
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalTaunt : public zNPCGoalLoopAnim
@@ -28,7 +28,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalEvade : public zNPCGoalCommon
@@ -43,7 +43,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 };
 
 class zNPCGoalGoHome : public zNPCGoalCommon
@@ -54,7 +54,7 @@ public:
 		SetFlags(0x2);
 	}
 
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 };
 
 class zNPCGoalAlert : public zNPCGoalCommon
@@ -72,7 +72,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 enum en_alertfod
@@ -101,7 +101,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	bool32 CheckSpot(float32);
 	void FlankPlayer(float32 dt);
@@ -134,7 +134,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	
 	void Detonate();
 	void SonarHoming(float32 dt);
@@ -172,7 +172,7 @@ public:
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Suspend(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void ToggleOrbit();
 	void OrbitPlayer(float32 dt);
@@ -205,7 +205,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void CirclePlayer(float32 dt);
 	void GetInArena(float32 dt);
@@ -240,7 +240,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	bool32 PlayerInSpot(float32);
 	void MoveChase(float32 dt);
@@ -284,10 +284,10 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
-	int32 HoppyUpdate(trantype* trantype, float32 dt);
+	int32 HoppyUpdate(en_trantype* trantype, float32 dt);
 	void GetInArena(float32 dt);
 };
 
@@ -314,7 +314,7 @@ public:
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Suspend(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void FXTurbulence();
 	void FXWhirlwind();
@@ -353,7 +353,7 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
 	void MoveCorner(float32 dt);
 };
@@ -383,7 +383,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 };
 
@@ -422,7 +422,7 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	en_arfdoes DecideAttack();
@@ -451,7 +451,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 enum en_alertchuk
@@ -486,7 +486,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	
 	void GetInArena(float32 dt);
 	bool32 ZoomMove(float32 dt);
@@ -509,9 +509,9 @@ public:
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 	bool32 MoveToHome(float32 dt);
 	void PeteAttackBegin();
 	void PeteAttackParSys(float32, int32);
@@ -544,7 +544,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	void GetInArena(float32 dt);
@@ -562,7 +562,7 @@ public:
 		SetFlags(0x2);
 	}
 
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 };
 
 class zNPCGoalAttackCQC : public zNPCGoalPushAnim
@@ -578,7 +578,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 };
 
 class zNPCGoalAttackFodder : public zNPCGoalPushAnim
@@ -592,7 +592,7 @@ private:
 	public:
 		CattleNotify() WIP : HAZNotify() {}
 
-		virtual bool32 Notify(haznote note, NPCHazard*);
+		virtual bool32 Notify(en_haznote note, NPCHazard*);
 	};
 
 	xVec3 dir_attack;
@@ -608,7 +608,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	bool32 SyncCattleProd();
 };
@@ -622,7 +622,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void BreathAttack();
 };
@@ -643,9 +643,9 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 	bool32 PlayerTests(xVec3* pos_vert, float32);
 	bool32 ShockwaveTests(xVec3* pos_vert, float32);
 	void TellBunnies();
@@ -669,7 +669,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	void CacheAimPoint();
@@ -688,7 +688,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	
 	bool32 SpitCloud();
 };
@@ -706,7 +706,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void PlayerTests();
 	void FXStreakPrep();
@@ -727,7 +727,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void SetAttackMode(int32, int32);
 	void LaunchBone(float32, int32);
@@ -747,7 +747,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void BombzAway(float32);
 };
@@ -764,7 +764,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void FireOne(int32);
 };
@@ -786,7 +786,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 CollReview(void*) WIP { return FALSE; }
 
 	void ViciousAttack(xVec3*, xVec3*, zMovePoint*, int32);
@@ -806,7 +806,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalDogDash : public zNPCGoalLoopAnim
@@ -818,7 +818,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void HoundPlayer(float32);
 };
@@ -851,7 +851,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 };
 
@@ -868,7 +868,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalEvilPat : public zNPCGoalCommon
@@ -881,7 +881,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 NPCMessage(NPCMsg* msg);
 
 	int32 InputStun(NPCStunInfo* info);
@@ -898,7 +898,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	int32 InputInfo(NPCStunInfo*);
 };
@@ -912,7 +912,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalPatThrow : public zNPCGoalCommon
@@ -937,7 +937,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalLassoGrab : public zNPCGoalCommon
@@ -948,7 +948,7 @@ public:
 		SetFlags(0x2);
 	}
 
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	
 	void DoTurnAway(float32 dt);
 };
@@ -969,7 +969,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 CollReview(void*);
 
 	void ApplyYank(int32 left);
@@ -986,7 +986,7 @@ public:
 		SetFlags(0xC);
 	}
 
-	virtual bool32 Process(trantype* trantype, float32, void*, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32, void*, xScene*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 
 	int32 InputInfo(NPCDamageInfo* info);
@@ -1001,7 +1001,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 class zNPCGoalWound : public zNPCGoalPushAnim
@@ -1018,7 +1018,7 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 	virtual bool32 CollReview(void*);
 	virtual bool32 NPCMessage(NPCMsg* mail);
 };
@@ -1040,7 +1040,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	int32 InputInfo(NPCDamageInfo* info);
 
@@ -1081,7 +1081,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	float32 LaunchRoboBits();
 	void DoAppearFX(float32 dt);
@@ -1100,9 +1100,9 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 EvalRules(trantype* trantype, float32 dt, void* updCtxt);
+	virtual bool32 EvalRules(en_trantype* trantype, float32 dt, void* updCtxt);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 };
 
 class zNPCGoalTubeDuckling : public zNPCGoalCommon
@@ -1124,9 +1124,9 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 	void MoveFrolic(float32 dt);
 	void DuckStackInterpInit();
 	int32 DuckStackInterp(float32 dt);
@@ -1177,9 +1177,9 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Resume(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 	void LaserRender();
 	void MaryAttack(float32 dt, xScene*);
 	void MarySpinUp();
@@ -1199,9 +1199,9 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 	void MoveTryToEscape(float32 dt);
 };
 
@@ -1214,9 +1214,9 @@ public:
 	}
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 };
 
 class zNPCGoalTubeBonked : public zNPCGoalCommon
@@ -1234,9 +1234,9 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
-	void CheckForTran(trantype* trantype, int32* nextgoal);
+	void CheckForTran(en_trantype* trantype, int32* nextgoal);
 };
 
 class zNPCGoalTubeDead : public zNPCGoalDead
@@ -1244,9 +1244,9 @@ class zNPCGoalTubeDead : public zNPCGoalDead
 public:
 	zNPCGoalTubeDead(int32 myType) WIP : zNPCGoalDead(myType) {}
 
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene*);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene*);
 
-	void ChkPrelimTran(trantype* trantype, int32* nextgoal);
+	void ChkPrelimTran(en_trantype* trantype, int32* nextgoal);
 };
 
 class zNPCGoalTubeDying : public zNPCGoalCommon
@@ -1264,7 +1264,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 
 	void DeathByLasso(const xVec3*);
 };
@@ -1284,7 +1284,7 @@ public:
 
 	virtual bool32 Enter(float32 dt, void* updCtxt);
 	virtual bool32 Exit(float32, void*);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
+	virtual bool32 Process(en_trantype* trantype, float32 dt, void* updCtxt, xScene* xscn);
 };
 
 xFactoryInst* GOALCreate_Robotic(int32 who, RyzMemGrow* grow, void*);

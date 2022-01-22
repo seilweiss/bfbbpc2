@@ -1,6 +1,6 @@
 #include "xserializer.h"
 
-int32 xSerialStartup(int32 count, SERIAL_PERCID_SIZE* sizeinfo) STUB
+int32 xSerialStartup(int32 count, st_SERIAL_PERCID_SIZE* sizeinfo) STUB
 int32 xSerialShutdown() STUB
 void xSerialTraverse(xSerialTraverseCallback func) STUB_VOID
 xSerial::xSerial() {}
@@ -27,17 +27,17 @@ bool32 xSerial::rdbit() STUB
 void xSerial::prepare(uint32) STUB_VOID
 void xSerialWipeMainBuffer() STUB_VOID
 static void xSER_init_tables() STUB_VOID
-static void xSER_init_buffers(int32 count, SERIAL_PERCID_SIZE* sizeinfo) STUB_VOID
+static void xSER_init_buffers(int32 count, st_SERIAL_PERCID_SIZE* sizeinfo) STUB_VOID
 static int32 xSER_ord_compare(void* e1, void* e2) STUB
 static int32 xSER_ord_test(const void* key, void* elt) STUB
-static SERIAL_CLIENTINFO* XSER_get_client(uint32 idtag) STUB
-bool32 xSerial_svgame_register(XSAVEGAME_DATA* sgctxt, SAVEGAME_MODE mode) STUB
-static bool32 xSER_xsgclt_svinfo_ver(void*, XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
-static bool32 xSER_xsgclt_svproc_ver(void*, XSAVEGAME_DATA* xsg, XSAVEGAME_WRITECONTEXT* wctxt) STUB
-static bool32 xSER_xsgclt_ldproc_ver(void*, XSAVEGAME_DATA* xsg, XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
-static bool32 xSER_xsgclt_svinfo_clt(void* cltdata, XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
-static bool32 xSER_xsgclt_svproc_clt(void* cltdata, XSAVEGAME_DATA* xsg, XSAVEGAME_WRITECONTEXT* wctxt) STUB
-static bool32 xSER_xsgclt_ldproc_clt(void*, XSAVEGAME_DATA* xsg, XSAVEGAME_READCONTEXT* rctxt, uint32 idtag, int32) STUB
-static bool32 xSER_xsgclt_svinfo_fill(void*, XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
-static bool32 xSER_xsgclt_svproc_fill(void*, XSAVEGAME_DATA* xsg, XSAVEGAME_WRITECONTEXT* wctxt) STUB
-static bool32 xSER_xsgclt_ldproc_fill(void*, XSAVEGAME_DATA* xsg, XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
+static st_SERIAL_CLIENTINFO* XSER_get_client(uint32 idtag) STUB
+bool32 xSerial_svgame_register(st_XSAVEGAME_DATA* sgctxt, en_SAVEGAME_MODE mode) STUB
+static bool32 xSER_xsgclt_svinfo_ver(void*, st_XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
+static bool32 xSER_xsgclt_svproc_ver(void*, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_WRITECONTEXT* wctxt) STUB
+static bool32 xSER_xsgclt_ldproc_ver(void*, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB
+static bool32 xSER_xsgclt_svinfo_clt(void* cltdata, st_XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
+static bool32 xSER_xsgclt_svproc_clt(void* cltdata, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_WRITECONTEXT* wctxt) STUB
+static bool32 xSER_xsgclt_ldproc_clt(void*, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_READCONTEXT* rctxt, uint32 idtag, int32) STUB
+static bool32 xSER_xsgclt_svinfo_fill(void*, st_XSAVEGAME_DATA*, int32* cur_space, int32* max_fullgame) STUB
+static bool32 xSER_xsgclt_svproc_fill(void*, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_WRITECONTEXT* wctxt) STUB
+static bool32 xSER_xsgclt_ldproc_fill(void*, st_XSAVEGAME_DATA* xsg, st_XSAVEGAME_READCONTEXT* rctxt, uint32, int32) STUB

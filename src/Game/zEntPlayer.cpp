@@ -162,7 +162,7 @@ void zEntPlayerSpeakStart(uint32 sndid, int32 anim) STUB_VOID
 void zEntPlayerSpeakStop() STUB_VOID
 static xEnt* GetPatrickTarget(xEnt* ent) STUB
 static uint32 PatrickGrabThrowCB(xAnimTransition*, xAnimSingle*, void* object) STUB
-void zEntPlayer_LassoNotify(LASSO_EVENT event) STUB_VOID
+void zEntPlayer_LassoNotify(en_LASSO_EVENT event) STUB_VOID
 static uint32 MeleeCheck(xAnimTransition*, xAnimSingle* anim, void*) STUB
 static uint32 LassoStartCheck(xAnimTransition*, xAnimSingle*, void*) STUB
 static uint32 LassoLostTargetCheck(xAnimTransition*, xAnimSingle*, void*) STUB

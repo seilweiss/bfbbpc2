@@ -4,7 +4,7 @@
 
 struct NPCMsg;
 
-typedef enum en_NPC_GOAL_SPOT
+enum en_NPC_GOAL_SPOT
 {
 	NPC_GSPOT_START = 32,
 	NPC_GSPOT_RESUME,
@@ -15,7 +15,7 @@ typedef enum en_NPC_GOAL_SPOT
 	NPC_GSPOT_PATROLPAUSE,
 	NPC_GSPOT_NOMORE,
 	NPC_GSPOT_FORCEINT = FORCEENUMSIZEINT
-} NPC_GOAL_SPOT;
+};
 
 class zNPCGoalCommon : public xGoal
 {
@@ -40,6 +40,6 @@ public:
 	virtual bool32 CollReview(void*) WIP { return FALSE; }
 
 	const char* Name() WIP { return NULL; }
-	uint32 DoAutoAnim(NPC_GOAL_SPOT gspot, bool32 forceRestart);
+	uint32 DoAutoAnim(en_NPC_GOAL_SPOT gspot, bool32 forceRestart);
 	uint32 DoExplicitAnim(uint32 anid, bool32 forceRestart);
 };

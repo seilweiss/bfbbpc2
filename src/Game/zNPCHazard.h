@@ -9,7 +9,7 @@ struct zLightning;
 struct xShadowCache;
 class NPCHazard;
 
-typedef enum en_npchaz
+enum en_npchaz
 {
 	NPC_HAZ_UNKNOWN,
 	NPC_HAZ_EXPLODE,
@@ -40,18 +40,18 @@ typedef enum en_npchaz
 	NPC_HAZ_VISSPLASH,
 	NPC_HAZ_NOMORE,
 	NPC_HAZ_FORCE = FORCEENUMSIZEINT
-} npchaz;
+};
 
-typedef enum en_hazcol
+enum en_hazcol
 {
 	HAZ_COLTYP_STAT,
 	HAZ_COLTYP_DYN,
 	HAZ_COLTYP_NPC,
 	HAZ_COLTYP_NOMORE,
 	HAZ_COLTYP_FORCE = FORCEENUMSIZEINT
-} hazcol;
+};
 
-typedef enum en_haznote
+enum en_haznote
 {
 	HAZ_NOTE_DISCARD,
 	HAZ_NOTE_ABORT,
@@ -59,7 +59,7 @@ typedef enum en_haznote
 	HAZ_NOTE_RECONFIG,
 	HAZ_NOTE_NOMORE,
 	HAZ_NOTE_FORCE = FORCEENUMSIZEINT
-} haznote;
+};
 
 struct HAZTypical
 {
@@ -81,7 +81,7 @@ struct HAZCollide : HAZTypical
 		int32 flg_unused : 16;
 	};
 	int32 cnt_skipcol;
-	hazcol idx_rotateCol;
+	en_hazcol idx_rotateCol;
 };
 
 struct HAZMissile
@@ -152,7 +152,7 @@ class HAZNotify
 public:
 	HAZNotify() WIP {}
 
-	virtual bool32 Notify(haznote note, NPCHazard*) WIP { return FALSE; }
+	virtual bool32 Notify(en_haznote note, NPCHazard*) WIP { return FALSE; }
 };
 
 class NPCHazard

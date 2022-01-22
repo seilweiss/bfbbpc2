@@ -2,7 +2,7 @@
 
 #include <types.h>
 
-typedef enum en_SM_NOTICES
+enum en_SM_NOTICES
 {
 	SM_NOTE_NPCDIED,
 	SM_NOTE_NPCSTANDBY,
@@ -14,4 +14,4 @@ typedef enum en_SM_NOTICES
 	SM_NOTE_KILLKIDS,
 	SM_NOTE_NOMORE,
 	SM_NOTE_FORCE = FORCEENUMSIZEINT
-} SM_NOTICES;
+};

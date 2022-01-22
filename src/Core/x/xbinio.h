@@ -2,16 +2,16 @@
 
 #include "xfileio.h"
 
-typedef enum en_BIO_ASYNC_ERRCODES
+enum en_BIO_ASYNC_ERRCODES
 {
 	BINIO_ASYNC_FAIL = -1,
 	BINIO_ASYNC_NOOP = 0,
 	BINIO_ASYNC_INPROG,
 	BINIO_ASYNC_DONE,
 	BINIO_ASYNC_FORCEENUMSIZEINT = FORCEENUMSIZEINT
-} BIO_ASYNC_ERRCODES;
+};
 
-typedef struct st_FILELOADINFO
+struct st_FILELOADINFO
 {
 	void(*destroy)(st_FILELOADINFO*);
 	int32(*readBytes)(st_FILELOADINFO*, char*, int32);
@@ -29,9 +29,9 @@ typedef struct st_FILELOADINFO
 	void(*discardDblBuf)(st_FILELOADINFO*);
 	int32(*asyncIRead)(st_FILELOADINFO*, int32, char*, int32, int32);
 	int32(*asyncMRead)(st_FILELOADINFO*, int32, char*, int32, int32);
-	BIO_ASYNC_ERRCODES(*asyncReadStatus)(st_FILELOADINFO*);
+	en_BIO_ASYNC_ERRCODES(*asyncReadStatus)(st_FILELOADINFO*);
 	uint32 lockid;
-	FIOERRCODES error;
+	en_FIOERRCODES error;
 	uint32 basesector;
 	void* privdata;
 	void* xtradata;
@@ -39,6 +39,6 @@ typedef struct st_FILELOADINFO
 	int32 filesize;
 	int32 remain;
 	int32 position;
-} FILELOADINFO;
+};
 
-FILELOADINFO* xBinioLoadCreate(const char* filename);
+st_FILELOADINFO* xBinioLoadCreate(const char* filename);
