@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types.h>
+#include "xFactory.h"
 
 enum en_NPCTYPES
 {
@@ -82,3 +82,7 @@ enum en_NPCTYPES
 	NPC_TYPE_NOMORE,
 	NPC_TYPE_FORCE = FORCEENUMSIZEINT
 };
+
+void zNPCTypes_StartupTypes();
+void zNPCTypes_ShutdownTypes();
+void zNPCTypes_RegisterTypes(xFactory* fac);
