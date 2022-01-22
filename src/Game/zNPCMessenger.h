@@ -2,7 +2,7 @@
 
 #include "zNPCTypeCommon.h"
 
-struct zMovePoint;
+class zMovePoint;
 
 typedef enum en_NPC_MSG_ID
 {

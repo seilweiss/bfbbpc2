@@ -4,9 +4,10 @@
 #include "xCollide.h"
 #include "xMath2.h"
 
-struct zNPCCommon;
+class zNPCCommon;
 struct zLightning;
 struct xShadowCache;
+class NPCHazard;
 
 typedef enum en_npchaz
 {
@@ -49,6 +50,16 @@ typedef enum en_hazcol
 	HAZ_COLTYP_NOMORE,
 	HAZ_COLTYP_FORCE = FORCEENUMSIZEINT
 } hazcol;
+
+typedef enum en_haznote
+{
+	HAZ_NOTE_DISCARD,
+	HAZ_NOTE_ABORT,
+	HAZ_NOTE_HITPLAYER,
+	HAZ_NOTE_RECONFIG,
+	HAZ_NOTE_NOMORE,
+	HAZ_NOTE_FORCE = FORCEENUMSIZEINT
+} haznote;
 
 struct HAZTypical
 {
@@ -136,8 +147,12 @@ struct UVAModelInfo
 	xVec2 offset;
 };
 
-struct HAZNotify
+class HAZNotify
 {
+public:
+	HAZNotify() WIP {}
+
+	virtual bool32 Notify(haznote note, NPCHazard*) WIP { return FALSE; }
 };
 
 class NPCHazard
@@ -181,4 +196,6 @@ private:
 
 public:
 	void MarkForRecycle();
+	void SetNPCOwner(zNPCCommon*) STUB_VOID;
+	void NotifyCBSet(HAZNotify*) STUB_VOID;
 };

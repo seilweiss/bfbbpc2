@@ -6,8 +6,9 @@
 #include "zNPCSpawner.h"
 #include "zNPCGoalCommon.h"
 #include "zBase.h"
+#include "xAnim.h"
 
-struct zMovePoint;
+class zMovePoint;
 struct xSpline3;
 struct xEntDrive;
 struct xPsyche;
