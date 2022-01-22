@@ -10,5 +10,6 @@ private:
 	xFactoryInst* prevprod;
 
 public:
-	xFactoryInst() STUB_VOID;
+	xFactoryInst() WIP : itemType(0), prevprod(NULL), nextprod(NULL) {}
+	~xFactoryInst() WIP {}
 };

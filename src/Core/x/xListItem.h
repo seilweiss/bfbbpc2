@@ -10,5 +10,7 @@ private:
 	T* prev;
 
 public:
-	xListItem() STUB_VOID;
+	xListItem() WIP : flg_travFilter(0), prev(NULL), next(NULL) {}
+
+	void Remove() STUB_VOID;
 };

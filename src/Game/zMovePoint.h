@@ -4,8 +4,12 @@
 
 struct zScene;
 
-struct zMovePoint : xMovePoint
+class zMovePoint : public xMovePoint
 {
+public:
+	xVec3* PosGet() WIP { return pos; }
+	float32 Delay() WIP { return asset->delay; }
+	float32 RadiusZone() WIP { return asset->zoneRadius; }
 };
 
 zMovePoint* zMovePoint_GetMemPool(int32 cnt);

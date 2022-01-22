@@ -6,6 +6,7 @@
 class xGoal;
 struct xPsyche;
 struct xBase;
+struct xScene;
 
 typedef enum en_GOALSTATE
 {
@@ -62,7 +63,7 @@ public:
 	virtual bool32 Resume(float32 dt, void* updCtxt) WIP { return FALSE; }
 	virtual bool32 PreCalc(float32 dt, void* updCtxt);
 	virtual bool32 EvalRules(trantype* trantype, float32 dt, void* updCtxt);
-	virtual bool32 Process(trantype* trantype, float32 dt, void* ctxt);
+	virtual bool32 Process(trantype* trantype, float32 dt, void* ctxt, xScene*);
 	virtual bool32 SysEvent(xBase*, xBase*, uint32, const float32*, xBase*, int32*) WIP { return TRUE; }
 
 	xBase* GetOwner() const;

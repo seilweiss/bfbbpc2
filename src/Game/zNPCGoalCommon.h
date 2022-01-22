@@ -19,7 +19,7 @@ typedef enum en_NPC_GOAL_SPOT
 
 class zNPCGoalCommon : public xGoal
 {
-private:
+protected:
 	int32 flg_npcgauto;
 	int32 flg_npcgable;
 	uint32 anid_played;
