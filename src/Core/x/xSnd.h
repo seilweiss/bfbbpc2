@@ -112,4 +112,5 @@ inline float32 xSndGetVol(uint32) STUB
 inline uint32 xSndPlay3D(uint32, float32, float32, uint32, uint32, xEnt*, float32, sound_category, float32) STUB
 inline uint32 xSndPlay3D(uint32, float32, float32, uint32, uint32, const xVec3*, float32, sound_category, float32) STUB
 inline uint32 xSndIsPlaying(uint32) STUB
+inline bool32 xSndIsPlaying(uint32, uint32) STUB
 inline bool xSndIsPlayingByHandle(uint32) STUB

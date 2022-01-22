@@ -418,3 +418,21 @@ public:
 	void ModelScaleSet(const xVec3* scale) WIP { ModelScaleSet(scale->x, scale->y, scale->z); }
 	xAnimTable* AnimGetTable() STUB;
 };
+
+xFactoryInst* ZNPC_Create_Common(int32 who, RyzMemGrow* grow, void*);
+void ZNPC_Destroy_Common(xFactoryInst* inst);
+void ZNPC_Common_Startup();
+void ZNPC_Common_Shutdown();
+void zNPCCommon_ScenePrepare();
+void zNPCCommon_SceneFinish();
+void zNPCCommon_SceneReset();
+void zNPCCommon_ScenePostInit();
+void zNPCCommon_Timestep(xScene*, float32 dt);
+void zNPCSettings_MakeDummy();
+zNPCSettings* zNPCSettings_Find(uint32);
+bool32 NPCC_NPCIsConversing();
+void zNPCCommon_WonderReset();
+xAnimTable* ZNPC_AnimTable_Common();
+xAnimTable* ZNPC_AnimTable_LassoGuide();
+void NPCC_BuildStandardAnimTran(xAnimTable* table, char** namelist, int32* ourAnims, int32 idx_dflt, float32 blend);
+void zNPCCommon_EjectPhlemOnPawz();

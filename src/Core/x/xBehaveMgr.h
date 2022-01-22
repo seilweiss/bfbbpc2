@@ -64,6 +64,10 @@ private:
 
 public:
 	int32 GIDOfSafety() const WIP { return gid_safegoal; }
+	void ImmTranOn() STUB_VOID;
+	void ImmTranOff() STUB_VOID;
+	bool32 ImmTranIsOn() STUB;
+	bool32 HasGoal(int32) STUB;
 };
 
 class xBehaveMgr : public RyzMemData
