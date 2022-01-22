@@ -65,3 +65,14 @@ private:
 public:
 	int32 GIDOfSafety() const WIP { return gid_safegoal; }
 };
+
+class xBehaveMgr : public RyzMemData
+{
+private:
+	xFactory* goalFactory;
+	xPsyche* psypool;
+	st_XORDEREDARRAY psylist;
+
+public:
+	xFactory* GetFactory() WIP { return goalFactory; }
+};

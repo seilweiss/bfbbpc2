@@ -4,7 +4,7 @@
 #include "xFactory.h"
 
 class xGoal;
-struct xPsyche;
+class xPsyche;
 struct xBase;
 struct xScene;
 

@@ -11,7 +11,7 @@
 class zMovePoint;
 struct xSpline3;
 struct xEntDrive;
-struct xPsyche;
+class xPsyche;
 struct zShrapnelAsset;
 struct NPCMsg;
 struct xSFX;
