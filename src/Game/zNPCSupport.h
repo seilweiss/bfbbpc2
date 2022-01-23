@@ -2,6 +2,13 @@
 
 #include "xEnt.h"
 
+class NPCBlinker
+{
+private:
+	float32 tmr_uvcell;
+	int32 idx_uvcell;
+};
+
 class NPCLaser
 {
 private:
@@ -13,6 +20,12 @@ private:
 
 public:
 	void ColorSet(const RwRGBA*, const RwRGBA*) STUB_VOID;
+	void Prepare() STUB_VOID;
+	void RadiusSet(float32, float32) STUB_VOID;
+	void UVScrollSet(float32, float32) STUB_VOID;
+	void TextureSet(RwRaster*) STUB_VOID;
+	RwRaster* TextureGet() STUB;
+	void UVScrollUpdate(float32) STUB_VOID;
 };
 
 inline xVec3* NPCC_rightDir(xEnt* ent) STUB
@@ -24,3 +37,4 @@ inline uint8 LERP(float32, uint8, uint8) STUB
 inline float32 LERP(float32, float32, float32) STUB
 inline float32 EASE(float32) STUB
 inline float32 SMOOTH(float32, float32, float32) STUB
+inline float32 RANGEWRAP(float32*, float32, float32) STUB

@@ -177,6 +177,7 @@ bool xEntValidType(uint8 type);
 void xEntReposition(xEnt& ent, const xMat4x3& mat);
 void xEntInitShadow(xEnt& ent, xEntShadow& shadow);
 
+inline uint32 xEntIsEnabled(xEnt*) STUB
 inline void xEntEnable(xEnt*) STUB_VOID
 inline uint32 xEntIsVisible(const xEnt* ent) STUB
 inline void xEntShow(xEnt*) STUB_VOID

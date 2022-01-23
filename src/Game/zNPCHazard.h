@@ -137,14 +137,20 @@ struct HAZCatProd : HAZBall
 	zLightning* zap_lytb;
 };
 
-struct UVAModelInfo
+class UVAModelInfo
 {
+private:
 	xVec2 offset_vel;
 	uint32 flg_uvam;
 	RpAtomic* model;
 	RwTexCoords* uv;
 	int32 uvsize;
 	xVec2 offset;
+
+public:
+	void Clear() STUB_VOID;
+	void UVVelSet(float32, float32) STUB_VOID;
+	bool32 Valid() const STUB;
 };
 
 class HAZNotify

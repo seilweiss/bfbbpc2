@@ -68,6 +68,8 @@ public:
 	void ImmTranOff() STUB_VOID;
 	bool32 ImmTranIsOn() STUB;
 	bool32 HasGoal(int32) STUB;
+	void SetSafety(int32) STUB_VOID;
+	void SetNotify(xPSYNote*) STUB_VOID;
 };
 
 class xBehaveMgr : public RyzMemData

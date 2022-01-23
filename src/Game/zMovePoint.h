@@ -10,7 +10,10 @@ public:
 	xVec3* PosGet() WIP { return pos; }
 	float32 Delay() WIP { return asset->delay; }
 	float32 RadiusZone() WIP { return asset->zoneRadius; }
+	float32 RadiusArena() WIP { return asset->arenaRadius; }
 	bool32 HasSpline() WIP { return spl != NULL; }
+	xMovePoint* NodeByIndex(int32 index) WIP { return nodes[index]; }
+	int32 NumNodes() WIP { return asset->numPoints; }
 };
 
 zMovePoint* zMovePoint_GetMemPool(int32 cnt);
