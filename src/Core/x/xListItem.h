@@ -15,4 +15,6 @@ public:
 	void Insert(T*) STUB_VOID;
 	void Remove() STUB_VOID;
 	T* Next() STUB;
+	T* RemHead(T** listhead) STUB;
+	T* Head() STUB;
 };

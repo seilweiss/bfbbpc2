@@ -35,6 +35,12 @@ enum en_pendtype
 	PEND_TRAN_NOMORE
 };
 
+enum en_xpsytime
+{
+	XPSY_TYMR_CURGOAL,
+	XPSY_TYMR_NOMORE
+};
+
 class xPSYNote
 {
 public:
@@ -63,6 +69,37 @@ private:
 	xBase fakebase;
 
 public:
+	void BrainBegin();
+	void BrainExtend();
+	void BrainEnd();
+	xGoal* AddGoal(int32 gid, void* createData);
+	void FreshWipe();
+	void SetOwner(xBase*, void*);
+	void KillBrain(xFactory*);
+	void Lobotomy(xFactory*);
+	void Amnesia(bool32);
+	int32 IndexInStack(int32 gid) const;
+	xGoal* GetCurGoal() const;
+	xGoal* GIDInStack(int32 gid) const;
+	int32 GIDOfActive() const;
+	int32 GIDOfPending() const;
+	xGoal* GetPrevRecovery(int32 gid) const;
+	bool32 xGoalSet(int32 gid, int32);
+	bool32 GoalPush(int32 gid, int32);
+	bool32 GoalPopToBase(int32 overpend);
+	bool32 GoalPopRecover(int32 overpend);
+	bool32 GoalPop(int32 gid_popto, int32);
+	bool32 GoalSwap(int32 gid, int32);
+	bool32 GoalNone(int32 denyExplicit, int32);
+	void SetTopState(en_GOALSTATE);
+	xGoal* FindGoal(int32 gid);
+	void ForceTran(float32, void*);
+	bool32 Timestep(float32 dt, void* updCtxt);
+	bool32 ParseTranRequest(en_trantype trantyp, int32 trangid);
+	int32 TranGoal(float32 dt, void* updCtxt);
+	float32 TimerGet(en_xpsytime tymr);
+	void TimerClear();
+	void TimerUpdate(float32);
 	int32 GIDOfSafety() const WIP { return gid_safegoal; }
 	void ImmTranOn() STUB_VOID;
 	void ImmTranOff() STUB_VOID;
@@ -70,6 +107,10 @@ public:
 	bool32 HasGoal(int32) STUB;
 	void SetSafety(int32) STUB_VOID;
 	void SetNotify(xPSYNote*) STUB_VOID;
+	void ExpTranOn() STUB_VOID;
+	void ExpTranOff() STUB_VOID;
+	void ExpTranIsOn() STUB_VOID;
+	void DBG_HistAdd(int32) {}
 };
 
 class xBehaveMgr : public RyzMemData
@@ -80,5 +121,23 @@ private:
 	st_XORDEREDARRAY psylist;
 
 public:
+	xBehaveMgr() {}
+	~xBehaveMgr() WIP {}
+
+	void Startup(int32, int32);
+	void RegBuiltIn();
+	xPsyche* Subscribe(xBase* owner, int32);
+	void UnSubscribe(xPsyche* psy);
+	void ScenePrepare();
+	void SceneFinish();
+	void SceneReset();
 	xFactory* GetFactory() WIP { return goalFactory; }
 };
+
+void xBehaveMgr_Startup();
+void xBehaveMgr_Shutdown();
+xBehaveMgr* xBehaveMgr_GetSelf();
+xFactory* xBehaveMgr_GoalFactory();
+void xBehaveMgr_ScenePrepare();
+void xBehaveMgr_SceneFinish();
+void xBehaveMgr_SceneReset();
