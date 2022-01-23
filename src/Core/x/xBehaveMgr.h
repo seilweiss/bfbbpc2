@@ -111,6 +111,7 @@ public:
 	void ExpTranOff() STUB_VOID;
 	void ExpTranIsOn() STUB_VOID;
 	void DBG_HistAdd(int32) {}
+	xBase* GetClient() WIP { return clt_owner; }
 };
 
 class xBehaveMgr : public RyzMemData
