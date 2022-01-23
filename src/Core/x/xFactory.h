@@ -15,11 +15,14 @@ public:
 	~xFactoryInst() WIP {}
 };
 
+typedef xFactoryInst* (*xFactoryInstCreator)(int32, RyzMemGrow*, void*);
+typedef void(*xFactoryInstDestroyer)(xFactoryInst*);
+
 struct XGOFTypeInfo
 {
 	int32 tid;
-	xFactoryInst* (*creator)(int32, RyzMemGrow*, void*);
-	void(*destroyer)(xFactoryInst*);
+	xFactoryInstCreator creator;
+	xFactoryInstDestroyer destroyer;
 };
 
 class xFactory : public RyzMemData
@@ -29,4 +32,16 @@ private:
 	st_XORDEREDARRAY infolist;
 	xFactoryInst* products;
 	RyzMemGrow growContextData;
+
+public:
+	xFactory(int32 maxTypes);
+	~xFactory();
+
+	int32 RegItemType(XGOFTypeInfo* info);
+	int32 RegItemType(int32 tid, xFactoryInstCreator create, xFactoryInstDestroyer destroy);
+	void GrowDataEnable(xBase* user, bool32 isResume);
+	void GrowDataDisable();
+	xFactoryInst* CreateItem(int32 typeID, void* userdata, RyzMemGrow* callerzgrow);
+	void DestroyAll();
+	void DestroyItem(xFactoryInst* item);
 };
