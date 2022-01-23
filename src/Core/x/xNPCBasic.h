@@ -160,3 +160,11 @@ public:
 	void DBG_PStatClear() WIP {}
 	void DBG_HaltOnMe(uint32, char*) WIP {}
 };
+
+void NPC_entwrap_setup(xEnt* ent);
+void NPC_entwrap_reset(xEnt* ent);
+void NPC_entwrap_update(xEnt* ent, xScene* xscn, float32 dt_caller);
+void NPC_entwrap_bupdate(xEnt* ent, xVec3* pos);
+void NPC_entwrap_move(xEnt* ent, xScene* xscn, float32 dt, xEntFrame* frm);
+bool32 NPC_entwrap_event(xBase* from, xBase* to, uint32 toEvent, const float32* toParam, xBase* toParamWidget);
+void NPC_entwrap_render(xEnt* ent);
