@@ -2,6 +2,35 @@
 
 #include "xEnt.h"
 
+enum en_npctgt
+{
+	NPC_TGT_NONE,
+	NPC_TGT_PLYR,
+	NPC_TGT_ENT,
+	NPC_TGT_BASE,
+	NPC_TGT_POS,
+	NPC_TGT_MVPT,
+	NPC_TGT_NOMORE,
+	NPC_TGT_FORCEINT = FORCEENUMSIZEINT
+};
+
+class NPCTarget
+{
+private:
+	en_npctgt typ_target;
+	union
+	{
+		xEnt* ent_target;
+		xBase* bas_target;
+		xVec3 pos_target;
+		zMovePoint* nav_target;
+	};
+	zNPCCommon* npc_owner;
+
+public:
+	bool32 HaveTarget() STUB;
+};
+
 class NPCBlinker
 {
 private:
