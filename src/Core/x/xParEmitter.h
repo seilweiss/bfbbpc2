@@ -6,6 +6,8 @@
 
 struct xParGroup;
 struct xParSys;
+struct xPar;
+struct xScene;
 
 struct xParInterp
 {
@@ -15,6 +17,7 @@ struct xParInterp
 	float32 oofreq;
 
 	void set(float32, float32, float32, uint32) STUB_VOID;
+	void order() STUB_VOID;
 };
 
 struct xParEmitterPropsAsset : xBaseAsset
@@ -161,3 +164,18 @@ struct xParEmitter : xBase
 	void* emit_volume;
 	xVec3 last_attach_loc;
 };
+
+int32 xParInterpConvertInterpMode(xParInterp* p);
+void xParEmitterInit(void* b, void* tasset);
+void xParEmitterInit(xBase* b, xParEmitterAsset* pea);
+void xParEmitterSetup(xParEmitter* t);
+void xParEmitterReset(xParEmitter*);
+bool32 xParEmitterEventCB(xBase*, xBase* to, uint32 toEvent, const float32*, xBase*);
+xPar* xParEmitterEmitCustom(xParEmitter* p, float32 dt, xParEmitterCustomSettings* info);
+float32 xParInterpCompute(int32 interp_mode, xParInterp* r, float32 time, int32 time_has_elapsed, float32 lastVal);
+xPar* xParEmitterEmitSetTexIdxs(xPar* p, const xParSys* ps);
+xPar* xParEmitterEmit(xParEmitter* pe, float32 emit_dt, float32 par_dt);
+void xParEmitterUpdate(xBase* to, xScene*, float32 dt);
+void xParEmitterDestroy();
+
+inline xPar* xParEmitterEmit(xParEmitter*, float32) STUB
