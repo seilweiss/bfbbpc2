@@ -131,6 +131,7 @@ void xQuatSlerp(xQuat* o, const xQuat* a, const xQuat* b, float32 t);
 void xQuatMul(xQuat* o, const xQuat* a, const xQuat* b);
 void xQuatDiff(xQuat* o, const xQuat* a, const xQuat* b);
 
+inline void xBoxFromSphere(xBox&, const xSphere&) STUB_VOID
 inline void xBoxFromLine(xBox& box, const xLine3& line) STUB_VOID
 inline void xBoxFromCircle(xBox&, const xVec3&, const xVec3&, float32) STUB_VOID
 inline void xBoxFromRay(xBox&, const xRay3&) STUB_VOID
