@@ -21,3 +21,6 @@ struct xJSPHeader
 	xClumpCollBSPTree* colltree;
 	xJSPNodeInfo* jspNodeList;
 };
+
+void xJSP_MultiStreamRead(void* data, uint32 size, xJSPHeader** jsp);
+void xJSP_Destroy(xJSPHeader* jsp);
