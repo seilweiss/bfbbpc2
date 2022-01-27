@@ -27,3 +27,8 @@ struct xShadowSimpleCache
 	float32 dydz;
 	xVec3 corner[4];
 };
+
+void xShadowSimple_Init();
+void xShadowSimple_CacheInit(xShadowSimpleCache* cache, xEnt* ent, uint8 alpha);
+void xShadowSimple_Add(xShadowSimpleCache* cache, xEnt* ent, float32 radius, float32 ecc);
+void xShadowSimple_Render();
