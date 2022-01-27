@@ -14,6 +14,7 @@ public:
 	bool32 HasSpline() WIP { return spl != NULL; }
 	xMovePoint* NodeByIndex(int32 index) WIP { return nodes[index]; }
 	int32 NumNodes() WIP { return asset->numPoints; }
+	bool32 IsOn() WIP { return on; }
 };
 
 zMovePoint* zMovePoint_GetMemPool(int32 cnt);

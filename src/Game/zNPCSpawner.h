@@ -5,6 +5,8 @@
 
 class zMovePoint;
 class zNPCCommon;
+struct xBound;
+struct xCollis;
 
 enum en_SM_NOTICES
 {
@@ -80,4 +82,39 @@ private:
 	st_XORDEREDARRAY pendlist;
 	st_XORDEREDARRAY actvlist;
 	int32 cnt_cleanup;
+
+public:
+	void Subscribe(zNPCCommon* owner);
+	void SetWaveMode(en_SM_WAVE_MODE mode, float32 delay, int32 lifemax);
+	bool32 AddSpawnPoint(zMovePoint* sp);
+	bool32 AddSpawnNPC(zNPCCommon* npc);
+	void Reset();
+	void MapPreferred();
+	void Timestep(float32 dt);
+	void UpdateDiscreet(float32);
+	void UpdateContinuous(float32);
+	void Notify(en_SM_NOTICES note, void* data);
+	bool Owned(zNPCCommon*) const;
+	bool Receivable(en_SM_NOTICES note, void* data) const;
+	SMSPStatus* SelectSP(const SMNPCStatus* npcstat);
+	SMSPStatus* NextPendingNPC(int32);
+	void ClearActive();
+	void ClearPending();
+	int32 FillPending();
+	int32 ReFillPending();
+	bool32 IsSPLZClear(zMovePoint* sp);
+	int32 IsNearbyMover(xBound* bnd, int32 usecyl, xCollis* caller_colrec);
+	void SetNPCStatus(zNPCCommon*, en_SM_NPC_STATUS);
+	SMSPStatus* StatForSP(zMovePoint*, int32);
+	SMNPCStatus* StatForNPC(zNPCCommon* npc);
+	bool32 SpawnBeastie(SMNPCStatus* npcstat, SMSPStatus* spstat);
+	SMNPCStatus* ToastedBeastie(zNPCCommon*);
+	void ChildHeartbeat(float32);
+	void ChildCleanup(float32);
 };
+
+void zNPCSpawner_Startup();
+void zNPCSpawner_Shutdown();
+void zNPCSpawner_ScenePrepare();
+void zNPCSpawner_SceneFinish();
+zNPCSpawner* zNPCSpawner_GetInstance();
