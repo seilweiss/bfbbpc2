@@ -72,3 +72,7 @@ public:
 	void next() STUB_VOID;
 	void lock_block() STUB_VOID;
 };
+
+void xPTankPoolSceneEnter();
+void xPTankPoolSceneExit();
+void xPTankPoolRender();
