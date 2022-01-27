@@ -215,7 +215,7 @@ private:
 	ulong32 wrap_block(ulong32 i) const WIP { return i & 0xFF; }
 };
 
-template <class T, ulong32 N> struct fixed_queue
+template <class T, ulong32 N> class fixed_queue
 {
 private:
 	ulong32 _first;
