@@ -4,6 +4,7 @@ inline void xVec3Init(xVec3* v, float32 _x, float32 _y, float32 _z) STUB_VOID
 inline void xVec3Copy(xVec3*, const xVec3*) STUB_VOID
 inline float32 xVec3Length(const xVec3* v) STUB
 inline float32 xVec3Length2(const xVec3* v) STUB
+inline float32 xVec3LengthFast(const xVec3*) STUB
 inline float32 xVec3LengthFast(float32, float32, float32) STUB
 inline void xVec3Add(xVec3*, const xVec3*, const xVec3*) STUB_VOID
 inline void xVec3AddTo(xVec3*, const xVec3*) STUB_VOID
