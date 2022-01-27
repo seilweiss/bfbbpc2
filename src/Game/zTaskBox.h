@@ -1,6 +1,9 @@
 #pragma once
 
 #include "xDynAsset.h"
+#include "zTalkBox.h"
+
+class zNPCCommon;
 
 class ztaskbox : public xBase
 {
@@ -37,6 +40,8 @@ public:
 		virtual void on_talk_stop() {}
 	};
 
+	class talk_callback;
+
 private:
 	struct
 	{
@@ -49,5 +54,27 @@ private:
 	ztaskbox* current;
 
 public:
+	void load(const asset_type& a);
+	void read(xSerial& s);
+	void write(xSerial& s);
+	void start_talk(zNPCCommon* npc);
+	void stop_talk();
+	void enable();
+	void disable();
+	void reset();
+	void initiate();
+	void succeed();
+	void fail();
+	void complete();
+	void set_callback(callback* cb);
+	bool exists(state_enum);
+	void set_state(state_enum state);
+	void on_talk_start();
+	void on_talk_stop(ztalkbox::answer_enum);
 	state_enum StatusGet() const STUB;
+
+	static void init();
+	static void load(xBase& data, xDynAsset& asset, ulong32);
+	static const char* get_text(uint32);
+	static bool32 cb_dispatch(xBase*, xBase* to, uint32 event, const float32*, xBase*);
 };
