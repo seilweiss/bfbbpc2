@@ -21,6 +21,7 @@ typedef void(*xEntEndUpdateCallback)(xEnt*, xScene*, float32);
 typedef void(*xEntBoundUpdateCallback)(xEnt*, xVec3*);
 typedef void(*xEntMoveCallback)(xEnt*, xScene*, float32, xEntFrame*);
 typedef void(*xEntRenderCallback)(xEnt*);
+typedef void(*xEntTranslateCallback)(xEnt*, xVec3*, xMat4x3*);
 
 typedef xEnt* (*xEntSceneCallback)(xEnt*, xScene*, void*);
 
@@ -124,7 +125,7 @@ struct xEnt : xBase
 	xEntCollis* collis;
 	xGridBound gridb;
 	xBound bound;
-	void(*transl)(xEnt*, xVec3*, xMat4x3*);
+	xEntTranslateCallback transl;
 	xFFX* ffx;
 	xEnt* driver;
 	int32 driveMode;

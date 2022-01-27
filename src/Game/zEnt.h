@@ -2,6 +2,7 @@
 
 #include "xEnt.h"
 #include "xAnim.h"
+#include "xColor.h"
 
 struct zScene;
 
@@ -37,3 +38,15 @@ int32 zParamGetVector(xModelAssetParam* param, uint32 size, char* tok, xVec3, xV
 void zEntGetShadowParams(xEnt* ent, xVec3* center, float32* radius, xEntShadow::radius_enum rtype);
 
 inline void checkpoint_collision_hack(zEnt*) STUB_VOID
+
+namespace auto_tweak {
+
+	template <class T1, class T2> void load_param(T1&, T2, T2, T2, xModelAssetParam*, uint32, const char*);
+	template <> static inline void load_param(int32&, int32, int32, int32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+	template <> static inline void load_param(uint32&, int32, int32, int32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+	template <> static inline void load_param(float32&, float32, float32, float32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+	template <> static inline void load_param(bool&, int32, int32, int32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+	template <> static inline void load_param(xVec3&, int32, int32, int32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+	template <> static inline void load_param(xColor&, int32, int32, int32, xModelAssetParam*, uint32, const char*) STUB_VOID;
+
+}

@@ -53,6 +53,7 @@ public:
 	void JellyBoneWorldPos(xVec3* pos, int32 idx_request) const;
 	void PlayWithLightnin();
 	void ActLikeOctopus();
+	void MeetTheKing(zNPCCommon*) STUB_VOID;
 };
 
 class zNPCNeptune : public zNPCAmbient
