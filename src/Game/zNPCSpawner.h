@@ -1,6 +1,10 @@
 #pragma once
 
-#include <types.h>
+#include "xRMemData.h"
+#include "xordarray.h"
+
+class zMovePoint;
+class zNPCCommon;
 
 enum en_SM_NOTICES
 {
@@ -14,4 +18,66 @@ enum en_SM_NOTICES
 	SM_NOTE_KILLKIDS,
 	SM_NOTE_NOMORE,
 	SM_NOTE_FORCE = FORCEENUMSIZEINT
+};
+
+enum en_SM_WAVE_MODE
+{
+	SM_WAVE_CONTINUOUS,
+	SM_WAVE_DISCREET,
+	SM_WAVE_NOMORE,
+	SM_WAVE_FORCE = FORCEENUMSIZEINT
+};
+
+enum en_SM_WAVE_STAT
+{
+	SM_STAT_BEGIN,
+	SM_STAT_INPROG,
+	SM_STAT_ABORT,
+	SM_STAT_MARKTIME,
+	SM_STAT_DONE,
+	SM_STAT_NOMORE,
+	SM_STAT_FORCE = FORCEENUMSIZEINT
+};
+
+enum en_SM_NPC_STATUS
+{
+	SM_NPC_DEAD,
+	SM_NPC_READY,
+	SM_NPC_PENDING,
+	SM_NPC_SPAWNED,
+	SM_NPC_ACTIVE,
+	SM_NPC_NOMORE,
+	SM_NPC_FORCE = FORCEENUMSIZEINT
+};
+
+struct SMSPStatus
+{
+	zMovePoint* sp;
+	int32 flg_stat;
+	zNPCCommon* npc_prefer;
+};
+
+struct SMNPCStatus
+{
+	zNPCCommon* npc;
+	en_SM_NPC_STATUS status;
+	zMovePoint* sp_prefer;
+};
+
+class zNPCSpawner : public RyzMemData
+{
+private:
+	int32 flg_spawner;
+	zNPCCommon* npc_owner;
+	float32 tym_delay;
+	int32 max_spawn;
+	en_SM_WAVE_MODE wavemode;
+	en_SM_WAVE_STAT wavestat;
+	float32 tmr_wave;
+	int32 cnt_spawn;
+	SMSPStatus sppool[16];
+	SMNPCStatus npcpool[16];
+	st_XORDEREDARRAY pendlist;
+	st_XORDEREDARRAY actvlist;
+	int32 cnt_cleanup;
 };
