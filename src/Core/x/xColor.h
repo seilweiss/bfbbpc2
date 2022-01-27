@@ -12,6 +12,14 @@ typedef struct _xFColor
 	float32 a;
 } xFColor;
 
+inline void xColorInit(xColor* c, uint8 r, uint8 g, uint8 b, uint8 a) WIP
+{
+	c->r = r;
+	c->g = g;
+	c->b = b;
+	c->a = a;
+}
+
 inline xColor xColorFromRGBA(uint8 r, uint8 g, uint8 b, uint8 a) WIP
 {
 	xColor c;
