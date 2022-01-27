@@ -3,6 +3,8 @@
 #include "xDynAsset.h"
 #include "xFont.h"
 
+struct xScene;
+
 class ztextbox : public xBase
 {
 public:
@@ -77,5 +79,26 @@ private:
 	RwRaster* bgtex;
 
 public:
+	void load(const asset_type& a);
+	void update(xScene&, float32);
+	void reset();
+	void render();
+	void render_backdrop();
+	void activate();
+	void deactivate();
+	void set_text(const char* s);
+	void set_text(uint32 id);
+	void add_text(const char* s);
+	void add_text(uint32);
+	void clear_text();
+	void refresh();
+	void get_text(char* buffer, ulong32 buffer_size) const;
 	bool visible() STUB;
+
+	static void init();
+	static void load(xBase& data, xDynAsset& asset, ulong32);
+	static void update_all(xScene&, float32);
+	static void render_all();
 };
+
+inline ztextbox::asset_type::color_type convert(const ztextbox::asset_type::color_type&) STUB;
