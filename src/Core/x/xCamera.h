@@ -164,7 +164,9 @@ struct xBinaryCamera
 	void start(xCamera& camera);
 	void stop();
 	void update(float32 dt);
+	void set_targets(const xVec3&, const xVec3&, float32) STUB_VOID;
 	void render_debug() {}
+	void add_tweaks(const char*) {}
 };
 
 void xCameraInit(xCamera* cam, uint32 width, uint32 height);
