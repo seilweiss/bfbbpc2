@@ -5,12 +5,15 @@
 #include "xCollide.h"
 
 struct zFrag;
+struct zFragAsset;
 struct zShrapnelAsset;
 struct zParEmitter;
 struct xCurveAsset;
 struct zLightning;
+struct zScene;
 
 typedef void(*zFragUpdateCallback)(zFrag*, float32);
+typedef void(*zShrapnelAssetInitCallback)(zFrag*, zFragAsset*);
 
 enum zFragType
 {
@@ -197,3 +200,34 @@ struct zFrag
 	zFrag* prev;
 	zFrag* next;
 };
+
+zFrag* zFrag_Alloc(zFragType type);
+void zFrag_Free(zFrag*);
+void zShrapnel_GameInit();
+void zShrapnel_ProjectileSceneInit(zFragProjectileAsset*);
+void zShrapnel_ParticleSceneInit(zFragParticleAsset*);
+void zShrapnel_SetShrapnelAssetInitCB(zShrapnelAsset*);
+void zShrapnel_SceneInit(zScene*);
+void zShrapnel_Update(float32 dt);
+void zShrapnel_Reset();
+void zShrapnel_Render();
+void zShrapnel_DefaultInit(zShrapnelAsset* shrap, xModelInstance* parent, xVec3* initVel, zShrapnelAssetInitCallback cb);
+void zShrapnel_CinematicInit(zShrapnelAsset* shrap, RpAtomic* cinModel, RwMatrix* animMat, xVec3* initVel, zShrapnelAssetInitCallback cb);
+void zFragLoc_Setup(zFragLocation* loc, xModelInstance* parent);
+void zFragLoc_InitMat(zFragLocation* loc, xMat4x3* mat, xModelInstance* parent);
+void zFragLoc_InitVec(zFragLocation* loc, xVec3* vec, xModelInstance* parent);
+void zFragLoc_InitDir(zFragLocation* loc, xVec3* vec, xModelInstance* parent);
+void zFrag_DefaultInit(zFrag* frag, zFragAsset* fasset);
+void zFrag_DefaultParticleUpdate(zFrag* frag, float32);
+void zFrag_ParticleManager(float32 dt);
+void zFrag_ProjectileCollData(zFrag*);
+void zFrag_DefaultProjectileUpdate(zFrag* frag, float32);
+void zFrag_DeleteProjectile(zFrag*);
+void zFrag_ProjectileManager(float32 dt);
+void zFrag_DefaultLightningUpdate(zFrag* frag, float32);
+void zFrag_LightningManager(float32 dt);
+void zFrag_DefaultSoundUpdate(zFrag* frag, float32);
+void zFrag_SoundManager(float32);
+void zFrag_ProjectileRenderer();
+
+inline void zFrag_ProjectileSetupPath(zFrag*, zFragProjectileAsset*) STUB_VOID
