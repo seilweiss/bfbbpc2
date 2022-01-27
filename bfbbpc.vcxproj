@@ -158,6 +158,7 @@
     <ClInclude Include="src\Core\x\xLaserBolt.h" />
     <ClInclude Include="src\Core\x\xLightKit.h" />
     <ClInclude Include="src\Core\x\xListItem.h" />
+    <ClInclude Include="src\Core\x\xLocationAsset.h" />
     <ClInclude Include="src\Core\x\xMath.h" />
     <ClInclude Include="src\Core\x\xMath2.h" />
     <ClInclude Include="src\Core\x\xMath3.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\Core\x\xParSys.h" />
     <ClInclude Include="src\Core\x\xPartition.h" />
     <ClInclude Include="src\Core\x\xpkrsvc.h" />
+    <ClInclude Include="src\Core\x\xPointerAsset.h" />
     <ClInclude Include="src\Core\x\xPtankPool.h" />
     <ClInclude Include="src\Core\x\xQuickCull.h" />
     <ClInclude Include="src\Core\x\xRenderState.h" />

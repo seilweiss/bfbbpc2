@@ -4,6 +4,8 @@
 
 class ztextbox;
 class zNPCCommon;
+struct xIniFile;
+struct xScene;
 
 class ztalkbox : public xBase
 {
@@ -80,4 +82,30 @@ private:
 		const char* yesno;
 	} prompt;
 	zNPCCommon* npc;
+
+public:
+	void load(const asset_type& a);
+	void reset();
+	void set_text(const char* s);
+	void set_text(uint32 id);
+	void add_text(const char*);
+	void add_text(uint32);
+	void clear_text();
+	void start_talk(const char* s, callback* cb, zNPCCommon* npc);
+	void start_talk(uint32 text_id, callback* cb, zNPCCommon* npc);
+	void stop_talk();
+	void stop_wait(uint32);
+	void show();
+	void hide();
+	void MasterTellSlaves(bool32 isBeginning);
+	void MasterLoveSlave(xBase* slave, bool32 starting);
+
+	static void load_settings(xIniFile& ini);
+	static void init();
+	static void load(xBase& data, xDynAsset& asset, ulong32);
+	static void update_all(xScene& s, float32 dt);
+	static void render_all();
+	static void reset_all();
+	static ztalkbox* get_active();
+	static void permit(uint32 add_flags, uint32 remove_flags);
 };

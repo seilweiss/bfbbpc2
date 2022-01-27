@@ -38,10 +38,15 @@ enum sound_listener_game_mode
 template <int32 N> class sound_queue
 {
 public:
-	sound_queue() STUB_VOID;
+	sound_queue() WIP : head(0), tail(0) {}
 
 	void play(uint32, float32, float32, uint32, uint32, uint32, sound_category) STUB_VOID;
 	void push(uint32) STUB_VOID;
+	void pop() STUB_VOID;
+	int32 size() const STUB;
+	void clear() STUB_VOID;
+	bool playing(int32, bool) const STUB;
+	uint32 recent(int32) const STUB;
 
 private:
 	uint32 _playing[N + 1];

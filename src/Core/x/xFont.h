@@ -177,6 +177,7 @@ struct xtextbox::layout
 	void render(const xtextbox& ctb, int32 begin_jot, int32 end_jot);
 	float32 yextent(float32 max, int32& size, int32 begin_jot, int32 end_jot) const;
 	bool changed(const xtextbox& ctb);
+	const jot* jots() const WIP { return _jots; }
 	ulong32 jots_size() const WIP { return _jots_size; }
 };
 
