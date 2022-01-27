@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xCamera.h"
+#include "zCamMarker.h"
 
 enum camera_owner_enum
 {
