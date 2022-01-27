@@ -112,6 +112,7 @@ public:
 	void ExpTranIsOn() STUB_VOID;
 	void DBG_HistAdd(int32) {}
 	xBase* GetClient() WIP { return clt_owner; }
+	int32 IndexInStack(const xGoal*) const STUB;
 };
 
 class xBehaveMgr : public RyzMemData
