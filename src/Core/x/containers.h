@@ -226,8 +226,8 @@ public:
 	class iterator
 	{
 	public:
-		T& operator+=(int32) STUB_REF(T);
-		T& operator++() STUB_REF(T);
+		iterator& operator+=(int32) STUB_REF(iterator);
+		iterator& operator++() STUB_REF(iterator);
 		bool operator!=(const iterator& c) const STUB;
 		T& operator*() const STUB_REF(T);
 		T* operator->() const STUB;
@@ -240,14 +240,13 @@ public:
 	fixed_queue() STUB_VOID;
 
 	ulong32 size() const STUB;
-	ulong32 max_size() const WIP { return T; }
+	ulong32 max_size() const WIP { return N; }
+	bool full() const STUB;
 	iterator begin() const STUB;
 	iterator end() const STUB;
 	T& front() STUB_REF(T);
-
 	void push_front(const T&) STUB_VOID;
 	void pop_back() STUB_VOID;
-	bool full() const STUB;
 	void reset() STUB_VOID;
 
 	T& operator[](int32) STUB_REF(T);
@@ -257,4 +256,48 @@ private:
 	void push_front() STUB_VOID;
 	void clear() STUB_VOID;
 	T& get_at(int32) const STUB_REF(T);
+};
+
+template <class T> class static_queue
+{
+private:
+	ulong32 _first;
+	ulong32 _size;
+	ulong32 _max_size;
+	ulong32 _max_size_mask;
+	T* _buffer;
+
+public:
+	class iterator
+	{
+	public:
+		iterator& operator+=(int32) STUB_REF(iterator);
+		iterator& operator++() STUB_REF(iterator);
+		iterator& operator-=(int32) STUB_REF(iterator);
+		iterator operator-(int32) const STUB;
+		bool operator!=(const iterator&) const STUB;
+		T& operator*() const STUB_REF(T);
+
+	private:
+		ulong32 _it;
+		static_queue* _owner;
+	};
+
+	void init(ulong32) STUB_VOID;
+	void clear() STUB_VOID;
+	void erase(const iterator&, const iterator&) STUB_VOID;
+	ulong32 size() const WIP { return _size; }
+	ulong32 max_size() const STUB;
+	iterator begin() const STUB;
+	iterator end() const STUB;
+	T& front() const STUB;
+	T& back() const STUB;
+	bool empty() const STUB;
+	bool full() const STUB;
+	void push_front() STUB_VOID;
+	void pop_back() STUB_VOID;
+
+private:
+	iterator create_iterator(ulong32) const STUB;
+	ulong32 mod_max_size(ulong32) const STUB;
 };
