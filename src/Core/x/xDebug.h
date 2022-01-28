@@ -96,6 +96,7 @@ void xDebugTimestampScreen();
 inline void xDebugAddTweak(const char*, const char*, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddTweak(const char*, uint8*, uint8, uint8, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddTweak(const char*, int16*, int16, int16, const tweak_callback*, void*, uint32) {}
+inline void xDebugAddTweak(const char*, uint32*, uint32, uint32, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddTweak(const char*, float32*, float32, float32, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddTweak(const char*, xVec3*, const tweak_callback*, void*, uint32) {}
 inline void xDebugAddFlagTweak(const char*, uint32*, uint32, const tweak_callback*, void*, uint32) {}
