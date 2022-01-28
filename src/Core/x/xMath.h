@@ -35,5 +35,6 @@ inline const char* xbtoa(uint32) STUB
 inline float32 xSCurve(float32) STUB
 inline float32 xSCurve(float32 t, float32 softness) STUB
 inline void xSCurve(float32&, float32&, float32&, float32) STUB_VOID
+inline float32 xSCurveInverse(float32) STUB
 
 #include "xMathInlines.h"
