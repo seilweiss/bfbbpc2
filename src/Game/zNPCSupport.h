@@ -233,6 +233,8 @@ inline float32 BOWL(float32) STUB
 inline float32 ARCH(float32) STUB
 inline uint8 LERP(float32, uint8, uint8) STUB
 inline float32 LERP(float32, float32, float32) STUB
+inline xVec3* LERP(float32, xVec3*, const xVec3*, const xVec3*) STUB
 inline float32 EASE(float32) STUB
 inline float32 SMOOTH(float32, float32, float32) STUB
+inline xVec3* SMOOTH(float32, xVec3*, const xVec3*, const xVec3*) STUB
 inline float32 RANGEWRAP(float32*, float32, float32) STUB

@@ -54,3 +54,4 @@ template <class T> struct basic_rect
 inline void xVec2Init(xVec2*, float32, float32) STUB_VOID
 inline float32 xVec2Dist(float32, float32, float32, float32) STUB
 inline float32 xVec2Dot(const xVec2*, const xVec2*) STUB
+inline float32 xVec2Length2(const xVec2*) STUB
