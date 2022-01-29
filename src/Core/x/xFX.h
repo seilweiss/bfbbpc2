@@ -95,6 +95,8 @@ struct xFXRibbon
 	bool visible() const STUB;
 	void debug_update() WIP {}
 	float32 get_age(const joint_data&) const STUB;
+	void init(int32, const char*) STUB_VOID;
+	void clear() STUB_VOID;
 };
 
 void xFXInit();

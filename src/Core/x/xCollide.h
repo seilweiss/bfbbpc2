@@ -131,5 +131,6 @@ inline bool xSphereHitsBox(const xSphere&, const xBox&) STUB
 inline bool xSphereHitsOBB(const xVec3&, float32, const xBox&, const xMat4x3&) STUB
 inline bool xSphereHitsOBB(const xSphere&, const xBox&, const xMat4x3&) STUB
 inline bool xSphereHitsVCircle(const xSphere&, const xVec3&, float32) STUB
+inline bool xSphereHitsCapsule(const xSphere&, const xVec3&, const xVec3&, float32) STUB
 inline void xParabolaEvalPos(const xParabola*, xVec3*, float32) STUB_VOID
 inline void xParabolaEvalVel(const xParabola*, xVec3*, float32) STUB_VOID
