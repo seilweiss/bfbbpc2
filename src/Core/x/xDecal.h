@@ -88,6 +88,7 @@ public:
 	void debug_init(const char*) {}
 	void debug_update_curve() {}
 	void debug_update(float32) {}
+	bool full() const STUB;
 };
 
 void xDecalInit();

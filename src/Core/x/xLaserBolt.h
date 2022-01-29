@@ -63,6 +63,18 @@ public:
 		FORCE_INT_FX_ORIENT = 0xffffffff
 	};
 
+	enum fx_when_enum
+	{
+		FX_WHEN_LAUNCH,
+		FX_WHEN_IMPACT,
+		FX_WHEN_BIRTH,
+		FX_WHEN_DEATH,
+		FX_WHEN_HEAD,
+		FX_WHEN_TAIL,
+		FX_WHEN_KILL,
+		MAX_FX_WHEN
+	};
+
 	struct effect_data
 	{
 		fx_type_enum type;
@@ -91,5 +103,38 @@ private:
 	uint32 fxsize[7];
 
 public:
+	void init(ulong32 max_bolts, const char*);
+	void set_texture(const char* name);
+	void set_texture(uint32);
+	void set_texture(RwTexture*);
+	void set_texture(RwRaster*);
+	void reset();
+	void refresh_config();
+	void emit(const xVec3& loc, const xVec3& dir);
+	void update(float32 dt);
+	void render();
+	void attach_effects(fx_when_enum when, effect_data* fx, ulong32 fxsize);
+	void pre_collide(bolt&);
+	void collide_update(bolt& b);
+	RwIm3DVertex* render(bolt& b, RwIm3DVertex* vert);
+	RwIm3DVertex* get_vert_buffer(int32&);
+	void apply_damage(bolt&);
+	void reset_fx(fx_when_enum);
+	void update_fx(bolt& b, float32 prev_dist, float32 dt);
+	void emit_particle(effect_data& effect, bolt& b, float32 from_dist, float32 to_dist, float32 dt);
+	void emit_decal(effect_data& effect, bolt& b, float32, float32 to_dist, float32);
+	void emit_decal_dist(effect_data& effect, bolt& b, float32 from_dist, float32 to_dist, float32);
 	bool visible() const STUB;
+	void debug_init(const char*) {}
+	void emit_fx(effect_data&, bolt&, float32, float32, float32) STUB_VOID;
+	void perturb_dir(xVec3&, float32) STUB_VOID;
+	void update(bolt&, float32) STUB_VOID;
+	void debug_update() {}
+	void flush_verts(RwIm3DVertex*, int32) STUB_VOID;
+	void debug_render() {}
+	void debug_refresh_effects(fx_when_enum) {}
+	void log_collide_statics(bool) {}
+	void log_collide_dynamics(bool) {}
+	void set_bolt_verts(RwIm3DVertex*, const xVec3&, const xVec3&, uint8, const xVec3&) STUB_VOID;
+	void set_vert(RwIm3DVertex& vert, const xVec3& loc, float32 u, float32 v, uint8 alpha) STUB_VOID;
 };
