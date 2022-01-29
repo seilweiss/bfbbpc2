@@ -98,6 +98,11 @@ private:
 
 public:
 	void RenderCone(xVec3* pos_tiptop, xVec3* pos_botcenter);
+	void TextureSet(RwRaster*) STUB_VOID;
+	void UVSliceSet(float32, float32) STUB_VOID;
+	void UVBaseSet(float32, float32) STUB_VOID;
+	void ColorSet(RwRGBA, RwRGBA) STUB_VOID;
+	void RadiusSet(float32) STUB_VOID;
 };
 
 class NPCBlinker

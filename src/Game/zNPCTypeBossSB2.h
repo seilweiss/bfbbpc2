@@ -199,6 +199,8 @@ private:
 public:
 	zNPCB_SB2(int32 myType) WIP : zNPCBoss(myType) {}
 
+	static zNPCB_SB2* singleton() STUB;
+
 	virtual void Init(xEntAsset* asset);
 	virtual void ParseINI();
 	virtual void Setup();

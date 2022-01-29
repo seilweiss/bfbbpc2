@@ -99,6 +99,9 @@ struct xCutscene
 	uint32 SndAssetID[2];
 	uint32 SndHandle[2];
 	XCSNNosey* cb_nosey;
+
+	void NoseySet(XCSNNosey*) STUB_VOID;
+	void NoseyClear() STUB_VOID;
 };
 
 struct xCutsceneZbuffer

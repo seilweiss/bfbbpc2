@@ -108,6 +108,7 @@ public:
 	void UserDataSet(void**) STUB_VOID;
 	void PromoteTail(int32) STUB_VOID;
 	NPARData* NextAvail() STUB;
+	void KillAll() STUB_VOID;
 };
 
 enum en_nparmode
