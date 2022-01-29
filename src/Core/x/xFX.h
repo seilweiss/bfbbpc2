@@ -99,6 +99,19 @@ struct xFXRibbon
 	void clear() STUB_VOID;
 };
 
+struct StreakInfo
+{
+	float32 freq;
+	float32 alf_fade;
+	float32 alf_start;
+	uint32 idx_useTxtr;
+	xColor rgba_left;
+	xColor rgba_right;
+	int32 taper;
+
+	void Defaults() STUB_VOID;
+};
+
 void xFXInit();
 xFXRing* xFXRingCreate(const xVec3* pos, const xFXRing* params);
 void xFXRingRender();
@@ -150,3 +163,5 @@ void xFXSceneSetup();
 void xFXSceneReset();
 void xFXScenePrepare();
 void xFXSceneFinish();
+
+inline uint32 xFXStreakStart(StreakInfo*) STUB

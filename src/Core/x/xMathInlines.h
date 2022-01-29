@@ -12,5 +12,3 @@ inline float32 xlog(float32) STUB
 inline float32 xpow(float32 x, float32 y) STUB;
 
 template <class T> inline T range_limit(T v, T minv, T maxv) STUB
-
-inline float32 SQ(float32) STUB

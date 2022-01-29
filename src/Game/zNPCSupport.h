@@ -224,6 +224,13 @@ inline xVec3* NPCC_upDir(xEnt* ent) STUB
 inline xVec3* NPCC_faceDir(xEnt* ent) STUB
 inline float32 NPCC_DstSq(const xVec3*, const xVec3*, xVec3*) STUB
 inline void NPCC_DrawPlayerPredict(int32, float32, float32) {}
+
+inline float32 SQ(float32) STUB
+inline float32 QUB(float32) STUB
+inline float32 BOWL3(float32) STUB
+inline float32 ARCH3(float32) STUB
+inline float32 BOWL(float32) STUB
+inline float32 ARCH(float32) STUB
 inline uint8 LERP(float32, uint8, uint8) STUB
 inline float32 LERP(float32, float32, float32) STUB
 inline float32 EASE(float32) STUB
