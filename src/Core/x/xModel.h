@@ -46,6 +46,10 @@ struct xModelInstance
 	} anim_coll;
 };
 
+#define XMODELINSTANCE_UNK0x4 0x4
+#define XMODELINSTANCE_UNK0x80 0x80
+#define XMODELINSTANCE_UNK0x100 0x100
+
 struct xModelPool
 {
 	xModelPool* Next;

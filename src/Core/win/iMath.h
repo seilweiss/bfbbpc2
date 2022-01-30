@@ -1,7 +1,7 @@
 #pragma once
 
 #include <types.h>
-#include <math.h>
+#include <cmath>
 
 #define iabs(x) (float32)fabs((x))
 

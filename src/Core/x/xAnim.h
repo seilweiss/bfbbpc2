@@ -1,6 +1,7 @@
 #pragma once
 
-#include "xMath3.h"
+#include "iAnim.h"
+#include "xMorph.h"
 
 struct xAnimFile;
 struct xAnimMultiFileEntry;
@@ -39,6 +40,11 @@ struct xAnimFile
 	void** RawData;
 };
 
+#define XANIMFILE_UNK0x1000 0x1000
+#define XANIMFILE_UNK0x2000 0x2000
+#define XANIMFILE_UNK0x4000 0x4000
+#define XANIMFILE_USEMORPHSEQ 0x8000
+
 struct xAnimMultiFileEntry
 {
 	uint32 ID;
@@ -63,6 +69,13 @@ struct xAnimEffect
 	float32 EndTime;
 	xAnimEffectCallback Callback;
 };
+
+#define XANIMEFFECT_UNK0x1 0x1
+#define XANIMEFFECT_UNK0x2 0x2
+#define XANIMEFFECT_UNK0x4 0x4
+#define XANIMEFFECT_UNK0x8 0x8
+#define XANIMEFFECT_UNK0x10 0x10
+#define XANIMEFFECT_UNK0x20 0x20
 
 struct xAnimActiveEffect
 {
@@ -93,6 +106,9 @@ struct xAnimState
 	xAnimBeforeAnimMatricesCallback BeforeAnimMatrices;
 };
 
+#define XANIMSTATE_UNK0xF 0xF
+#define XANIMSTATE_UNK0x100 0x100
+
 struct xAnimTransition
 {
 	xAnimTransition* Next;
@@ -108,6 +124,11 @@ struct xAnimTransition
 	float32 BlendRecip;
 	uint16* BlendOffset;
 };
+
+#define XANIMTRANSITION_UNK0x2 0x2
+#define XANIMTRANSITION_UNK0x4 0x4
+#define XANIMTRANSITION_UNK0x10 0x10
+#define XANIMTRANSITION_UNK0x20 0x20
 
 struct xAnimTransitionList
 {
@@ -133,6 +154,9 @@ struct xAnimSingle
 	float32 BlendFactor;
 	uint32 pad;
 };
+
+#define XANIMSINGLE_UNK0x1 0x1
+#define XANIMSINGLE_UNK0x8000 0x8000
 
 struct xAnimTable
 {
@@ -160,6 +184,10 @@ struct xAnimPlay
 
 extern uint32 gxAnimUseGrowAlloc;
 
+#define XANIMFILEEVAL_UNK0x2 0x2
+
+#define xAnimFileGetDuration(file) (((file)->FileFlags & XANIMFILE_USEMORPHSEQ) ? xMorphSeqDuration((xMorphSeqFile*)(file)->RawData[0]) : iAnimDuration((file)->RawData[0]))
+
 void xAnimInit();
 void xAnimTempTransitionInit(uint32 count);
 xAnimFile* xAnimFileNewBilinear(void** rawData, const char* name, uint32 flags, xAnimFile** linkedList, uint32 numX, uint32 numY);
@@ -186,3 +214,14 @@ void xAnimPoolCB(xMemPool* pool, void* data);
 void xAnimPoolInit(xMemPool* pool, uint32 count, uint32 singles, uint32 blendFlags, uint32 effectMax);
 xAnimPlay* xAnimPoolAlloc(xMemPool* pool, void* object, xAnimTable* table, xModelInstance* modelInst);
 void xAnimPoolFree(xAnimPlay* play);
+
+inline float32 xAnimFileRawTime(xAnimFile* file, float32 time)
+{
+	if ((file->FileFlags & XANIMFILE_UNK0x1000) ||
+		((file->FileFlags & XANIMFILE_UNK0x2000) && time > 0.5f * file->Duration))
+	{
+		return file->TimeOffset + file->Duration - time;
+	}
+
+	return file->TimeOffset + time;
+}

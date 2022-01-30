@@ -1,8 +1,10 @@
 #pragma once
 
-#include <types.h>
+inline float32 xatan2(float32 y, float32 x)
+{
+	return xAngleClampFast(std::atan2f(y, x));
+}
 
-inline float32 xatan2(float32 y, float32 x) STUB
 inline float32 xasin(float32 x) STUB
 inline float32 xacos(float32) STUB
 inline float32 xsqrt(float32 x) STUB

@@ -2,6 +2,10 @@
 
 #include "xMath3.h"
 
+#define IANIMEVAL_UNK0x2 0x2
+
+extern uint8* giAnimScratch;
+
 void iAnimInit();
 void iAnimEval(void* RawData, float32 time, uint32 flags, xVec3* tran, xQuat* quat);
 float32 iAnimDuration(void* RawData);

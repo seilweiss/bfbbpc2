@@ -73,3 +73,4 @@ void* xMemPoolAlloc(xMemPool* pool);
 void xMemPoolFree(xMemPool* pool, void* data);
 
 #define xMEMALLOC(size) xMemAlloc(gActiveHeap, (size), 0)
+#define xMEMGROWALLOC(size) xMemGrowAlloc(gActiveHeap, (size))

@@ -1,5 +1,8 @@
 #include "iAnim.h"
 
+static uint8 scratchBuffer[9120];
+uint8* giAnimScratch = scratchBuffer;
+
 void iAnimInit() STUB_VOID
 void iAnimEval(void* RawData, float32 time, uint32 flags, xVec3* tran, xQuat* quat) STUB_VOID
 float32 iAnimDuration(void* RawData) STUB
