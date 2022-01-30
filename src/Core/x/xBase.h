@@ -3,7 +3,7 @@
 #include <types.h>
 
 struct xBase;
-struct xSerial;
+class xSerial;
 
 typedef bool32(*xBaseEventCallback)(xBase*, xBase*, uint32, const float32*, xBase*);
 
@@ -35,14 +35,34 @@ struct xBase
 	xBaseEventCallback eventFunc;
 };
 
+#define XBASE_ENABLED 0x1
+#define XBASE_VALID 0x4
+#define XBASE_UNK0x10 0x10
+
 void xBaseInit(xBase* xb, xBaseAsset* asset);
 void xBaseSetup(xBase*);
 void xBaseSave(xBase* ent, xSerial* s);
 void xBaseLoad(xBase* ent, xSerial* s);
 void xBaseReset(xBase* xb, xBaseAsset* asset);
 
-inline void xBaseValidate(xBase*) STUB_VOID
-inline bool xBaseIsEnabled(const xBase*) STUB
-inline void xBaseDisable(xBase*) STUB_VOID
-inline void xBaseEnable(xBase*) STUB_VOID
+inline void xBaseValidate(xBase* xb)
+{
+	xb->baseFlags |= XBASE_VALID;
+}
+
 inline uint32 xBaseIsValid(xBase*) STUB
+
+inline void xBaseEnable(xBase* xb)
+{
+	xb->baseFlags |= XBASE_ENABLED;
+}
+
+inline void xBaseDisable(xBase* xb)
+{
+	xb->baseFlags &= ~XBASE_ENABLED;
+}
+
+inline bool xBaseIsEnabled(const xBase* xb)
+{
+	return xb->baseFlags & XBASE_ENABLED;
+}

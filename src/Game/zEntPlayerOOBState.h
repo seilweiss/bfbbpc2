@@ -4,7 +4,7 @@
 
 struct xIniFile;
 struct xScene;
-struct xSerial;
+class xSerial;
 
 namespace oob_state {
 
