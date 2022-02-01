@@ -6,13 +6,27 @@ inline float32 xVec3Length(const xVec3* v) STUB
 inline float32 xVec3Length2(const xVec3* v) STUB
 inline float32 xVec3LengthFast(const xVec3*) STUB
 inline float32 xVec3LengthFast(float32, float32, float32) STUB
-inline void xVec3Add(xVec3*, const xVec3*, const xVec3*) STUB_VOID
+
+inline void xVec3Add(xVec3* o, const xVec3* a, const xVec3* b)
+{
+    o->x = a->x + b->x;
+    o->y = a->y + b->y;
+    o->z = a->z + b->z;
+}
+
 inline void xVec3AddTo(xVec3*, const xVec3*) STUB_VOID
 inline void xVec3AddScaled(xVec3*, const xVec3*, float32) STUB_VOID
 inline void xVec3Sub(xVec3* o, const xVec3* a, const xVec3* b) STUB_VOID
 inline void xVec3SubFrom(xVec3*, const xVec3*) STUB_VOID
 inline void xVec3ScaleC(xVec3*, const xVec3*, float32, float32, float32) STUB_VOID
-inline void xVec3SMul(xVec3* o, const xVec3* v, float32 s) STUB_VOID
+
+inline void xVec3SMul(xVec3* o, const xVec3* v, float32 s)
+{
+    o->x = v->x * s;
+    o->y = v->y * s;
+    o->z = v->z * s;
+}
+
 inline void xVec3SMulBy(xVec3* v, float32 s) STUB_VOID
 inline void xVec3Inv(xVec3* o, const xVec3* v) STUB_VOID
 inline uint32 xVec3Equals(const xVec3*, const xVec3*) STUB

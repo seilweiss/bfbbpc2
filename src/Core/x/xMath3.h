@@ -144,13 +144,41 @@ inline void xMat3x3LookAt(xMat3x3*, const xVec3*, const xVec3*) STUB_VOID
 inline float32 xMat3x3LookVec3(xMat3x3&, const xVec3&) STUB
 inline void xMat3x3MulRotC(xMat3x3*, xMat3x3*, float32, float32, float32, float32) STUB_VOID
 inline void xMat3x3SMul(xMat3x3*, const xMat3x3*, float32) STUB_VOID
-static inline void xMat3x3RMulVec(xVec3* o, const xMat3x3* m, const xVec3* v) STUB_VOID
+
+static inline void xMat3x3RMulVec(xVec3* o, const xMat3x3* m, const xVec3* v)
+{
+	float32 x = m->right.x * v->x + m->up.x * v->y + m->at.x * v->z;
+	float32 y = m->right.y * v->x + m->up.y * v->y + m->at.y * v->z;
+	float32 z = m->right.z * v->x + m->up.z * v->y + m->at.z * v->z;
+
+	o->x = x;
+	o->y = y;
+	o->z = z;
+}
+
 inline void xMat4x3Copy(xMat4x3*, const xMat4x3*) STUB_VOID
 inline void xMat4x3Identity(xMat4x3*) STUB_VOID
 inline void xMat4x3RotC(xMat4x3*, float32, float32, float32, float32) STUB_VOID
 inline void xMat4x3Rot(xMat4x3*, const xVec3*, float32) STUB_VOID
-inline void xMat4x3Tolocal(xVec3*, const xMat4x3*, const xVec3*) STUB_VOID
-inline void xMat4x3Toworld(xVec3* o, const xMat4x3* m, const xVec3* v) STUB_VOID
+
+inline void xMat4x3Tolocal(xVec3* o, const xMat4x3* m, const xVec3* v)
+{
+	o->x = v->x - m->pos.x;
+	o->y = v->y - m->pos.y;
+	o->z = v->z - m->pos.z;
+
+	xMat3x3Tolocal(o, m, o);
+}
+
+inline void xMat4x3Toworld(xVec3* o, const xMat4x3* m, const xVec3* v)
+{
+	xMat3x3RMulVec(o, m, v);
+
+	o->x += m->pos.x;
+	o->y += m->pos.y;
+	o->z += m->pos.z;
+}
+
 inline void xMat4x3OrthoInv(xMat4x3*, const xMat4x3*) STUB_VOID
 inline void xQuatCopy(xQuat*, const xQuat*) STUB_VOID
 inline uint32 xQuatEquals(const xQuat*, const xQuat*) STUB

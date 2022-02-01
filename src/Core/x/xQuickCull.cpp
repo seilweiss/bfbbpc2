@@ -1,5 +1,7 @@
 #include "xQuickCull.h"
 
+xQCControl xqc_def_ctrl;
+
 void xQuickCullInit(xQCControl* ctrl, float32 xmin, float32 ymin, float32 zmin, float32 xmax, float32 ymax, float32 zmax) STUB_VOID
 void xQuickCullInit(xQCControl* ctrl, const xBox* box) STUB_VOID
 bool32 xQuickCullIsects(const xQCData* a, const xQCData* b) STUB

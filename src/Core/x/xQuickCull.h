@@ -37,6 +37,8 @@ struct xQCControl
 	float32 center_z;
 };
 
+extern xQCControl xqc_def_ctrl;
+
 void xQuickCullInit(xQCControl* ctrl, float32 xmin, float32 ymin, float32 zmin, float32 xmax, float32 ymax, float32 zmax);
 void xQuickCullInit(xQCControl* ctrl, const xBox* box);
 bool32 xQuickCullIsects(const xQCData* a, const xQCData* b);
@@ -49,7 +51,7 @@ void xQuickCullForOBB(xQCControl* ctrl, xQCData* q, const xBox* b, const xMat4x3
 void xQuickCullForEverything(xQCData* q);
 
 inline void xQuickCullInit(const xBox*) STUB_VOID
-inline void xQuickCullForBound(xQCData*, const xBound*) STUB_VOID
+inline void xQuickCullForBound(xQCData* q, const xBound* b) { xQuickCullForBound(&xqc_def_ctrl, q, b); }
 inline void xQuickCullForLine(xQCData*, const xLine3*) STUB_VOID
 inline void xQuickCullForRay(xQCData*, const xRay3*) STUB_VOID
 inline void xQuickCullForSphere(xQCData*, const xSphere*) STUB_VOID

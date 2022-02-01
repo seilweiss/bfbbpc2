@@ -52,6 +52,8 @@ struct xCollis
 	};
 };
 
+#define XCOLLIS_UNK0x1 0x1
+
 struct xParabola
 {
 	xVec3 initPos;
