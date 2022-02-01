@@ -19,6 +19,14 @@ typedef struct tag_iFile
 
 } iFile;
 
+#define IFILE_OPEN_READ 0x1
+#define IFILE_OPEN_WRITE 0x2
+#define IFILE_OPEN_ABSPATH 0x4
+
+#define IFILE_SEEK_SET 0
+#define IFILE_SEEK_CUR 1
+#define IFILE_SEEK_END 2
+
 typedef void(*iFileReadAsyncCallback)(tag_xFile*);
 
 void iFileInit();
