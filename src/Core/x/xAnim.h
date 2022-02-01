@@ -43,6 +43,7 @@ struct xAnimFile
 #define XANIMFILE_UNK0x1000 0x1000
 #define XANIMFILE_UNK0x2000 0x2000
 #define XANIMFILE_UNK0x4000 0x4000
+#define XANIMFILE_UNK0x8000 0x8000
 #define XANIMFILE_USEMORPHSEQ 0x8000
 
 struct xAnimMultiFileEntry
@@ -106,8 +107,13 @@ struct xAnimState
 	xAnimBeforeAnimMatricesCallback BeforeAnimMatrices;
 };
 
+#define XANIMSTATE_UNK0x10 0x10
+#define XANIMSTATE_UNK0x20 0x20
+#define XANIMSTATE_UNK0x30 (XANIMSTATE_UNK0x10 | XANIMSTATE_UNK0x20)
+#define XANIMSTATE_UNK0x30MASK (XANIMSTATE_UNK0x10 | XANIMSTATE_UNK0x20)
 #define XANIMSTATE_UNK0xF 0xF
 #define XANIMSTATE_UNK0x100 0x100
+#define XANIMSTATE_UNK0x200 0x200
 
 struct xAnimTransition
 {
@@ -156,6 +162,8 @@ struct xAnimSingle
 };
 
 #define XANIMSINGLE_UNK0x1 0x1
+#define XANIMSINGLE_UNK0x2 0x2
+#define XANIMSINGLE_UNK0x3MASK (XANIMSINGLE_UNK0x1 | XANIMSINGLE_UNK0x2)
 #define XANIMSINGLE_UNK0x8000 0x8000
 
 struct xAnimTable
@@ -184,6 +192,7 @@ struct xAnimPlay
 
 extern uint32 gxAnimUseGrowAlloc;
 
+#define XANIMFILEEVAL_UNK0x1 0x1
 #define XANIMFILEEVAL_UNK0x2 0x2
 
 #define xAnimFileGetDuration(file) (((file)->FileFlags & XANIMFILE_USEMORPHSEQ) ? xMorphSeqDuration((xMorphSeqFile*)(file)->RawData[0]) : iAnimDuration((file)->RawData[0]))

@@ -1,10 +1,7 @@
 #pragma once
 
-#include "xMath3.h"
+#include "iModel.h"
 #include "xMath2.h"
-
-#include <rwcore.h>
-#include <rpworld.h>
 
 struct xModelPool;
 struct xAnimPlay;

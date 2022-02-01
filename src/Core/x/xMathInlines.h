@@ -1,5 +1,9 @@
 #pragma once
 
+#define xmax(a, b) (((a) > (b)) ? (a) : (b))
+#define xmin(a, b) (((a) < (b)) ? (a) : (b))
+#define xclamp(x, a, b) (xmax((a), xmin((x), (b))))
+
 inline float32 xatan2(float32 y, float32 x)
 {
 	return xAngleClampFast(std::atan2f(y, x));

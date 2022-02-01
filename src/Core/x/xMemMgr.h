@@ -19,6 +19,8 @@ struct xMemPool
 	uint32 Total;
 };
 
+#define XMEMPOOL_UNK0x1 0x1
+
 typedef struct xHeapState_tag
 {
 	uint32 curr;

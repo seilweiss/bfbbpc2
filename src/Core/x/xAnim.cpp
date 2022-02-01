@@ -9,6 +9,8 @@
 static xMemPool sxAnimTempTranPool;
 uint32 gxAnimUseGrowAlloc = 0;
 
+#define xAnimMemAlloc(size) (gxAnimUseGrowAlloc ? xMEMGROWALLOC((size)) : xMEMALLOC((size)))
+
 static bool _xSingleCompare(char a, char b)
 {
     switch (b)
@@ -54,7 +56,347 @@ static bool _xCharIn(char ch, const char* str)
     return false;
 }
 
-static bool _xCheckAnimNameInner(const char* name, const char* pattern, int32 patternSize, char* extra, int32* nameOut, int32* extraOut) STUB
+static bool _xCheckAnimNameInner(const char* name, const char* pattern, int32 patternSize, char* extra, int32* nameOut, int32* extraOut) WIP
+{
+    const char* startExtra = NULL; // r31
+    char* initialExtra = extra; // r30
+    int32 patternCurrent = 0; // r29
+    int32 nameCurrent = 0; // r28
+
+    while (patternCurrent < patternSize)
+    {
+        const char* r3 = &pattern[patternCurrent];
+
+        switch (*r3)
+        {
+        case '?':
+        case '+':
+        {
+            patternCurrent++;
+
+            if (nameCurrent == 0)
+            {
+                return false;
+            }
+
+            nameCurrent++;
+
+            if (*r3 == '?')
+            {
+                break;
+            }
+        }
+        case '*':
+        {
+            int32 check = patternCurrent + 1; // r20
+            char nextPattern[128] = {};
+
+            nextPattern[0] = pattern[check];
+
+            while (nextPattern[0] == '{' || nextPattern[0] == '}' ||
+                nextPattern[0] == '<' || nextPattern[0] == '>')
+            {
+                nextPattern[0] = pattern[++check];
+            }
+
+            if (nextPattern[0] == '(')
+            {
+                int32 nextPatternCount = 0; // r21
+                bool first = true; // r19
+                int32 parenCount = 0; // r18
+
+                while (pattern[check] != '\0' && parenCount >= 0)
+                {
+                    if (pattern[check] == '(')
+                    {
+                        parenCount++;
+                    }
+                    else if (pattern[check] == ')')
+                    {
+                        parenCount--;
+                    }
+                    else if (parenCount == 0)
+                    {
+                        const char* IGNORE_PATTERNS = "{}()<>";
+
+                        if (pattern[check] == '|')
+                        {
+                            first = true;
+                        }
+                        else if (first && !_xCharIn(pattern[check], IGNORE_PATTERNS))
+                        {
+                            first = false;
+                            nextPattern[nextPatternCount++] = pattern[check];
+                        }
+                    }
+
+                    check++;
+                }
+
+                nextPattern[nextPatternCount] = NULL;
+            }
+
+            //const char* r16 = name + nameCurrent;
+
+            while (name[nameCurrent] != '\0' && !_xSingleCompare(name[nameCurrent], nextPattern))
+            {
+                nameCurrent++;
+            }
+
+            patternCurrent++;
+
+            break;
+        }
+        case '#':
+        {
+            if (name[nameCurrent] < '0' || name[nameCurrent] > '9')
+            {
+                return false;
+            }
+
+            nameCurrent++;
+
+            while (name[nameCurrent] >= '0' && name[nameCurrent] <= '9')
+            {
+                nameCurrent++;
+            }
+
+            patternCurrent++;
+
+            break;
+        }
+        case '{':
+        {
+            startExtra = name + nameCurrent;
+            patternCurrent++;
+            break;
+        }
+        case '}':
+        {
+            int32 length = name + nameCurrent - startExtra; // r16
+
+            if (extra)
+            {
+                memcpy(extra, startExtra, length);
+
+                extra[length] = NULL;
+                extra += length + 1;
+                *extra = '\1';
+            }
+
+            startExtra = NULL;
+            patternCurrent++;
+
+            break;
+        }
+        case '(':
+        {
+            patternCurrent++;
+
+            bool done = false; // r18
+            const char* current = pattern + patternCurrent; // r19
+            const char* startPattern = current; // r21
+
+            while (*current != ')' && *current != '\0')
+            {
+                const char* r4 = current;
+
+                while (*current != '\0' && *current != ')' && *current != '|')
+                {
+                    if (*current == '(')
+                    {
+                        int32 pc = 1;
+
+                        while (*current != '\0' && pc > 0)
+                        {
+                            if (*current == ')')
+                            {
+                                pc--;
+                            }
+                            else if (*current == '(')
+                            {
+                                pc++;
+                            }
+
+                            current++;
+                        }
+
+                        if (*current != '\0')
+                        {
+                            current++;
+                        }
+                    }
+                    else
+                    {
+                        current++;
+                    }
+                }
+
+                if (current != r4)
+                {
+                    int32 nameOut;
+                    int32 extraOut;
+
+                    bool r16 = (!done && _xCheckAnimNameInner(name + nameCurrent, r4, startPattern - r4, extra,
+                        &nameOut, &extraOut));
+
+                    if (r16)
+                    {
+                        done = true;
+                        nameCurrent += nameOut;
+                        extra += extraOut;
+                    }
+                    else if (extra)
+                    {
+                        *extra = '\1';
+                    }
+                }
+
+                if (*current == '|')
+                {
+                    current++;
+                }
+            }
+
+            if (*current != '\0')
+            {
+                current++;
+            }
+
+            patternCurrent += current - startPattern;
+
+            if (!done)
+            {
+                return false;
+            }
+
+            break;
+        }
+        case '<':
+        {
+            patternCurrent++;
+
+            const char* r18 = pattern + patternCurrent;
+            const char* r20 = r18;
+            const char* r4 = r18;
+
+            while (*r18 != '\0' && *r18 != ';' && *r18 != '>')
+            {
+                r18++;
+            }
+
+            const char* r5 = r18;
+            const char* r19 = NULL;
+            const char* r17 = NULL;
+
+            if (*r18 == ';')
+            {
+                r19 = r18++;
+
+                while (*r18 != '\0' && *r18 != '>')
+                {
+                    r18++;
+                }
+
+                r17 = r18;
+            }
+
+            const char* r21 = name + nameCurrent;
+            int32 nameOut;
+            int32 extraOut;
+            bool matched = _xCheckAnimNameInner(r21, r4, r5 - r4, extra, &nameOut, &extraOut);
+
+            if (matched)
+            {
+                if (r19 && _xCheckAnimNameInner(r21, r19, r17 - r19, NULL, NULL, NULL))
+                {
+                    if (extra)
+                    {
+                        *extra = '\0';
+                    }
+
+                    matched = false;
+                }
+                else
+                {
+                    nameCurrent += nameOut;
+                    extra += extraOut;
+                }
+            }
+
+            if (*r18 != '\0')
+            {
+                r18++;
+            }
+
+            patternCurrent += r18 - r20;
+
+            if (!matched)
+            {
+                return false;
+            }
+
+            break;
+        }
+        case '\0':
+        {
+            return false;
+        }
+        case ')':
+        default:
+        {
+            if (name[nameCurrent] != *r3)
+            {
+                return false;
+            }
+
+            nameCurrent++;
+            patternCurrent++;
+
+            break;
+        }
+        }
+    }
+
+    if (nameOut)
+    {
+        *nameOut = nameCurrent;
+    }
+
+    if (extraOut)
+    {
+        *extraOut = extra - initialExtra;
+    }
+
+    return true;
+
+    /*
+        char* startExtra;
+        char* initialExtra;
+        int32 patternCurrent;
+        int32 nameCurrent;
+        int32 check;
+        //char nextPattern[128];
+        int32 nextPatternCount;
+        bool first;
+        int32 parenCount;
+        char* IGNORE_PATTERNS;
+        int32 length;
+        bool done;
+        char* current;
+        char* startPattern;
+        int32 pc;
+        // int32 nameOut;
+        // int32 extraOut;
+        char* current;
+        char* positiveEnd;
+        char* negative;
+        char* negativeEnd;
+        // int32 nameOut;
+        // int32 extraOut;
+        bool matched;
+    */
+}
 
 static bool _xCheckAnimName(const char* name, const char* pattern, char* extra)
 {
@@ -192,8 +534,7 @@ static void TransitionTimeInit(xAnimSingle* single, xAnimTransition* tran)
 xAnimFile* xAnimFileNewBilinear(void** rawData, const char* name, uint32 flags, xAnimFile** linkedList, uint32 numX, uint32 numY)
 {
     int32 count, i;
-    xAnimFile* afile = (xAnimFile*)(gxAnimUseGrowAlloc ? xMEMGROWALLOC(numX * numY * sizeof(void*) + sizeof(xAnimFile)) :
-                                                         xMEMALLOC(numX * numY * sizeof(void*) + sizeof(xAnimFile)));
+    xAnimFile* afile = (xAnimFile*)xAnimMemAlloc(numX * numY * sizeof(void*) + sizeof(xAnimFile));
 
     if (numX > 1 || numY > 1)
     {
@@ -260,14 +601,91 @@ void xAnimFileSetTime(xAnimFile* data, float32 duration, float32 timeOffset)
     data->Duration = (data->FileFlags & XANIMFILE_UNK0x2000) ? 2.0f * duration : duration;
 }
 
-void xAnimFileEval(xAnimFile* data, float32 time, float32* bilinear, uint32 flags, xVec3* tran, xQuat* quat, float32*) STUB_VOID
+void xAnimFileEval(xAnimFile* data, float32 time, float32* bilinear, uint32 flags, xVec3* tran, xQuat* quat, float32*) WIP
+{
+    int32 i;
+    uint32 fileFlags = data->FileFlags;
+    float32 rawTime = xAnimFileRawTime(data, xclamp(time, 0.0f, data->Duration));
+
+    if (data->FileFlags & XANIMFILE_UNK0x8000)
+    {
+        return;
+    }
+
+    uint32 numBones = (flags & XANIMFILEEVAL_UNK0x1) ? 1 : data->BoneCount;
+
+    if (flags & XANIMFILEEVAL_UNK0x2)
+    {
+        numBones--;
+    }
+
+    if (numBones == 0)
+    {
+        return;
+    }
+
+    if (bilinear && (fileFlags & XANIMFILE_UNK0x4000))
+    {
+        float32 bilerp[2];
+        uint32 biindex[2];
+        uint32 biplus[2];
+
+        for (i = 0; i < 2; i++)
+        {
+            float32 f30 = xclamp(bilinear[i], 0.0f, data->NumAnims[i] - 1);
+            float32 f1 = std::floorf(f30);
+
+            bilerp[i] = f30 - f1;
+            biindex[i] = (uint32)f1;
+            biplus[i] = (biindex[i] + 1 < data->NumAnims[i]) ? biindex[i] + 1 : biindex[i];
+        }
+
+        xQuat* q0 = (xQuat*)(giAnimScratch + 0x1560);
+        xVec3* t0 = (xVec3*)(q0 + 65);
+
+        if (bilerp[0] != 0.0f && bilerp[1] != 0.0f)
+        {
+            xQuat* q1 = (xQuat*)(giAnimScratch + 0x1C80);
+            xVec3* t1 = (xVec3*)(q1 + 65);
+
+            iAnimEval(data->RawData[biindex[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, tran, quat);
+            iAnimEval(data->RawData[biplus[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, t0, q0);
+            iAnimBlend(bilerp[0], 1.0f, NULL, NULL, numBones, tran, quat, t0, q0, tran, quat);
+
+            iAnimEval(data->RawData[biindex[0] + biplus[1] * data->NumAnims[0]], rawTime, flags, t0, q0);
+            iAnimEval(data->RawData[biplus[0] + biplus[1] * data->NumAnims[0]], rawTime, flags, t1, q1);
+            iAnimBlend(bilerp[0], 1.0f, NULL, NULL, numBones, t0, q0, t1, q1, t0, q0);
+
+            iAnimBlend(bilerp[1], 1.0f, NULL, NULL, numBones, tran, quat, t0, q0, tran, quat);
+        }
+        else if (bilerp[0] != 0.0f)
+        {
+            iAnimEval(data->RawData[biindex[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, tran, quat);
+            iAnimEval(data->RawData[biplus[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, t0, q0);
+            iAnimBlend(bilerp[0], 1.0f, NULL, NULL, numBones, tran, quat, t0, q0, tran, quat);
+        }
+        else if (bilerp[1] != 0.0f)
+        {
+            iAnimEval(data->RawData[biindex[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, tran, quat);
+            iAnimEval(data->RawData[biindex[0] + biplus[1] * data->NumAnims[0]], rawTime, flags, t0, q0);
+            iAnimBlend(bilerp[0], 1.0f, NULL, NULL, numBones, tran, quat, t0, q0, tran, quat);
+        }
+        else
+        {
+            iAnimEval(data->RawData[biindex[0] + biindex[1] * data->NumAnims[0]], rawTime, flags, tran, quat);
+        }
+    }
+    else
+    {
+        iAnimEval(data->RawData[0], rawTime, flags, tran, quat);
+    }
+}
 
 xAnimEffect* xAnimStateNewEffect(xAnimState* state, uint32 flags, float32 startTime, float32 endTime, xAnimEffectCallback callback, uint32 userDataSize)
 {
     xAnimEffect* curr;
     xAnimEffect** prev;
-    xAnimEffect* effect = (xAnimEffect*)(gxAnimUseGrowAlloc ? xMEMGROWALLOC(userDataSize + sizeof(xAnimEffect)) :
-                                                              xMEMALLOC(userDataSize + sizeof(xAnimEffect)));
+    xAnimEffect* effect = (xAnimEffect*)xAnimMemAlloc(userDataSize + sizeof(xAnimEffect));
 
     effect->Flags = flags;
     effect->StartTime = startTime;
@@ -325,8 +743,7 @@ void xAnimDefaultBeforeEnter(xAnimPlay*, xAnimState* state)
 
 xAnimState* xAnimTableNewState(xAnimTable* table, const char* name, uint32 flags, uint32 userFlags, float32 speed, float32* boneBlend, float32* timeSnap, float32 fadeRecip, uint16* fadeOffset, void* callbackData, xAnimBeforeEnterCallback beforeEnter, xAnimStateCallback stateCallback, xAnimBeforeAnimMatricesCallback beforeAnimMatrices) WIP
 {
-    xAnimState* state = (xAnimState*)(gxAnimUseGrowAlloc ? xMEMGROWALLOC(sizeof(xAnimState)) :
-                                                           xMEMALLOC(sizeof(xAnimState)));
+    xAnimState* state = (xAnimState*)xAnimMemAlloc(sizeof(xAnimState));
 
     if (!table->StateList)
     {
@@ -382,7 +799,188 @@ static void _xAnimTableAddTransitionHelper(xAnimState* state, xAnimTransition* t
     }
 }
 
-static void _xAnimTableAddTransition(xAnimTable* table, xAnimTransition* tran, const char* source, const char* dest) STUB_VOID
+static void _xAnimTableAddTransition(xAnimTable* table, xAnimTransition* tran, const char* source, const char* dest) WIP
+{
+    uint8* buffer = giAnimScratch;
+	xAnimState** stateList = (xAnimState**)(giAnimScratch + 1024); // r27
+    uint32 i;
+    uint32 stateCount = 0;
+	uint32 allocCount = 0;
+    const char* stateName;
+    xAnimTransitionList* tlist; // r25
+    xAnimTransition* substTransitionList[32];
+    uint32 substTransitionCount = 0; // r24
+    bool hasSubst = false; // r23
+
+    if (dest)
+    {
+        for (i = 0; dest[i] != '\0'; i++)
+        {
+            if (dest[i] == '@' || dest[i] == '~')
+            {
+                hasSubst = true;
+                break;
+            }
+        }
+    }
+
+    stateName = xStrTokBuffer(source, " ,\t\n\r", buffer); // r26
+
+    while (stateName)
+    {
+        bool isComplex = (dest != NULL); // r18
+
+        if (!isComplex)
+        {
+            const char* COMPLEX_PATTERNS = "#+*?{}()<>|;"; // r19
+            const char* search = stateName; // r20
+
+            while (*search != '\0')
+            {
+                if (_xCharIn(*search, COMPLEX_PATTERNS))
+                {
+                    isComplex = true;
+                    break;
+                }
+
+                search++;
+            }
+        }
+
+        xAnimState* state;
+
+        if (isComplex)
+        {
+            for (state = table->StateList; state != NULL; state = state->Next)
+            {
+                char extra[128];
+
+                if (_xCheckAnimName(state->Name, stateName, extra))
+                {
+                    if (hasSubst)
+                    {
+                        char tempName[128];
+                        char* tempIterator = tempName;
+                        char* extraIterator = extra;
+                        bool allowMissingState = false; // r19
+
+                        for (int32 i = 0; dest[i] != '\0'; i++)
+                        {
+                            if (dest[i] == '@' || dest[i] == '~')
+                            {
+                                allowMissingState = (dest[i] == '~');
+
+                                uint32 extraIteratorLength = strlen(extraIterator);
+
+                                strcpy(tempIterator, extraIterator);
+
+                                tempIterator += extraIteratorLength;
+                                extraIterator += extraIteratorLength + 1;
+                            }
+                            else
+                            {
+                                *tempIterator = dest[i];
+                                tempIterator++;
+                            }
+                        }
+
+                        *tempIterator = '\0';
+
+                        xAnimState* r19 = xAnimTableGetState(table, tempName);
+
+                        if (allowMissingState && !r19)
+                        {
+                            continue;
+                        }
+
+                        if (substTransitionCount != 0)
+                        {
+                            xAnimTransition* duplicatedTransition = (xAnimTransition*)xAnimMemAlloc(sizeof(xAnimTransition));
+                            
+                            memcpy(duplicatedTransition, tran, sizeof(xAnimTransition));
+
+                            tran = duplicatedTransition;
+                        }
+
+                        tran->Dest = r19;
+
+                        substTransitionList[substTransitionCount++] = tran;
+                    }
+
+                    if (tran->Dest != state)
+                    {
+                        _xAnimTableAddTransitionHelper(state, tran, allocCount, stateCount, stateList);
+                    }
+                }
+            }
+        }
+        else
+        {
+            state = xAnimTableGetState(table, stateName);
+
+            if (state && tran->Dest != state)
+            {
+                _xAnimTableAddTransitionHelper(state, tran, allocCount, stateCount, stateList);
+            }
+        }
+
+        stateName = xStrTokBuffer(NULL, " ,\t\n\r", buffer);
+    }
+
+    if (allocCount != 0)
+    {
+        tlist = (xAnimTransitionList*)(xAnimMemAlloc(allocCount * sizeof(xAnimTransitionList)));
+    }
+
+    // Bug: tlist might be uninitialized
+
+    if (tran->Flags & XANIMTRANSITION_UNK0x10)
+    {
+        for (i = 0; i < stateCount; i++)
+        {
+            if (!DefaultOverride(stateList[i], tran))
+            {
+                if (!tran->Conditional && stateList[i]->Default)
+                {
+                    xAnimTransitionList* curr = stateList[i]->Default;
+
+                    while (curr->Next)
+                    {
+                        curr = curr->Next;
+                    }
+                    
+                    tlist->T = hasSubst ? substTransitionList[i] : tran;
+                    tlist->Next = NULL;
+
+                    curr->Next = tlist;
+
+                    tlist++;
+                }
+                else
+                {
+                    tlist->T = hasSubst ? substTransitionList[i] : tran;
+                    tlist->Next = stateList[i]->Default;
+
+                    stateList[i]->Default = tlist;
+
+                    tlist++;
+                }
+            }
+        }
+    }
+    else
+    {
+        for (i = 0; i < stateCount; i++)
+        {
+            tlist->T = hasSubst ? substTransitionList[i] : tran;
+            tlist->Next = stateList[i]->List;
+
+            stateList[i]->List = tlist;
+
+            tlist++;
+        }
+    }
+}
 
 void xAnimTableAddTransition(xAnimTable* table, xAnimTransition* tran, const char* source)
 {
@@ -391,8 +989,7 @@ void xAnimTableAddTransition(xAnimTable* table, xAnimTransition* tran, const cha
 
 xAnimTransition* xAnimTableNewTransition(xAnimTable* table, const char* source, const char* dest, xAnimTransitionConditionalCallback conditional, xAnimTransitionCallback callback, uint32 flags, uint32 userFlags, float32 srcTime, float32 destTime, uint16 priority, uint16 queuePriority, float32 blendRecip, uint16* blendOffset)
 {
-    xAnimTransition* tran = (xAnimTransition*)(gxAnimUseGrowAlloc ? xMEMGROWALLOC(sizeof(xAnimTransition)) :
-                                                                    xMEMALLOC(sizeof(xAnimTransition)));
+    xAnimTransition* tran = (xAnimTransition*)xAnimMemAlloc(sizeof(xAnimTransition));
 
     if (blendRecip != 0.0f)
     {
@@ -461,9 +1058,7 @@ xAnimState* xAnimTableAddFileID(xAnimTable* table, xAnimFile* file, uint32 state
         {
             if (!state->MultiFile)
             {
-                state->MultiFile = (xAnimMultiFile*)(gxAnimUseGrowAlloc ? xMEMGROWALLOC(subStateCount * sizeof(xAnimMultiFileEntry) + sizeof(xAnimMultiFileBase)) :
-                                                                          xMEMALLOC(subStateCount * sizeof(xAnimMultiFileEntry) + sizeof(xAnimMultiFileBase)));
-
+                state->MultiFile = (xAnimMultiFile*)xAnimMemAlloc(subStateCount * sizeof(xAnimMultiFileEntry) + sizeof(xAnimMultiFileBase));
                 state->MultiFile->Count = 0;
             }
 
@@ -816,7 +1411,345 @@ void xAnimPlaySetState(xAnimSingle* single, xAnimState* state, float32 startTime
     }
 }
 
-static void SingleUpdate(xAnimSingle* single, float32 timeDelta) STUB_VOID
+static void SingleUpdate(xAnimSingle* single, float32 timeDelta) WIP
+{
+    uint32 foundBlendstop = 0; // r30
+    uint32 firstStep = TRUE; // r29
+    xAnimTransition* foundTransition = NULL; // r28
+    xAnimSingle* bl = NULL; // r27
+    float32 tranDelta = 0.0f; // f31
+    float32 blendDelta = 0.0f; // f30
+
+    if (!single->State)
+    {
+        return;
+    }
+
+    void* object = single->Play->Object; // r26
+
+    if (single->LastTime == -1.0f)
+    {
+        EffectSingleStart(single);
+    }
+
+    single->LastTime = single->Time;
+
+    xAnimSingle* r25 = single->Blend;
+    float32 singleTime = timeDelta * single->CurrentSpeed + single->Time; // f27
+
+    if (r25 && r25->State)
+    {
+        bl = r25;
+
+        if (r25->LastTime == -1.0f)
+        {
+            EffectSingleStart(r25);
+        }
+
+        r25->LastTime = r25->Time;
+    }
+
+    float32 duration = single->State->Data->Duration; // f29
+
+    if (single->Sync)
+    {
+        float32 timeCmp = single->Sync->SrcTime;
+
+        if (timeCmp != 0.0f)
+        {
+            if (timeCmp > duration)
+            {
+                timeCmp = duration;
+            }
+
+            if (single->LastTime <= timeCmp && singleTime >= timeCmp)
+            {
+                foundTransition = single->Sync;
+                tranDelta = (singleTime - timeCmp) / single->CurrentSpeed;
+                timeDelta -= tranDelta;
+
+                if (timeDelta < 0.0f)
+                {
+                    timeDelta = 0.0f;
+                }
+            }
+            else
+            {
+                timeCmp += duration;
+
+                if (single->LastTime <= timeCmp && singleTime >= timeCmp)
+                {
+                    foundTransition = single->Sync;
+                    tranDelta = (singleTime - timeCmp) / single->CurrentSpeed;
+                    timeDelta -= tranDelta;
+
+                    if (timeDelta < 0.0f)
+                    {
+                        timeDelta = 0.0f;
+                    }
+                }
+            }
+        }
+        else if (!bl)
+        {
+            tranDelta = timeDelta;
+            foundTransition = single->Sync;
+            timeDelta = 0.0f;
+        }
+    }
+    else if ((single->State->Flags & XANIMSTATE_UNK0x30MASK) == XANIMSTATE_UNK0x20)
+    {
+        float32 timeCmp = single->State->Default->T->SrcTime; // f26
+
+        if (timeCmp == 0.0f || timeCmp > duration)
+        {
+            timeCmp = duration;
+        }
+
+        if (singleTime >= timeCmp && (!(single->State->Default->T->Flags & XANIMTRANSITION_UNK0x4) || !bl))
+        {
+            xAnimTransitionList* curr = single->State->Default; // r25
+
+            while (curr && curr->T->Conditional && !curr->T->Conditional(curr->T, single, object))
+            {
+                curr = curr->Next;
+            }
+
+            if (!curr)
+            {
+                fprintf(stderr, "State \"%s\" no default conditionals true!\n", single->State->Name);
+                curr = single->State->Default;
+            }
+
+            foundTransition = curr->T;
+
+            if (single->LastTime < timeCmp)
+            {
+                tranDelta = (singleTime - timeCmp) / single->CurrentSpeed;
+                timeDelta -= tranDelta;
+
+                if (timeDelta < 0.0f)
+                {
+                    timeDelta = 0.0f;
+                }
+            }
+            else
+            {
+                tranDelta = timeDelta;
+                timeDelta = 0.0f;
+            }
+        }
+    }
+
+    if (single->BlendFactor != 0.0f)
+    {
+        float32 recip; // f3
+
+        if (single->Tran)
+        {
+            recip = single->Tran->BlendRecip;
+        }
+        else
+        {
+            recip = single->State->FadeRecip;
+        }
+
+        if (recip * (single->BlendFactor + timeDelta) > 1.0f)
+        {
+            foundBlendstop = 1;
+            blendDelta = single->BlendFactor + timeDelta - 1.0f / recip;
+            timeDelta -= blendDelta;
+
+            if (timeDelta < 0.0f)
+            {
+                timeDelta = 0.0f;
+            }
+
+            if (blendDelta < 0.0f)
+            {
+                blendDelta = 0.01f;
+            }
+        }
+    }
+
+    while (true)
+    {
+        if (!firstStep)
+        {
+            if (foundBlendstop)
+            {
+                single->BlendFactor = 0.0f;
+
+                if (bl)
+                {
+                    EffectSingleStop(bl);
+
+                    bl->State = NULL;
+                    bl = NULL;
+
+                    if (single->Tran && (single->Tran->Flags & XANIMTRANSITION_UNK0x2))
+                    {
+                        xMemPoolFree(&sxAnimTempTranPool, single->Tran);
+                    }
+
+                    single->Tran = NULL;
+                }
+                else if (single->Tran)
+                {
+                    if (single->Tran && (single->Tran->Flags & XANIMTRANSITION_UNK0x2))
+                    {
+                        xMemPoolFree(&sxAnimTempTranPool, single->Tran);
+                    }
+
+                    single->Tran = NULL;
+                }
+                else
+                {
+                    EffectSingleStop(single);
+                    single->State = NULL;
+                    return;
+                }
+
+                timeDelta = blendDelta;
+                foundBlendstop = 0;
+            }
+            else
+            {
+                if (bl)
+                {
+                    EffectSingleStop(single);
+
+                    bl->State = NULL;
+                    bl = NULL;
+
+                    single->BlendFactor = 0.0f;
+                }
+
+                if (foundTransition->BlendRecip == 0.0f || !single->Blend)
+                {
+                    EffectSingleStop(single);
+
+                    if (single->Tran && (single->Tran->Flags & XANIMTRANSITION_UNK0x2))
+                    {
+                        xMemPoolFree(&sxAnimTempTranPool, single->Tran);
+                    }
+
+                    single->Tran = NULL;
+                }
+                else
+                {
+                    bl = single->Blend;
+                    bl->State = single->State;
+                    bl->Time = single->Time;
+                    bl->CurrentSpeed = single->CurrentSpeed;
+                    bl->BilinearLerp[0] = single->BilinearLerp[0];
+                    bl->BilinearLerp[1] = single->BilinearLerp[1];
+                    bl->Effect = single->Effect;
+                    bl->LastTime = single->LastTime;
+
+                    memcpy(bl->ActiveList, single->ActiveList, single->ActiveCount * sizeof(xAnimActiveEffect));
+
+                    single->ActiveList[0].Effect = NULL;
+
+                    if (single->Tran && (single->Tran->Flags & XANIMTRANSITION_UNK0x2))
+                    {
+                        xMemPoolFree(&sxAnimTempTranPool, single->Tran);
+                    }
+
+                    single->Tran = foundTransition;
+                    single->BlendFactor = 0.0000001f;
+                }
+
+                TransitionTimeInit(single, foundTransition);
+
+                single->State = foundTransition->Dest;
+                single->CurrentSpeed = single->State->Speed;
+                single->BilinearLerp[0] = 0.0f;
+                single->BilinearLerp[1] = 0.0f;
+                single->Sync = NULL;
+
+                EffectSingleStart(single);
+
+                if (foundTransition->Dest->BeforeEnter)
+                {
+                    foundTransition->Dest->BeforeEnter(single->Play, foundTransition->Dest);
+                }
+
+                if (foundTransition->Callback)
+                {
+                    foundTransition->Callback(foundTransition, single, single->Play->Object);
+                }
+
+                timeDelta = tranDelta;
+                foundTransition = NULL;
+            }
+        }
+
+        single->Time += timeDelta * single->CurrentSpeed;
+
+        if (single->BlendFactor != 0.0f)
+        {
+            single->BlendFactor += timeDelta;
+        }
+
+        if ((single->State->Flags & XANIMSTATE_UNK0x30MASK) == XANIMSTATE_UNK0x10)
+        {
+            LoopUpdate(single);
+        }
+        else
+        {
+            StopUpdate(single);
+        }
+
+        EffectSingleRun(single);
+
+        if (bl)
+        {
+            if ((bl->State->Flags & XANIMSTATE_UNK0x30MASK) == XANIMSTATE_UNK0x10)
+            {
+                LoopUpdate(bl);
+            }
+            else
+            {
+                StopUpdate(bl);
+            }
+
+            EffectSingleRun(bl);
+        }
+
+        firstStep = FALSE;
+
+        if (!foundBlendstop && !foundTransition)
+        {
+            break;
+        }
+    }
+
+    if (!single->Tran && single->BlendFactor == 0.0f && (single->State->Flags & XANIMSTATE_UNK0x30MASK) == XANIMSTATE_UNK0x30)
+    {
+        if (single->State->Flags & XANIMSTATE_UNK0x200)
+        {
+            if (single->Time >= duration)
+            {
+                single->BlendFactor = 0.0000001f;
+            }
+        }
+        else
+        {
+            if (single->State->FadeRecip * (duration - single->Time) < 1.0f)
+            {
+                single->BlendFactor = 0.0000001f;
+            }
+        }
+    }
+
+    EffectSingleDuration(single);
+
+    if (bl)
+    {
+        EffectSingleDuration(bl);
+    }
+}
 
 static void SingleEval(xAnimSingle* single, xVec3* tran, xQuat* quat)
 {
@@ -997,7 +1930,84 @@ void xAnimPlayUpdate(xAnimPlay* play, float32 timeDelta)
     }
 }
 
-void xAnimPlayEval(xAnimPlay* play) STUB_VOID
+void xAnimPlayEval(xAnimPlay* play) WIP
+{
+    uint32 i;
+    uint32 bone;
+    xQuat* quatresult = (xQuat*)giAnimScratch;
+    xVec3* tranresult = (xVec3*)(quatresult + 65);
+
+    if (play->BoneCount > 1)
+    {
+        xQuat* quatblend = (xQuat*)(giAnimScratch + 0x720);
+        xVec3* tranblend = (xVec3*)(quatblend + 65);
+
+        SingleEval(play->Single, tranresult, quatresult);
+
+        for (i = 1; i < play->NumSingle; i++)
+        {
+            xAnimSingle* si = &play->Single[i];
+
+            if (si->State && !(si->SingleFlags & XANIMSINGLE_UNK0x8000))
+            {
+                float32 blendF = 1.0f;
+                float32 blendR = 1.0f;
+                uint16* blendO = NULL;
+
+                SingleEval(si, tranblend, quatblend);
+
+                if ((!si->Blend || !si->Blend->State) && si->BlendFactor != 0.0f)
+                {
+                    if (si->Tran)
+                    {
+                        blendF = si->BlendFactor;
+                        blendR = si->Tran->BlendRecip;
+                        blendO = si->Tran->BlendOffset;
+                    }
+                    else
+                    {
+                        blendF = -si->BlendFactor;
+                        blendR = si->State->FadeRecip;
+                        blendO = si->State->FadeOffset;
+                    }
+                }
+
+                if ((si->SingleFlags & XANIMSINGLE_UNK0x3MASK) == XANIMSINGLE_UNK0x2)
+                {
+                    iAnimBlend(blendF, blendR, blendO, si->State->BoneBlend, play->BoneCount - 1, tranblend + 1, quatblend + 1, NULL, NULL, tranblend + 1, quatblend + 1);
+
+                    for (bone = 1; bone < play->BoneCount; bone++)
+                    {
+                        tranresult[bone].x += tranblend[bone].x;
+                        tranresult[bone].y += tranblend[bone].y;
+                        tranresult[bone].z += tranblend[bone].z;
+
+                        xQuatMul(&quatresult[bone], &quatresult[bone], &quatblend[bone]);
+                    }
+                }
+                else
+                {
+                    iAnimBlend(blendF, blendR, blendO, si->State->BoneBlend, play->BoneCount - 1, tranresult + 1, quatresult + 1, tranblend + 1, quatblend + 1, tranresult + 1, quatresult + 1);
+                }
+            }
+        }
+    }
+
+    memset(tranresult, 0, sizeof(xVec3));
+    memset(quatresult, 0, sizeof(xQuat));
+
+    if (play->Single->State->BeforeAnimMatrices)
+    {
+        play->Single->State->BeforeAnimMatrices(play, quatresult, tranresult, play->BoneCount);
+    }
+
+    if (play->BeforeAnimMatrices)
+    {
+        play->BeforeAnimMatrices(play, quatresult, tranresult, play->BoneCount);
+    }
+
+    iModelAnimMatrices(play->ModelInst->Data, quatresult, tranresult, play->ModelInst->Mat + 1);
+}
 
 void xAnimPoolCB(xMemPool* pool, void* data)
 {
@@ -1062,7 +2072,84 @@ void xAnimPoolCB(xMemPool* pool, void* data)
     clone->Pool = pool;
 }
 
-void xAnimPoolInit(xMemPool* pool, uint32 count, uint32 singles, uint32 blendFlags, uint32 effectMax) STUB_VOID
+#define thing1 ((blendFlags & 0xFFFF) & ((1 << singles) - 1))
+#define thing2 ((blendFlags & 0xFFFF) & (((1 << singles) - 1) >> 4))
+#define thing3 ((blendFlags & 0xFFFF) & (((1 << singles) - 1) >> 8))
+#define thing4 ((blendFlags & 0xFFFF) & (((1 << singles) - 1) >> 12))
+
+void xAnimPoolInit(xMemPool* pool, uint32 count, uint32 singles, uint32 blendFlags, uint32 effectMax) WIP
+{
+    uint32 size;
+    uint32 i;
+    void* buffer;
+    xAnimPlay* play;
+    xAnimSingle* currsingle;
+    xAnimActiveEffect* curract;
+
+    size = sizeof(xAnimPlay) + (effectMax * sizeof(xAnimActiveEffect) + sizeof(xAnimSingle)) *
+               ((thing1 & 0x1) + ((thing1 & 0x2) >> 1) + ((thing1 & 0x4) >> 2) + ((thing1 & 0x8) >> 3) +
+               (thing2 & 0x1) + ((thing2 & 0x2) >> 1) + ((thing2 & 0x4) >> 2) + ((thing2 & 0x8) >> 3) +
+               (thing3 & 0x1) + ((thing3 & 0x2) >> 1) + ((thing3 & 0x4) >> 2) + ((thing3 & 0x8) >> 3) +
+               (thing4 & 0x1) + ((thing4 & 0x2) >> 1) + ((thing4 & 0x4) >> 2) + ((thing4 & 0x8) >> 3) +
+               singles);
+
+    effectMax += effectMax & 1;
+    buffer = xMEMALLOC(count * size);
+    play = (xAnimPlay*)buffer;
+
+    play->NumSingle = singles;
+    play->Single = (xAnimSingle*)(play + 1);
+
+    currsingle = play->Single + singles;
+
+    for (i = 0; i < singles; i++)
+    {
+        if (blendFlags & (1 << i))
+        {
+            play->Single[i].Blend = currsingle;
+            currsingle->Blend = NULL;
+
+            currsingle++;
+        }
+        else
+        {
+            play->Single[i].Blend = NULL;
+        }
+    }
+
+    curract = (xAnimActiveEffect*)currsingle;
+
+    for (i = 0; i < play->NumSingle; i++)
+    {
+        currsingle = &play->Single[i];
+
+        if (effectMax != 0)
+        {
+            while (currsingle)
+            {
+                currsingle->ActiveCount = effectMax;
+                currsingle->ActiveList = curract;
+
+                curract += effectMax;
+                currsingle = currsingle->Blend;
+            }
+        }
+        else
+        {
+            while (currsingle)
+            {
+                currsingle->ActiveCount = effectMax;
+                currsingle->ActiveList = NULL;
+
+                currsingle = currsingle->Blend;
+            }
+        }
+    }
+
+    play->Pool = pool;
+
+    xMemPoolSetup(pool, play, 0, XMEMPOOL_UNK0x1, xAnimPoolCB, size, count, count / 2);
+}
 
 xAnimPlay* xAnimPoolAlloc(xMemPool* pool, void* object, xAnimTable* table, xModelInstance* modelInst)
 {
