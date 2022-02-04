@@ -26,7 +26,7 @@ struct xVec3
 	xVec3 operator*(const xVec3& v) const WIP { xVec3 temp = *this; temp *= v; return temp; }
 	xVec3& operator*=(float32 f) WIP { x *= f; y *= f; z *= f; return *this; }
 	xVec3 operator*(float32 f) const WIP { xVec3 temp = *this; temp *= f; return temp; }
-	xVec3& operator/=(float32 f) WIP { x /= f; y /= f; z /= f; return *this; }
+	xVec3& operator/=(float32 f) WIP { x = 1.0f / f; y = 1.0f / f; z = 1.0f / f; return *this; }
 	xVec3 operator/(float32 f) const WIP { xVec3 temp = *this; temp /= f; return temp; }
 	xVec3& operator=(const xVec3& v) WIP { x = v.x; y = v.y; z = v.z; return *this; }
 	xVec3& operator=(float32 f) WIP { x = f; y = f; z = f; return *this; }
@@ -39,7 +39,7 @@ struct xVec3
 	xVec3 inverse() const WIP { xVec3 v = *this; v.invert(); return v; }
 	xVec3& normalize() WIP { *this /= length(); return *this; }
 	xVec3 normal() const WIP { xVec3 v = *this; v.normalize(); return v; }
-	xVec3& safe_normalize(const xVec3& c) WIP { float32 len2 = length2(); if (len2 < 0.0001f) *this = c; else *this *= 1.0f / xsqrt(len2); }
+	xVec3& safe_normalize(const xVec3& c) WIP { float32 len2 = length2(); if (len2 < 0.0001f) return (*this = c); else return (*this *= 1.0f / xsqrt(len2)); }
 	xVec3 safe_normal(const xVec3& c) const WIP { xVec3 v = *this; v.safe_normalize(c); return v; }
 	xVec3& right_normalize() WIP { safe_normalize(m_UnitAxisX); return *this; }
 	xVec3& up_normalize() WIP { safe_normalize(m_UnitAxisX); return *this; }

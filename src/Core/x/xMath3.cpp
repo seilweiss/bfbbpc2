@@ -1,5 +1,7 @@
 #include "xMath3.h"
 
+xMat4x3 g_I3;
+
 void xMath3Init() STUB_VOID
 void xLine3VecDist2(const xVec3* p1, const xVec3* p2, const xVec3* v, xIsect* isx) STUB_VOID
 bool32 xPointInBox(const xBox* b, const xVec3* p) STUB

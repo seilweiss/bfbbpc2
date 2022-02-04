@@ -135,6 +135,17 @@ struct xEnt : xBase
 	void* user_data;
 };
 
+#define XENT_UNK0x1 0x1
+#define XENT_UNK0x80 0x80
+#define XENT_UNK0x81 (XENT_UNK0x1 | XENT_UNK0x80)
+
+#define XENT_COLLTYPE_NONE 0x0 // none
+#define XENT_COLLTYPE_TRIG 0x1 // trigger (TRIG)
+#define XENT_COLLTYPE_STAT 0x2 // static (SIMP)
+#define XENT_COLLTYPE_DYN 0x4 // dynamic (PLAT)
+#define XENT_COLLTYPE_NPC 0x8 // npc/enemy (VIL)
+#define XENT_COLLTYPE_PLYR 0x10 // player (PLYR)
+
 void xEntSetTimePassed(float32 sec);
 void xEntSceneInit();
 void xEntSceneExit();
@@ -180,7 +191,12 @@ void xEntInitShadow(xEnt& ent, xEntShadow& shadow);
 
 inline uint32 xEntIsEnabled(xEnt*) STUB
 inline void xEntEnable(xEnt*) STUB_VOID
-inline uint32 xEntIsVisible(const xEnt* ent) STUB
+
+inline uint32 xEntIsVisible(const xEnt* ent)
+{
+	return (ent->flags & XENT_UNK0x81) == XENT_UNK0x1;
+}
+
 inline void xEntShow(xEnt*) STUB_VOID
 inline void xEntHide(xEnt*) STUB_VOID
 inline xVec3* xEntGetPos(const xEnt*) STUB

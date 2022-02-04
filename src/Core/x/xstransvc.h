@@ -14,7 +14,7 @@ void xSTDisconnect(uint32 sid, int32 flg_hiphop);
 int32 xSTSwitchScene(uint32 sid, void* userdata, xSTSwitchSceneProgressMonitor progmon);
 char* xSTAssetName(uint32 aid);
 char* xSTAssetName(void* raw_HIP_asset);
-void* xSTFindAsset(uint32 aid, uint32* size);
+void* xSTFindAsset(uint32 aid, uint32* size = NULL);
 int32 xSTAssetCountByType(uint32 type);
 void* xSTFindAssetByType(uint32 type, int32 idx, uint32* size);
 int32 xSTGetAssetInfo(uint32 aid, st_PKR_ASSET_TOCINFO* tocainfo);

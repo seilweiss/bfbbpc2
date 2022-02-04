@@ -2,6 +2,8 @@
 
 #include "xVec3.h"
 
+#include <string.h>
+
 struct xVec4
 {
 	float32 x;
@@ -96,6 +98,8 @@ struct xIsect
 	float32 dist;
 };
 
+extern xMat4x3 g_I3;
+
 void xMath3Init();
 void xLine3VecDist2(const xVec3* p1, const xVec3* p2, const xVec3* v, xIsect* isx);
 bool32 xPointInBox(const xBox* b, const xVec3* p);
@@ -140,7 +144,15 @@ inline void xMat3x3Copy(xMat3x3*, const xMat3x3*) STUB_VOID
 inline void xMat3x3Identity(xMat3x3*) STUB_VOID
 inline void xMat3x3Rot(xMat3x3* m, const xVec3* a, float32 t) STUB_VOID
 inline void xMat3x3Scale(xMat3x3*, const xVec3*) STUB_VOID
-inline void xMat3x3LookAt(xMat3x3*, const xVec3*, const xVec3*) STUB_VOID
+
+inline void xMat3x3LookAt(xMat3x3* m, const xVec3* pos, const xVec3* at)
+{
+	xVec3 v;
+
+	xVec3Sub(&v, at, pos);
+	xMat3x3LookVec(m, &v);
+}
+
 inline float32 xMat3x3LookVec3(xMat3x3&, const xVec3&) STUB
 inline void xMat3x3MulRotC(xMat3x3*, xMat3x3*, float32, float32, float32, float32) STUB_VOID
 inline void xMat3x3SMul(xMat3x3*, const xMat3x3*, float32) STUB_VOID
@@ -156,8 +168,16 @@ static inline void xMat3x3RMulVec(xVec3* o, const xMat3x3* m, const xVec3* v)
 	o->z = z;
 }
 
-inline void xMat4x3Copy(xMat4x3*, const xMat4x3*) STUB_VOID
-inline void xMat4x3Identity(xMat4x3*) STUB_VOID
+inline void xMat4x3Copy(xMat4x3* o, const xMat4x3* m)
+{
+	memcpy(o, m, sizeof(xMat4x3));
+}
+
+inline void xMat4x3Identity(xMat4x3* m)
+{
+	xMat4x3Copy(m, &g_I3);
+}
+
 inline void xMat4x3RotC(xMat4x3*, float32, float32, float32, float32) STUB_VOID
 inline void xMat4x3Rot(xMat4x3*, const xVec3*, float32) STUB_VOID
 
@@ -184,9 +204,31 @@ inline void xQuatCopy(xQuat*, const xQuat*) STUB_VOID
 inline uint32 xQuatEquals(const xQuat*, const xQuat*) STUB
 inline void xQuatAdd(xQuat*, const xQuat*, const xQuat*) STUB_VOID
 inline void xQuatSMul(xQuat*, const xQuat*, float32) STUB_VOID
-inline float32 xQuatGetAngle(const xQuat*) STUB
+
+inline float32 xQuatGetAngle(const xQuat* q)
+{
+	if (q->s > 1.0f - EPSILON)
+	{
+		return 0.0f;
+	}
+
+	if (q->s < -1.0f + EPSILON)
+	{
+		return 2.0f * PI;
+	}
+
+	return 2.0f * xacos(q->s);
+}
+
 inline float32 xQuatDot(const xQuat*, const xQuat*) STUB
 inline float32 xQuatLength2(const xQuat*) STUB
 inline void xQuatFlip(xQuat*, const xQuat*) STUB_VOID
-inline void xQuatConj(xQuat*, const xQuat*) STUB_VOID
+
+inline void xQuatConj(xQuat* o, const xQuat* q)
+{
+	o->s = q->s;
+
+	xVec3Inv(&o->v, &q->v);
+}
+
 inline void xRotCopy(xRot*, const xRot*) STUB_VOID

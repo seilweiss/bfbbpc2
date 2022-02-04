@@ -1,11 +1,9 @@
 #pragma once
 
+#include "iCamera.h"
 #include "xBase.h"
-#include "xMath3.h"
 #include "xBound.h"
 #include "xMath2.h"
-
-#include <rwcore.h>
 
 struct xScene;
 struct xEnt;
@@ -90,6 +88,22 @@ struct xCamera : xBase
 	xVec4 frustplane[12];
 };
 
+#define XCAMERA_UNK0x1 0x1
+#define XCAMERA_UNK0x2 0x2
+#define XCAMERA_UNK0x4 0x4
+#define XCAMERA_UNK0x8 0x8
+#define XCAMERA_UNK0x10 0x10
+#define XCAMERA_UNK0x20 0x20
+#define XCAMERA_UNKMASK0x3E (XCAMERA_UNK0x2 | XCAMERA_UNK0x4 | XCAMERA_UNK0x8 | XCAMERA_UNK0x10 | XCAMERA_UNK0x20)
+#define XCAMERA_UNK0x40 0x40
+#define XCAMERA_UNK0x80 0x80
+#define XCAMERA_UNK0x100 0x100
+#define XCAMERA_UNK0x200 0x200
+#define XCAMERA_UNK0x400 0x400
+#define XCAMERA_UNK0x800 0x800
+#define XCAMERA_UNKMASK0xF80 (XCAMERA_UNK0x80 | XCAMERA_UNK0x100 | XCAMERA_UNK0x200 | XCAMERA_UNK0x400 | XCAMERA_UNK0x800)
+#define XCAMERA_UNK0x80 0x80
+
 struct cameraFXShake
 {
 	float32 magnitude;
@@ -117,6 +131,11 @@ struct cameraFXZoom
 	float32 holdTimeCur;
 };
 
+#define CAMERAFX_ZOOM_MODE_0 0
+#define CAMERAFX_ZOOM_MODE_1 1
+#define CAMERAFX_ZOOM_MODE_2 2
+#define CAMERAFX_ZOOM_MODE_3 3
+
 struct cameraFX
 {
 	int32 type;
@@ -128,6 +147,23 @@ struct cameraFX
 		cameraFXShake shake;
 		cameraFXZoom zoom;
 	};
+};
+
+#define CAMERAFX_TYPE_UNK0 0
+#define CAMERAFX_TYPE_ZOOM 1
+#define CAMERAFX_TYPE_SHAKE 2
+#define CAMERAFX_TYPE_COUNT 3
+
+#define CAMERAFX_ACTIVE 0x1
+#define CAMERAFX_UNK0x2 0x2
+
+#define CAMERAFX_COUNT 10
+
+struct cameraFXTableEntry
+{
+	int32 type;
+	void(*func)(cameraFX*, float32, const xMat4x3*, xMat4x3*);
+	void(*funcKill)(cameraFX*);
 };
 
 struct xBinaryCamera
@@ -169,6 +205,14 @@ struct xBinaryCamera
 	void add_tweaks(const char*) {}
 };
 
+extern int32 xcam_collis_owner_disable;
+extern bool32 xcam_do_collis;
+extern float32 xcam_collis_radius;
+extern float32 xcam_collis_stiffness;
+extern float32 gCameraLastFov;
+extern cameraFXTableEntry sCameraFXTable[CAMERAFX_TYPE_COUNT];
+extern cameraFX sCameraFX[CAMERAFX_COUNT];
+
 void xCameraInit(xCamera* cam, uint32 width, uint32 height);
 void xCameraExit(xCamera* cam);
 void xCameraReset(xCamera* cam, float32 d, float32 h, float32 pitch);
@@ -176,7 +220,7 @@ void SweptSphereHitsCameraEnt(xScene*, xRay3* ray, xQCData* qcd, xEnt* ent, void
 void xCameraUpdate(xCamera* cam, float32 dt);
 void xCameraBegin(xCamera* cam, bool32 clear);
 void xCameraFXBegin(xCamera* cam);
-void xCameraFXAlloc();
+cameraFX* xCameraFXAlloc();
 void xCameraFXZoomUpdate(cameraFX* f, float32 dt, const xMat4x3*, xMat4x3* m);
 void xCameraFXShake(float32 maxTime, float32 magnitude, float32 cycleMax, float32 rotate_magnitude, float32 radius, xVec3* epicenter, xVec3* player);
 void xCameraFXShakeUpdate(cameraFX* f, float32 dt, const xMat4x3*, xMat4x3* m);
@@ -197,5 +241,14 @@ void xCameraLookYPR(xCamera* cam, uint32 flags, float32 yaw, float32 pitch, floa
 void xCameraRotate(xCamera* cam, const xMat3x3& m, float32 time, float32 accel, float32 decl);
 void xCameraRotate(xCamera* cam, const xVec3& v, float32 roll, float32 time, float32 accel, float32 decl);
 
-inline void xCameraSetFOV(xCamera*, float32) STUB_VOID
-inline float32 xCameraGetFOV(const xCamera*) STUB
+inline void xCameraSetFOV(xCamera* cam, float32 fov)
+{
+	cam->fov = fov;
+
+	iCameraSetFOV(cam->lo_cam, fov);
+}
+
+inline float32 xCameraGetFOV(const xCamera* cam)
+{
+	return cam->fov;
+}
