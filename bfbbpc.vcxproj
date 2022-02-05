@@ -91,6 +91,7 @@
     <ClInclude Include="src\Core\win\iEnv.h" />
     <ClInclude Include="src\Core\win\iFile.h" />
     <ClInclude Include="src\Core\win\iFMV.h" />
+    <ClInclude Include="src\Core\win\iFog.h" />
     <ClInclude Include="src\Core\win\iFX.h" />
     <ClInclude Include="src\Core\win\iLight.h" />
     <ClInclude Include="src\Core\win\iMath.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="src\Core\x\xFog.h" />
     <ClInclude Include="src\Core\x\xFont.h" />
     <ClInclude Include="src\Core\x\xFX.h" />
+    <ClInclude Include="src\Core\x\xGlobals.h" />
     <ClInclude Include="src\Core\x\xGrid.h" />
     <ClInclude Include="src\Core\x\xGroup.h" />
     <ClInclude Include="src\Core\x\xhipio.h" />
@@ -246,6 +248,7 @@
     <ClInclude Include="src\Game\zGame.h" />
     <ClInclude Include="src\Game\zGameExtras.h" />
     <ClInclude Include="src\Game\zGameState.h" />
+    <ClInclude Include="src\Game\zGlobals.h" />
     <ClInclude Include="src\Game\zGoo.h" />
     <ClInclude Include="src\Game\zGrid.h" />
     <ClInclude Include="src\Game\zGust.h" />

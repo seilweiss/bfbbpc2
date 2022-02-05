@@ -2,6 +2,7 @@
 
 #include "zEnt.h"
 #include "zNPCTypeCommon.h"
+#include "zLasso.h"
 
 enum zControlOwner
 {
@@ -218,6 +219,21 @@ typedef enum _tagePlayerStreamSnd
 	ePlayerStreamSnd_Total
 } ePlayerStreamSnd;
 
+typedef enum _zPlayerWallJumpState
+{
+	k_WALLJUMP_NOT,
+	k_WALLJUMP_LAUNCH,
+	k_WALLJUMP_FLIGHT,
+	k_WALLJUMP_LAND
+} zPlayerWallJumpState;
+
+struct zCheckPoint
+{
+	xVec3 pos;
+	float32 rot;
+	uint32 initCamID;
+};
+
 struct zJumpParam
 {
 	float32 PeakHeight;
@@ -276,6 +292,60 @@ struct zPlayerSettings
 	uint8 talk_anims;
 	uint8 talk_filter_size;
 	uint8 talk_filter[4];
+};
+
+struct zPlayerCarryInfo
+{
+	xEnt* grabbed;
+	uint32 grabbedModelID;
+	xMat4x3 spin;
+	xEnt* throwTarget;
+	xEnt* flyingToTarget;
+	float32 minDist;
+	float32 maxDist;
+	float32 minHeight;
+	float32 maxHeight;
+	float32 maxCosAngle;
+	float32 throwMinDist;
+	float32 throwMaxDist;
+	float32 throwMinHeight;
+	float32 throwMaxHeight;
+	float32 throwMaxStack;
+	float32 throwMaxCosAngle;
+	float32 throwTargetRotRate;
+	float32 targetRot;
+	uint32 grabTarget;
+	xVec3 grabOffset;
+	float32 grabLerpMin;
+	float32 grabLerpMax;
+	float32 grabLerpLast;
+	uint32 grabYclear;
+	float32 throwGravity;
+	float32 throwHeight;
+	float32 throwDistance;
+	float32 fruitFloorDecayMin;
+	float32 fruitFloorDecayMax;
+	float32 fruitFloorBounce;
+	float32 fruitFloorFriction;
+	float32 fruitCeilingBounce;
+	float32 fruitWallBounce;
+	float32 fruitLifetime;
+	xEnt* patLauncher;
+};
+
+struct zPlayerLassoInfo
+{
+	xEnt* target;
+	float32 dist;
+	uint8 destroy;
+	uint8 targetGuide;
+	float32 lassoRot;
+	xEnt* swingTarget;
+	xEnt* releasedSwing;
+	float32 copterTime;
+	int32 canCopter;
+	zLasso lasso;
+	xAnimState* zeroAnim;
 };
 
 void zEntPlayerControlOn(zControlOwner owner);

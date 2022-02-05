@@ -741,6 +741,15 @@
     <ClInclude Include="src\Core\x\xLocationAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\x\xGlobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\win\iFog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\zGlobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\win\iAnim.cpp">

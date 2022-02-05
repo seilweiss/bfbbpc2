@@ -3,6 +3,9 @@
 #include "zEntPlayer.h"
 #include "xIni.h"
 
+zGlobals globals;
+xGlobals* xglobals = &globals;
+
 int main() STUB
 static void zMainOutputMgrSetup() STUB_VOID
 static void zMainInitGlobals() STUB_VOID

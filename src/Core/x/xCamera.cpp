@@ -6,6 +6,7 @@
 #include "xScrFx.h"
 #include "xScene.h"
 #include "xEnv.h"
+#include "zMain.h"
 
 #include <rwcore.h>
 #include <rpworld.h>
@@ -1001,4 +1002,167 @@ void xBinaryCamera::stop()
     camera = NULL;
 }
 
-void xBinaryCamera::update(float32 dt) STUB_VOID
+void xBinaryCamera::update(float32 dt) WIP
+{
+    xVec3& A = camera->mat.pos;
+    xVec3& B = *s1;
+    xVec3& C = *s2;
+
+    xVec3 CA = {};
+    CA.x = A.x - C.x;
+    CA.z = A.z - C.z;
+
+    float32 dCA = CA.length();
+
+    if (dCA < 0.01f)
+    {
+        CA.assign(A.x - B.x, 0.0f, A.z - B.z).right_normalize();
+        dCA = 0.01f;
+    }
+    else
+    {
+        CA /= dCA;
+    }
+
+    float32 yaw_start = xatan2(B.x - A.x, B.z - A.z);
+    float32 yaw_end;
+
+    if (dCA > s2_radius)
+    {
+        xVec3 Q1;
+        xVec3 Q2;
+
+        bound_sphere_xz(Q1, Q2, C, s2_radius, CA, dCA);
+
+        float32 yaw_Q1 = xatan2(Q1.x - A.x, Q1.z - A.z);
+        float32 yaw_Q2 = xatan2(Q2.x - A.x, Q2.z - A.z);
+        float32 dyaw1 = xrmod(yaw_Q1 - yaw_start + PI) - PI;
+        float32 dyaw2 = xrmod(yaw_Q2 - yaw_start + PI) - PI;
+        float32 fov = xdeg2rad(1.0f) * xCameraGetFOV(camera);
+        float32 max_dyaw = range_limit(0.5f * fov + cfg.margin_angle, 0.0f, PI);
+
+        if (0.5f * xabs(dyaw2 - dyaw1) > max_dyaw)
+        {
+            yaw_end = xatan2(C.x - B.x, C.z - B.z);
+        }
+        else if (dyaw1 >= dyaw2)
+        {
+            yaw_end = xatan2(C.x - B.x, C.z - B.z);
+        }
+        else if (dyaw1 >= -max_dyaw)
+        {
+            if (dyaw2 <= max_dyaw)
+            {
+                yaw_end = yaw_start;
+            }
+            else
+            {
+                yaw_end = dyaw2 - max_dyaw + yaw_start;
+            }
+        }
+        else
+        {
+            yaw_end = dyaw1 + max_dyaw + yaw_start;
+        }
+    }
+    else
+    {
+        yaw_end = xatan2(C.x - B.x, C.z - B.z);
+    }
+
+    float32 sstick = 1.0f - xexp(-cfg.stick_speed * dt);
+    xPad::analog_data& stick = globals.pad0->analog[1];
+
+    stick_offset.x += (cfg.stick_yaw_vel * stick.offset.x * dt - stick_offset.x) * sstick;
+
+    yaw_end += stick_offset.x;
+
+    float32 yaw_diff = xrmod(yaw_end - yaw_start + PI) - PI;
+    float32 max_yaw_diff = cfg.max_yaw_vel * dt;
+
+    if (xabs(yaw_diff) > max_yaw_diff)
+    {
+        if (yaw_diff < 0.0f)
+        {
+            if (max_yaw_diff > 0.0f)
+            {
+                max_yaw_diff = -max_yaw_diff;
+            }
+        }
+        else
+        {
+            if (max_yaw_diff < 0.0f)
+            {
+                max_yaw_diff = -max_yaw_diff;
+            }
+        }
+
+        yaw_end = yaw_start + max_yaw_diff;
+    }
+
+    stick_offset.y += (stick.offset.y - stick_offset.y) * sstick;
+
+    float32 d;
+    float32 h;
+    float32 hf;
+
+    if (stick_offset.y > 0.0f)
+    {
+        float32 s = stick_offset.y;
+
+        d = (cfg.zone_below.distance - cfg.zone_rest.distance) * s + cfg.zone_rest.distance;
+        h = (cfg.zone_below.height - cfg.zone_rest.height) * s + cfg.zone_rest.height;
+        hf = (cfg.zone_below.height_focus - cfg.zone_rest.height_focus) * s + cfg.zone_rest.height_focus;
+    }
+    else
+    {
+        float32 s = -stick_offset.y;
+
+        d = (cfg.zone_above.distance - cfg.zone_rest.distance) * s + cfg.zone_rest.distance;
+        h = (cfg.zone_above.height - cfg.zone_rest.height) * s + cfg.zone_rest.height;
+        hf = (cfg.zone_above.height_focus - cfg.zone_rest.height_focus) * s + cfg.zone_rest.height_focus;
+    }
+
+    xVec3 end_loc = {};
+    end_loc.x = B.x - d * isin(yaw_end);
+    end_loc.y = B.y + h;
+    end_loc.z = B.z - d * icos(yaw_end);
+
+    float32 sloc = 1.0f - xexp(-cfg.move_speed * dt);
+
+    xVec3 cam_loc = {};
+    xVec3 heading = {};
+
+    heading.x = B.x - end_loc.x;
+    cam_loc.x = (end_loc.x - A.x) * sloc + A.x;
+
+    cam_loc.y = (end_loc.y - A.y) * sloc + A.y;
+    heading.y = B.y - end_loc.y + hf;
+
+    cam_loc.z = (end_loc.z - A.z) * sloc + A.z;
+    heading.z = B.z - end_loc.z;
+
+    float32 heading_dist2 = heading.length2();
+
+    if (heading_dist2 >= 0.001f)
+    {
+        xQuat end_dir;
+        xMat3x3 mat;
+
+        heading /= xsqrt(heading_dist2);
+
+        xMat3x3LookVec(&mat, &heading.invert());
+        xQuatFromMat(&end_dir, &mat);
+
+        float32 sdir = 1.0f - xexp(-cfg.turn_speed * dt);
+        xQuatSlerp(&cam_dir, &cam_dir, &end_dir, sdir);
+    }
+
+    xMat3x3 mat;
+    xQuatToMat(&cam_dir, &mat);
+
+    xCameraMove(camera, cam_loc);
+    xCameraRotate(camera, mat, 0.0f, 0.0f, 0.0f);
+
+    render_debug();
+}
