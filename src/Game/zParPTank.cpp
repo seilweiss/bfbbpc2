@@ -1,5 +1,7 @@
 #include "zParPTank.h"
 
+uint32 gPTankDisable = FALSE;
+
 namespace {
 
 	struct snow_particle_data

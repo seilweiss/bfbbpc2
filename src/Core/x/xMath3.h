@@ -143,8 +143,17 @@ inline void xBoxFromLine(xBox& box, const xLine3& line) STUB_VOID
 inline void xBoxFromCircle(xBox&, const xVec3&, const xVec3&, float32) STUB_VOID
 inline void xBoxFromRay(xBox&, const xRay3&) STUB_VOID
 inline void xBoxUnion(xBox&, const xBox&, const xBox&) STUB_VOID
-inline void xMat3x3Copy(xMat3x3*, const xMat3x3*) STUB_VOID
-inline void xMat3x3Identity(xMat3x3*) STUB_VOID
+
+inline void xMat3x3Copy(xMat3x3* o, const xMat3x3* m)
+{
+	memcpy(o, m, sizeof(xMat3x3));
+}
+
+inline void xMat3x3Identity(xMat3x3* m)
+{
+	xMat3x3Copy(m, &g_I3);
+}
+
 inline void xMat3x3Rot(xMat3x3* m, const xVec3* a, float32 t) STUB_VOID
 inline void xMat3x3Scale(xMat3x3*, const xVec3*) STUB_VOID
 

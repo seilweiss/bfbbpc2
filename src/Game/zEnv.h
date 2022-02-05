@@ -23,6 +23,9 @@ struct xEnvAsset : xBaseAsset
 	float32 loldHeight;
 };
 
+#define XENVASSET_CLIMATE_UNK0x1 0x1
+#define XENVASSET_CLIMATE_UNK0x2 0x2
+
 typedef struct _zEnv : xBase
 {
 	xEnvAsset* easset;

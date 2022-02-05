@@ -54,6 +54,10 @@ struct xParEmitterCustomSettings : xParEmitterPropsAsset
 	void* emit_volume;
 };
 
+#define XPAREMITTER_CUSTOM_UNK0x2 0x2
+#define XPAREMITTER_CUSTOM_UNK0x100 0x100
+#define XPAREMITTER_CUSTOM_UNK0x200 0x200
+
 struct xPECircle
 {
 	float32 radius;
@@ -164,6 +168,8 @@ struct xParEmitter : xBase
 	void* emit_volume;
 	xVec3 last_attach_loc;
 };
+
+#define XPAREMITTER_UNK0x1 0x1
 
 int32 xParInterpConvertInterpMode(xParInterp* p);
 void xParEmitterInit(void* b, void* tasset);

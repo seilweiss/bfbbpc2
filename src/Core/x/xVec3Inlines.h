@@ -1,6 +1,12 @@
 #pragma once
 
-inline void xVec3Init(xVec3* v, float32 _x, float32 _y, float32 _z) STUB_VOID
+inline void xVec3Init(xVec3* v, float32 _x, float32 _y, float32 _z)
+{
+    v->x = _x;
+    v->y = _y;
+    v->z = _z;
+}
+
 inline void xVec3Copy(xVec3*, const xVec3*) STUB_VOID
 
 inline float32 xVec3Length(const xVec3* v)

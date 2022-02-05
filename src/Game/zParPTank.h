@@ -19,6 +19,8 @@ struct zParPTank
 	uint32 max_particles;
 };
 
+extern uint32 gPTankDisable;
+
 void zParPTankSpawnSparkles(xVec3* pos, uint32 count);
 void zParPTankSpawnBubbles(xVec3* pos, xVec3* vel, uint32 count, float32 scale);
 int32 zParPTankBubblesAvailable();
