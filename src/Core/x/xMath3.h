@@ -87,6 +87,9 @@ struct xRay3
 	int32 flags;
 };
 
+#define XRAY_UNK0x400 0x400
+#define XRAY_UNK0x800 0x800
+
 struct xIsect
 {
 	uint32 flags;

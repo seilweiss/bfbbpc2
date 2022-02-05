@@ -3,6 +3,7 @@
 #include "xGlobals.h"
 #include "zEntPlayer.h"
 #include "xEntDrive.h"
+#include "zScene.h"
 
 struct xEntBoulder;
 struct zEntHangable;

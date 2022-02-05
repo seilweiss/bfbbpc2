@@ -7,6 +7,7 @@
 #include "xScene.h"
 #include "xEnv.h"
 #include "zMain.h"
+#include "zGrid.h"
 
 #include <rwcore.h>
 #include <rpworld.h>
@@ -451,7 +452,458 @@ void SweptSphereHitsCameraEnt(xScene*, xRay3* ray, xQCData* qcd, xEnt* ent, void
     }
 }
 
-static void _xCameraUpdate(xCamera* cam, float32 dt) STUB_VOID
+static void _xCameraUpdate(xCamera* cam, float32 dt) WIP
+{
+    if (!cam->tgt_mat)
+    {
+        return;
+    }
+
+    static float32 last_dt = 1.0f / 60.0f;
+
+    xCam_worldtocyl(cam->dcur, cam->hcur, cam->pcur, cam->tgt_mat, &cam->mat.pos, cam->flags);
+
+    float32 wcvx = cam->mat.pos.x - cam->omat.pos.x;
+    float32 wcvy = cam->mat.pos.y - cam->omat.pos.y;
+    float32 wcvz = cam->mat.pos.z - cam->omat.pos.z;
+    float32 m = 1.0f / last_dt;
+
+    wcvx *= m;
+    wcvy *= m;
+    wcvz *= m;
+
+    cam->omat.pos = cam->mat.pos;
+
+    xCam_buildbasis(cam);
+
+    float32 dcv = wcvx * cam->mbasis.at.x + wcvz * cam->mbasis.at.z;
+    float32 hcv = wcvy;
+    float32 pcv = wcvx * cam->mbasis.right.x + wcvz * cam->mbasis.right.z;
+
+    wcvx *= dt;
+    wcvy *= dt;
+    wcvz *= dt;
+
+    cam->mat.pos.x += wcvx;
+    cam->mat.pos.y += wcvy;
+    cam->mat.pos.z += wcvz;
+
+    if (cam->flags & XCAMERA_UNK0x1)
+    {
+        float32 tnext = cam->tmr - dt;
+
+        if (tnext <= 0.0f)
+        {
+            cam->flags &= ~XCAMERA_UNK0x1;
+            cam->tmr = 0.0f;
+            cam->omat.pos = cam->mat.pos;
+        }
+        else
+        {
+            float32 dtg = cam->dgoal - cam->dcur;
+            float32 htg = cam->hgoal - cam->hcur;
+            float32 ptg = xDangleClamp(cam->pgoal - cam->pcur) * (cam->dgoal + cam->dcur) * 0.5f;
+            float32 dsv;
+            float32 hsv;
+            float32 psv;
+
+            if (tnext <= cam->tm_dec)
+            {
+                float32 T_inv = 1.0f / cam->tmr;
+
+                dsv = (dtg * 2.0f - dcv * dt) * T_inv;
+                hsv = (htg * 2.0f - hcv * dt) * T_inv;
+                psv = (ptg * 2.0f - pcv * dt) * T_inv;
+            }
+            else if (tnext <= cam->tm_acc)
+            {
+                float32 T_inv = 1.0f / (2.0f * cam->tmr - dt - cam->tm_dec);
+
+                dsv = (dtg * 2.0f - dcv * dt) * T_inv;
+                hsv = (htg * 2.0f - hcv * dt) * T_inv;
+                psv = (ptg * 2.0f - pcv * dt) * T_inv;
+            }
+            else
+            {
+                float32 it = 1.0f / (cam->tmr - cam->tm_acc);
+                float32 ot = 2.0f / (cam->tmr + cam->tm_acc - cam->tm_dec);
+                float32 T_inv = cam->tmr - dt + cam->tm_acc - cam->tm_dec;
+
+                dsv = (dtg * 2.0f - (dtg * ot + cam->depv) * 0.5f * T_inv - dcv * dt) * it;
+                hsv = (htg * 2.0f - (htg * ot + cam->hepv) * 0.5f * T_inv - hcv * dt) * it;
+                psv = (ptg * 2.0f - (ptg * ot + cam->pepv) * 0.5f * T_inv - pcv * dt) * it;
+            }
+
+            float32 dpv = dsv - dcv;
+            float32 hpv = hsv - hcv;
+            float32 ppv = psv - pcv;
+            float32 vax = cam->mbasis.right.x * ppv + cam->mbasis.at.x * dpv;
+            float32 vay = cam->mbasis.right.y * ppv + hpv;
+            float32 vaz = cam->mbasis.right.z * ppv + cam->mbasis.at.z * dpv;
+
+            vax *= dt;
+            vay *= dt;
+            vaz *= dt;
+
+            cam->mat.pos.x += vax;
+            cam->mat.pos.y += vay;
+            cam->mat.pos.z += vaz;
+            cam->tmr = tnext;
+        }
+    }
+    else
+    {
+        if (cam->flags & XCAMERA_UNK0x2)
+        {
+            if (!xapproxeq(cam->dcur / cam->dgoal, 1.0f))
+            {
+                float32 dtg = cam->dgoal - cam->dcur;
+                xCam_CorrectD(cam, dtg, dcv, dt);
+            }
+        }
+        else if (cam->dmax > cam->dmin)
+        {
+            if (cam->dcur < cam->dmin)
+            {
+                float32 dtg = cam->dmin - cam->dcur;
+                xCam_CorrectD(cam, dtg, dcv, dt);
+            }
+            else if (cam->dcur > cam->dmax)
+            {
+                float32 dtg = cam->dmax - cam->dcur;
+                xCam_CorrectD(cam, dtg, dcv, dt);
+            }
+        }
+
+        if (cam->flags & XCAMERA_UNK0x4)
+        {
+            if (!xapproxeq(cam->hcur / cam->hgoal, 1.0f))
+            {
+                float32 htg = cam->hgoal - cam->hcur;
+                xCam_CorrectH(cam, htg, hcv, dt);
+            }
+        }
+        else if (cam->hmax > cam->hmin)
+        {
+            if (cam->hcur < cam->hmin)
+            {
+                float32 htg = cam->hmin - cam->hcur;
+                xCam_CorrectH(cam, htg, hcv, dt);
+            }
+            else if (cam->hcur > cam->hmax)
+            {
+                float32 htg = cam->hmax - cam->hcur;
+                xCam_CorrectH(cam, htg, hcv, dt);
+            }
+        }
+
+        if (cam->flags & XCAMERA_UNK0x8)
+        {
+            if (!xapproxeq(cam->pcur / cam->pgoal, 1.0f))
+            {
+                float32 ptg = xDangleClamp(cam->pgoal - cam->pcur) * cam->dcur;
+                xCam_CorrectP(cam, ptg, pcv, dt);
+            }
+        }
+        else if (cam->pmax > cam->pmin)
+        {
+            float32 dphi = xDangleClamp(cam->pmax - cam->pcur);
+            float32 dplo = xDangleClamp(cam->pmin - cam->pcur);
+
+            if (dplo > 0.0f && (dphi > 0.0f || xabs(dplo) <= xabs(dphi)))
+            {
+                float32 ptg = (dplo + EPSILON) * cam->dcur;
+                xCam_CorrectP(cam, ptg, pcv, dt);
+            }
+            else if (dphi < 0.0f)
+            {
+                float32 ptg = (dphi - EPSILON) * cam->dcur;
+                xCam_CorrectP(cam, ptg, pcv, dt);
+            }
+            else
+            {
+                xCam_DampP(cam, pcv, dt);
+            }
+        }
+        else
+        {
+            xCam_DampP(cam, pcv, dt);
+        }
+    }
+
+    if (cam->flags & XCAMERA_UNK0x80)
+    {
+        xVec3 oeu;
+        xVec3 eu;
+
+        xMat3x3GetEuler(&cam->mat, &eu);
+        xMat3x3GetEuler(&cam->omat, &oeu);
+
+        float32 m = 1.0f / last_dt;
+        float32 ycv = xDangleClamp(eu.x - oeu.x) * m;
+        float32 pcv = xDangleClamp(eu.y - oeu.y) * m;
+        float32 rcv = xDangleClamp(eu.z - oeu.z) * m;
+
+        ycv *= cam->yaw_ccv;
+        pcv *= cam->pitch_ccv;
+        rcv *= cam->roll_ccv;
+
+        *(xMat3x3*)&cam->omat = *(xMat3x3*)&cam->mat;
+
+        cam->yaw_cur += ycv * dt;
+        cam->pitch_cur += pcv * dt;
+        cam->roll_cur += rcv * dt;
+
+        if (cam->flags & XCAMERA_UNK0x40)
+        {
+            float32 tnext = cam->ltmr - dt;
+
+            if (tnext <= 0.0f)
+            {
+                cam->flags &= ~XCAMERA_UNK0x40;
+                cam->ltmr = 0.0f;
+            }
+            else
+            {
+                float32 ytg = xDangleClamp(cam->yaw_goal - cam->yaw_cur);
+                float32 ptg = xDangleClamp(cam->pitch_goal - cam->pitch_cur);
+                float32 rtg = xDangleClamp(cam->roll_goal - cam->roll_cur);
+                float32 ysv;
+                float32 psv;
+                float32 rsv;
+
+                if (tnext <= cam->ltm_dec)
+                {
+                    float32 T_inv = 1.0f / cam->ltmr;
+
+                    ysv = (ytg * 2.0f - ycv * dt) * T_inv;
+                    psv = (ptg * 2.0f - pcv * dt) * T_inv;
+                    rsv = (rtg * 2.0f - rcv * dt) * T_inv;
+                }
+                else if (tnext <= cam->ltm_acc)
+                {
+                    float32 T_inv = 1.0f / (cam->ltmr * 2.0f - dt - cam->ltm_dec);
+
+                    ysv = (ytg * 2.0f - ycv * dt) * T_inv;
+                    psv = (ptg * 2.0f - pcv * dt) * T_inv;
+                    rsv = (rtg * 2.0f - rcv * dt) * T_inv;
+                }
+                else
+                {
+                    float32 it = 1.0f / (cam->ltmr - cam->ltm_acc);
+                    float32 ot = 2.0f / (cam->ltmr + cam->ltm_acc - cam->ltm_dec);
+                    float32 T_inv = cam->ltmr - dt + cam->ltm_acc - cam->ltm_dec;
+
+                    ysv = (ytg * 2.0f - (ytg * ot + cam->yaw_epv) * 0.5f * T_inv - ycv * dt) * it;
+                    psv = (ptg * 2.0f - (ptg * ot + cam->pitch_epv) * 0.5f * T_inv - pcv * dt) * it;
+                    rsv = (rtg * 2.0f - (rtg * ot + cam->roll_epv) * 0.5f * T_inv - rcv * dt) * it;
+                }
+
+                float32 ypv = ysv - ycv;
+                float32 ppv = psv - pcv;
+                float32 rpv = rsv - rcv;
+
+                cam->yaw_cur += ypv * dt;
+                cam->pitch_cur += ppv * dt;
+                cam->roll_cur += rpv * dt;
+
+                xMat3x3Euler(&cam->mat, cam->yaw_cur, cam->pitch_cur, cam->roll_cur);
+
+                cam->ltmr = tnext;
+            }
+        }
+        else
+        {
+            if (!xapproxeq(cam->yaw_cur, cam->yaw_goal))
+            {
+                float32 ytg = xDangleClamp(cam->yaw_goal - cam->yaw_cur);
+                xCam_CorrectYaw(cam, ytg, ycv, dt);
+            }
+
+            if (!xapproxeq(cam->pitch_cur, cam->pitch_goal))
+            {
+                float32 ptg = xDangleClamp(cam->pitch_goal - cam->pitch_cur);
+                xCam_CorrectPitch(cam, ptg, pcv, dt);
+            }
+
+            if (!xapproxeq(cam->roll_cur, cam->roll_goal))
+            {
+                float32 rtg = xDangleClamp(cam->roll_goal - cam->roll_cur);
+                xCam_CorrectRoll(cam, rtg, rcv, dt);
+            }
+
+            xMat3x3Euler(&cam->mat, cam->yaw_cur, cam->pitch_cur, cam->roll_cur);
+        }
+    }
+    else
+    {
+        xQuatFromMat(&cam->orn_cur, &cam->mat);
+
+        xQuat oq;
+        xQuatFromMat(&oq, &cam->omat);
+
+        xQuat qdiff_o_c;
+        xQuatDiff(&qdiff_o_c, &oq, &cam->orn_cur);
+
+        xRot rot_cv;
+        xQuatToAxisAngle(&qdiff_o_c, &rot_cv.axis, &rot_cv.angle);
+
+        rot_cv.angle *= m;
+        rot_cv.angle = 0.0f;
+
+        *(xMat3x3*)&cam->omat = *(xMat3x3*)&cam->mat;
+
+        xVec3 f;
+        xMat3x3RMulVec(&f, cam->tgt_mat, &cam->focus);
+        xVec3AddTo(&f, &cam->tgt_mat->pos);
+
+        float32 atx;
+        float32 aty;
+        float32 atz;
+        float32 dx__ = cam->tgt_mat->pos.x - cam->mat.pos.x;
+        float32 dz__ = cam->tgt_mat->pos.z - cam->mat.pos.z;
+        float32 dist2 = xsqr(dx__) + xsqr(dz__);
+
+        if (xapproxeq(dist2, 1.0f))
+        {
+            atx = dx__;
+            atz = dz__;
+        }
+        else if (xapproxeq(dist2, 0.0f))
+        {
+            atx = 0.0f;
+            atz = 0.0f;
+        }
+        else
+        {
+            float32 dist_inv = 1.0f / xsqrt(dist2);
+
+            atx = dx__ * dist_inv;
+            atz = dz__ * dist_inv;
+        }
+
+        aty = 0.0f;
+
+        if (cam->tgt_mat->at.x * atx + cam->tgt_mat->at.y * aty + cam->tgt_mat->at.z * atz < 0.0f)
+        {
+            float32 mpx;
+            float32 mpy;
+            float32 mpz;
+            float32 s = -2.0f * (((f.x - cam->tgt_mat->pos.x) * atx) + ((f.y - cam->tgt_mat->pos.y) * aty) + ((f.z - cam->tgt_mat->pos.z) * atz));
+
+            mpx = atx * s;
+            mpy = aty * s;
+            mpz = atz * s;
+
+            f.x += mpx;
+            f.y += mpy;
+            f.z += mpz;
+        }
+
+        xMat3x3 des_mat;
+        xMat3x3LookAt(&des_mat, &f, &cam->mat.pos);
+
+        xMat3x3 latgt;
+        xMat3x3LookAt(&latgt, &cam->tgt_mat->pos, &cam->mat.pos);
+
+        float32 ang_dist = xacos(latgt.at.x * des_mat.at.x + latgt.at.y * des_mat.at.y + latgt.at.z * des_mat.at.z);
+
+        if (ang_dist > xdeg2rad(30.0f))
+        {
+            xQuat a;
+            xQuatFromMat(&a, &latgt);
+
+            xQuat b;
+            xQuatFromMat(&b, &des_mat);
+
+            xQuat o;
+            float32 s = PI - ang_dist;
+
+            if (s < PI / 2.0f)
+            {
+                if (s > xdeg2rad(5.0f))
+                {
+                    xQuatSlerp(&o, &a, &b, s / ang_dist);
+                }
+                else
+                {
+                    o = a;
+                }
+            }
+            else
+            {
+                xQuatSlerp(&o, &a, &b, xdeg2rad(30.0f) / ang_dist);
+            }
+
+            xQuatToMat(&o, &des_mat);
+        }
+
+        xQuat desq;
+        xQuatFromMat(&desq, &des_mat);
+
+        xCameraLook(cam, 0, &desq, 0.25f, 0.0f, 0.0f);
+
+        xQuat difq;
+        xQuatConj(&difq, &cam->orn_cur);
+        xQuatMul(&difq, &difq, &desq);
+
+        xQuat newq;
+        xQuatSlerp(&newq, &cam->orn_cur, &desq, 25.5f * dt);
+
+        xQuatToMat(&newq, &cam->mat);
+    }
+
+    // While loop that runs once (breaks at end). Using if doesn't match here for some reason
+    while (xcam_do_collis && sCamCollis)
+    {
+        xSweptSphere sws;
+        xVec3 tgtpos;
+
+        tgtpos.x = cam->tgt_mat->pos.x;
+        tgtpos.y = 0.7f + cam->tgt_mat->pos.y;
+        tgtpos.z = cam->tgt_mat->pos.z;
+
+        xSweptSpherePrepare(&sws, &tgtpos, &cam->mat.pos, 0.07f);
+        xSweptSphereToEnv(&sws, globals.sceneCur->env);
+
+        xRay3 ray;
+
+        xVec3Copy(&ray.origin, &sws.start);
+        xVec3Sub(&ray.dir, &sws.end, &sws.start);
+
+        ray.max_t = xVec3Length(&ray.dir);
+
+        float32 one_len = 1.0f / xmax(ray.max_t, EPSILON);
+
+        xVec3SMul(&ray.dir, &ray.dir, one_len);
+
+        ray.flags = XRAY_UNK0x800;
+
+        if (!(ray.flags & XRAY_UNK0x400))
+        {
+            ray.flags |= XRAY_UNK0x400;
+            ray.min_t = 0.0f;
+        }
+
+        xRayHitsGrid(&colls_grid, globals.sceneCur, &ray, SweptSphereHitsCameraEnt, &sws.qcd, &sws);
+        xRayHitsGrid(&colls_oso_grid, globals.sceneCur, &ray, SweptSphereHitsCameraEnt, &sws.qcd, &sws);
+
+        if (sws.curdist != sws.dist)
+        {
+            float32 stopdist = xmax(sws.curdist, 0.6f);
+
+            cam->mat.pos.x = ray.origin.x + stopdist * ray.dir.x;
+            cam->mat.pos.y = ray.origin.y + stopdist * ray.dir.y;
+            cam->mat.pos.z = ray.origin.z + stopdist * ray.dir.z;
+        }
+
+        break;
+    }
+
+    last_dt = dt;
+
+    iCameraUpdatePos(cam->lo_cam, &cam->mat);
+}
 
 void xCameraUpdate(xCamera* cam, float32 dt)
 {
