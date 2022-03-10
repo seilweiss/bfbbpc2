@@ -15,9 +15,14 @@ typedef struct _xCounter : xBase
 	uint8 counterFlags;
 } xCounter;
 
+#define XCOUNTER_ACTIVE 0
+#define XCOUNTER_EXPIRED 1
+
+#define XCOUNTER_ISSPATULA 0x1
+
 void xCounterInit();
 void xCounterInit(void* b, void* asset);
-void xCounterInit(xCounter* b, xCounterAsset* asset);
+void xCounterInit(xBase* b, xCounterAsset* asset);
 void xCounterReset(xBase* b);
 void xCounterSave(xCounter* ent, xSerial* s);
 void xCounterLoad(xCounter* ent, xSerial* s);
