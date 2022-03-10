@@ -877,11 +877,11 @@ static void _xCameraUpdate(xCamera* cam, float32 dt) WIP
 
         xVec3SMul(&ray.dir, &ray.dir, one_len);
 
-        ray.flags = XRAY_UNK0x800;
+        ray.flags = XRAY3_UNK0x800;
 
-        if (!(ray.flags & XRAY_UNK0x400))
+        if (!(ray.flags & XRAY3_UNK0x400))
         {
-            ray.flags |= XRAY_UNK0x400;
+            ray.flags |= XRAY3_UNK0x400;
             ray.min_t = 0.0f;
         }
 
