@@ -91,4 +91,10 @@ inline float32 xVec3Dist(const xVec3* a, const xVec3* b)
 inline float32 xVec3Dist2(const xVec3*, const xVec3*) STUB
 inline float32 xVec3DistFast(const xVec3*, const xVec3*) STUB
 inline float32 xVec3Hdng(xVec3*, const xVec3*, const xVec3*) STUB
-inline void xVec3Lerp(xVec3*, const xVec3*, const xVec3*, float32) STUB_VOID
+
+inline void xVec3Lerp(xVec3* o, const xVec3* a, const xVec3* b, float32 t)
+{
+    o->x = a->x + (b->x - a->x) * t;
+    o->y = a->y + (b->y - a->y) * t;
+    o->z = a->z + (b->z - a->z) * t;
+}
