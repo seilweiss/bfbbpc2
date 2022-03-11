@@ -53,6 +53,15 @@ void xQuickCullForEverything(xQCData* q);
 inline void xQuickCullInit(const xBox*) STUB_VOID
 inline void xQuickCullForBound(xQCData* q, const xBound* b) { xQuickCullForBound(&xqc_def_ctrl, q, b); }
 inline void xQuickCullForLine(xQCData*, const xLine3*) STUB_VOID
-inline void xQuickCullForRay(xQCData*, const xRay3*) STUB_VOID
+
+inline void xQuickCullForRay(xQCData* q, const xRay3* r)
+{
+	xQuickCullForRay(&xqc_def_ctrl, q, r);
+}
+
 inline void xQuickCullForSphere(xQCData*, const xSphere*) STUB_VOID
-inline void xQuickCullForBox(xQCData*, const xBox*) STUB_VOID
+
+inline void xQuickCullForBox(xQCData* q, const xBox* b)
+{
+	xQuickCullForBox(&xqc_def_ctrl, q, b);
+}

@@ -1,5 +1,7 @@
 #include "xModel.h"
 
+RpMorphTarget anim_coll_old_mt;
+
 uint32 xModelGetPipeFlags(RpAtomic* model) STUB
 void xModelInit() STUB_VOID
 void xModelPoolInit(uint32 count, uint32 numMatrices) STUB_VOID

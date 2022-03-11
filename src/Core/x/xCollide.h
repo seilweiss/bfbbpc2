@@ -126,13 +126,55 @@ bool xOBBHitsOBB(const xBox& a, const xMat4x3& amat, const xBox& b, const xMat4x
 bool xSphereHitsVCylinder(const xVec3& sc, float32 sr, const xVec3& cc, float32 cr, float32 ch);
 bool xSphereHitsVCircle(const xVec3& sc, float32 sr, const xVec3& cc, float32 cr);
 
-inline bool xSphereHitsSphere(const xVec3, float32, const xVec3&, float32) STUB
-inline bool xSphereHitsSphere(const xSphere&, const xSphere&) STUB
-inline bool xSphereHitsBox(const xVec3&, float32, const xBox&) STUB
-inline bool xSphereHitsBox(const xSphere&, const xBox&) STUB
-inline bool xSphereHitsOBB(const xVec3&, float32, const xBox&, const xMat4x3&) STUB
-inline bool xSphereHitsOBB(const xSphere&, const xBox&, const xMat4x3&) STUB
+inline bool xSphereHitsSphere(const xVec3& ac, float32 ar, const xVec3& bc, float32 br)
+{
+	return (bc - ac).length2() <= xsqr(ar + br);
+}
+
+inline bool xSphereHitsSphere(const xSphere& a, const xSphere& b)
+{
+	return xSphereHitsSphere(a.center, a.r, b.center, b.r);
+}
+
+inline bool xSphereHitsBox(const xVec3& center, float32 radius, const xBox& box)
+{
+	return (center.x + radius >= box.lower.x &&
+			center.y + radius >= box.lower.y &&
+			center.z + radius >= box.lower.z &&
+			center.x - radius <= box.upper.x &&
+			center.y - radius <= box.upper.y &&
+			center.z - radius <= box.upper.z);
+}
+
+inline bool xSphereHitsBox(const xSphere& s, const xBox& b)
+{
+	return xSphereHitsBox(s.center, s.r, b);
+}
+
+inline bool xSphereHitsOBB(const xVec3& center, float32 radius, const xBox& box, const xMat4x3& mat)
+{
+	xVec3 var_28;
+	xMat4x3Tolocal(&var_28, &mat, &center);
+	return xSphereHitsBox(var_28, radius, box);
+}
+
+inline bool xSphereHitsOBB(const xSphere& s, const xBox& b, const xMat4x3& m)
+{
+	return xSphereHitsOBB(s.center, s.r, b, m);
+}
+
 inline bool xSphereHitsVCircle(const xSphere&, const xVec3&, float32) STUB
 inline bool xSphereHitsCapsule(const xSphere&, const xVec3&, const xVec3&, float32) STUB
-inline void xParabolaEvalPos(const xParabola*, xVec3*, float32) STUB_VOID
-inline void xParabolaEvalVel(const xParabola*, xVec3*, float32) STUB_VOID
+
+inline void xParabolaEvalPos(const xParabola* p, xVec3* pos, float32 t)
+{
+	xVec3Copy(pos, &p->initPos);
+	xVec3AddScaled(pos, &p->initVel, t);
+	pos->y -= p->gravity * 0.5f * t * t;
+}
+
+inline void xParabolaEvalVel(const xParabola* p, xVec3* vel, float32 t)
+{
+	xVec3Copy(vel, &p->initVel);
+	vel->y -= p->gravity * t;
+}

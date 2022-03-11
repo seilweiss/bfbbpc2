@@ -165,7 +165,42 @@ inline void xMat3x3LookAt(xMat3x3* m, const xVec3* pos, const xVec3* at)
 	xMat3x3LookVec(m, &v);
 }
 
-inline float32 xMat3x3LookVec3(xMat3x3&, const xVec3&) STUB
+inline float32 xMat3x3LookVec3(xMat3x3& m, const xVec3& v)
+{
+	float32 f31 = v.length();
+
+	if (f31 >= -EPSILON && f31 <= EPSILON)
+	{
+		m = g_I3;
+		return 0.0f;
+	}
+
+	m.at = v;
+	m.at *= 1.0f / f31;
+
+	float32 f1 = xabs(m.at.x);
+	float32 f3 = xabs(m.at.y);
+	float32 f4 = xabs(m.at.z);
+
+	if (f1 < f3 && f1 < f4)
+	{
+		m.right.assign(0.0f, m.at.z, -m.at.y);
+	}
+	else if (f3 < f4)
+	{
+		m.right.assign(-m.at.z, 0.0f, m.at.x);
+	}
+	else
+	{
+		m.right.assign(m.at.y, -m.at.x, 0.0f);
+	}
+
+	m.right.normalize();
+	m.up = m.right.cross(m.at);
+
+	return f31;
+}
+
 inline void xMat3x3MulRotC(xMat3x3*, xMat3x3*, float32, float32, float32, float32) STUB_VOID
 inline void xMat3x3SMul(xMat3x3*, const xMat3x3*, float32) STUB_VOID
 
@@ -211,7 +246,15 @@ inline void xMat4x3Toworld(xVec3* o, const xMat4x3* m, const xVec3* v)
 	o->z += m->pos.z;
 }
 
-inline void xMat4x3OrthoInv(xMat4x3*, const xMat4x3*) STUB_VOID
+inline void xMat4x3OrthoInv(xMat4x3* o, const xMat4x3* m)
+{
+	xMat3x3Transpose(o, m);
+
+	xVec3 var_18;
+	xMat3x3RMulVec(&var_18, o, &m->pos);
+	xVec3Inv(&o->pos, &var_18);
+}
+
 inline void xQuatCopy(xQuat*, const xQuat*) STUB_VOID
 inline uint32 xQuatEquals(const xQuat*, const xQuat*) STUB
 inline void xQuatAdd(xQuat*, const xQuat*, const xQuat*) STUB_VOID

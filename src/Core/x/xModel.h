@@ -46,6 +46,8 @@ struct xModelInstance
 #define XMODELINSTANCE_UNK0x4 0x4
 #define XMODELINSTANCE_UNK0x80 0x80
 #define XMODELINSTANCE_UNK0x100 0x100
+#define XMODELINSTANCE_UNK0x800 0x800
+#define XMODELINSTANCE_UNK0x1000 0x1000
 
 struct xModelPool
 {
@@ -72,6 +74,8 @@ struct xModelAssetParam
 	uint8 WordLength;
 	uint8 String[3];
 };
+
+extern RpMorphTarget anim_coll_old_mt;
 
 uint32 xModelGetPipeFlags(RpAtomic* model);
 void xModelInit();
@@ -100,7 +104,26 @@ inline void xModelSetScale(xModelInstance*, const xVec3&) STUB_VOID
 inline xMat4x3* xModelGetFrame(xModelInstance*) STUB
 inline void xModelSetFrame(xModelInstance*, const xMat4x3*) STUB_VOID
 inline xSphere* xModelGetLocalSBound(xModelInstance*) STUB
-inline void xModelAnimCollApply(const xModelInstance&) STUB_VOID
-inline void xModelAnimCollRestore(const xModelInstance&) STUB_VOID
-inline bool xModelAnimCollDirty(const xModelInstance&) STUB
+
+inline bool xModelAnimCollDirty(const xModelInstance& m)
+{
+	return (m.Flags & (XMODELINSTANCE_UNK0x800 | XMODELINSTANCE_UNK0x1000)) == XMODELINSTANCE_UNK0x800;
+}
+
+inline void xModelAnimCollApply(const xModelInstance& m)
+{
+	if (xModelAnimCollDirty(m))
+	{
+		xModelAnimCollRefresh(m);
+	}
+
+	anim_coll_old_mt.verts = m.Data->geometry->morphTarget->verts;
+	m.Data->geometry->morphTarget->verts = (RwV3d*)m.anim_coll.verts;
+}
+
+inline void xModelAnimCollRestore(const xModelInstance& m)
+{
+	m.Data->geometry->morphTarget->verts = anim_coll_old_mt.verts;
+}
+
 inline void xModelAnimCollStop(xModelInstance& m) STUB_VOID

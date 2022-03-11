@@ -13,15 +13,15 @@ struct xVec2
 	xVec2& operator=(float32 f) WIP { x = f; y = f; return *this; }
 	xVec2& operator+=(const xVec2& v) WIP { x += v.x; y += v.y; return *this; }
 	xVec2 operator+(const xVec2& v) const WIP { xVec2 temp = *this; temp += v; return temp; }
-	xVec2& operator-=(const xVec2& v) WIP { x -= v.x; y -= v.y; return *this; }
-	xVec2 operator-(const xVec2& v) const WIP { xVec2 temp = *this; temp -= v; return temp; }
+	xVec2& operator-=(const xVec2& v) { x -= v.x; y -= v.y; return *this; }
+	xVec2 operator-(const xVec2& v) const { xVec2 temp = *this; temp -= v; return temp; }
 	xVec2& operator*=(float32 f) WIP { x *= f; y *= f; return *this; }
 	xVec2 operator*(float32 f) const WIP { xVec2 temp = *this; temp *= f; return temp; }
 	xVec2& operator/=(float32 f) WIP { x /= f; y /= f; return *this; }
 	xVec2 operator/(float32 f) const WIP { xVec2 temp = *this; temp /= f; return temp; }
 	float32 dot(const xVec2& c) const WIP { return x * c.x + y * c.y; }
 	float32 length() const WIP { return xsqrt(length2()); }
-	float32 length2() const WIP { return x * x + y * y; }
+	float32 length2() const { return xsqr(x) + xsqr(y); }
 	xVec2& normalize() WIP { *this /= length(); return *this; }
 	xVec2 normal() const WIP { xVec2 v = *this; v.normalize(); return v; }
 
