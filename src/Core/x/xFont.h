@@ -3,6 +3,7 @@
 #include "xColor.h"
 #include "xMath2.h"
 #include "xString.h"
+#include "iSystem.h"
 
 #include <rwcore.h>
 
@@ -15,7 +16,18 @@ struct xfont
 	xColor color;
 	basic_rect<float32> clip;
 
-	static xfont create(uint32, float32, float32, float32, xColor, const basic_rect<float32>&) STUB;
+	static xfont create(uint32 id, float32 width, float32 height, float32 space, xColor color, const basic_rect<float32>& clip)
+	{
+		xfont r;
+		r.id = id;
+		r.width = width;
+		r.height = height;
+		r.space = space;
+		r.color = color;
+		r.clip = clip;
+		return r;
+	}
+
 	static xfont create() STUB;
 	static void init();
 	static void set_render_state(RwRaster* raster);
@@ -128,8 +140,26 @@ struct xtextbox
 	substr text;
 	uint32 text_hash;
 
-	static xtextbox create(const xfont& font, const basic_rect<float32>& bounds, uint32 flags, float32 line_space, float32 tab_stop, float32 left_indent, float32 right_indent) STUB;
+	static callback text_cb;
+
+	static xtextbox create(const xfont& font, const basic_rect<float32>& bounds, uint32 flags, float32 line_space, float32 tab_stop, float32 left_indent, float32 right_indent)
+	{
+		xtextbox r;
+		r.font = font;
+		r.bounds = bounds;
+		r.flags = flags;
+		r.line_space = line_space;
+		r.tab_stop = tab_stop;
+		r.left_indent = left_indent;
+		r.right_indent = right_indent;
+		r.texts_size = 0;
+		r.text_hash = 0;
+		r.cb = &text_cb;
+		return r;
+	}
+
 	static xtextbox create() STUB;
+	static void text_render(const jot& j, const xtextbox& tb, float32 x, float32 y);
 	static tag_entry_list read_tag(const substr& s);
 	static tag_entry* find_entry(const tag_entry_list& el, const substr& name);
 	static ulong32 read_list(const tag_entry& e, float32* v, ulong32 vsize);
@@ -148,8 +178,12 @@ struct xtextbox
 	float32 yextent(float32, int32&, bool) const STUB;
 	float32 yextent(const layout&, int32, int32) const STUB;
 	float32 yextent(bool) const STUB;
+	void render(layout& l, int32 begin_jot, int32 end_jot) const;
 
-	void render(bool) const STUB_VOID;
+	void render(bool cache) const
+	{
+		render(temp_layout(cache), 0, -1);
+	}
 };
 
 struct xtextbox::layout
@@ -183,5 +217,5 @@ struct xtextbox::layout
 
 void render_fill_rect(basic_rect<float32>& bounds, xColor color);
 
-inline float32 NSCREENX(float32) STUB
-inline float32 NSCREENY(float32) STUB
+inline float32 NSCREENX(float32 x) { return 1.0f / SCREEN_WIDTH * x; }
+inline float32 NSCREENY(float32 y) { return 1.0f / SCREEN_HEIGHT * y; }

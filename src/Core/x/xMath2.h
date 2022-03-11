@@ -41,9 +41,9 @@ template <class T> struct basic_rect
 	basic_rect& scale(T _x, T _y, T _w, T _h) WIP { x *= _x; y *= _y; w *= _w; h *= _h; return *this; }
 	basic_rect& scale(T _x, T _y) WIP { scale(_x, _y, _x, _y); return *this; }
 	basic_rect& scale(T s) WIP { scale(s, s, s, s); return *this; }
-	basic_rect& expand(T _x, T _y, T _w, T _h) WIP { x -= _x; w += _w; y -= _y; h += _h; return *this; }
+	basic_rect& expand(T _x, T _y, T _w, T _h) { x -= _x; w += _x + _w; y -= _y; h += _y + _h; return *this; }
 	basic_rect& expand(T f) WIP { expand(f, f, f, f); return *this; }
-	basic_rect& contract(T _x, T _y, T _w, T _h) WIP { expand(_x, _y, _w, _h); return *this; }
+	basic_rect& contract(T _x, T _y, T _w, T _h) { return expand(-_x, -_y, -_w, -_h); }
 	basic_rect& contract(T f) WIP { expand(-f); return *this; }
 	basic_rect& set_bounds(T x1, T y1, T x2, T y2) WIP { x = x1; w = x2 - x1; y = y1; h = y2 - y1; return *this; }
 	void get_bounds(T& x1, T& y1, T& x2, T& y2) const WIP { x1 = x; x2 = x + w; y1 = y; y2 = y + h; }

@@ -1,5 +1,7 @@
 #include "iSystem.h"
 
+#include <rwcore.h>
+
 void iVSync() STUB_VOID
 static void TRCInit() STUB_VOID
 void iSystemInit(uint32 options) STUB_VOID

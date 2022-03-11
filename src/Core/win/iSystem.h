@@ -1,7 +1,9 @@
 #pragma once
 
 #include <types.h>
-#include <rwcore.h>
+
+#define SCREEN_WIDTH 640.0f
+#define SCREEN_HEIGHT 480.0f
 
 void iVSync();
 void iSystemInit(uint32 options);

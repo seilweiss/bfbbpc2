@@ -128,6 +128,10 @@ namespace {
 
 }
 
+void xtextbox::text_render(const jot& j, const xtextbox& tb, float32 x, float32 y) STUB_VOID
+
+xtextbox::callback xtextbox::text_cb = { xtextbox::text_render, NULL, NULL };
+
 void xtextbox::set_text(const char* text) STUB_VOID
 void xtextbox::set_text(const char*, ulong32) STUB_VOID
 void xtextbox::set_text(const char** texts, ulong32 size) STUB_VOID
@@ -144,6 +148,7 @@ namespace tweaker {
 }
 
 xtextbox::layout& xtextbox::temp_layout(bool cache) const STUB_REF(xtextbox::layout)
+void xtextbox::render(layout& l, int32 begin_jot, int32 end_jot) const STUB_VOID
 float32 xtextbox::yextent(float32 max, int32& size, const layout& l, int32 begin_jot, int32 end_jot) const STUB
 xtextbox::tag_entry_list xtextbox::read_tag(const substr& s) STUB
 xtextbox::tag_entry* xtextbox::find_entry(const tag_entry_list& el, const substr& name) STUB
