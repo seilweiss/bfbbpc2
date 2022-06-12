@@ -1,5 +1,6 @@
 #include "zMain.h"
 
+#include "zGlobals.h"
 #include "zEntPlayer.h"
 #include "xIni.h"
 

@@ -3,7 +3,7 @@
 #include "zParEmitter.h"
 #include "xString.h"
 #include "zEnv.h"
-#include "zMain.h"
+#include "zGlobals.h"
 #include "zParPTank.h"
 
 static Climate* sClimate = NULL;

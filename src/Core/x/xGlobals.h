@@ -37,3 +37,5 @@ struct xGlobals
 	bool dontShowPadMessageDuringLoadingOrCutScene;
 	bool autoSaveFeature;
 };
+
+extern xGlobals* xglobals;

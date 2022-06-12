@@ -1,9 +1,6 @@
 #pragma once
 
-#include "zGlobals.h"
-
-extern zGlobals globals;
-extern xGlobals* xglobals;
+#include "types.h"
 
 void zMainShowProgressBar();
 void zMainFirstScreen(int32 mode);

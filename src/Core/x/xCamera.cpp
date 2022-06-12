@@ -6,7 +6,7 @@
 #include "xScrFx.h"
 #include "xScene.h"
 #include "xEnv.h"
-#include "zMain.h"
+#include "zGlobals.h"
 #include "zGrid.h"
 
 #include <rwcore.h>
