@@ -36,8 +36,11 @@ struct xBase
 };
 
 #define XBASE_ENABLED 0x1
+#define XBASE_PERSISTENT 0x2
 #define XBASE_VALID 0x4
-#define XBASE_UNK0x10 0x10
+#define XBASE_CUTSCENEVIS 0x8
+#define XBASE_RECSHADOW 0x10
+#define XBASE_UNK0x20 0x20
 
 void xBaseInit(xBase* xb, xBaseAsset* asset);
 void xBaseSetup(xBase*);

@@ -1,5 +1,7 @@
 #include "xScene.h"
 
+xScene* g_xSceneCur = NULL;
+
 void xSceneInit(xScene* sc, uint16 num_trigs, uint16 num_stats, uint16 num_dyns, uint16 num_npcs) STUB_VOID
 void xSceneExit(xScene*) {}
 void xSceneSave(xScene*, xSerial*) {}

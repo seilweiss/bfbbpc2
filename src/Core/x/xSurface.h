@@ -20,6 +20,9 @@ struct xSurface : xBase
 	void* moprops;
 };
 
+#define XSURFACE_TYPE_1 1
+#define XSURFACE_TYPE_3 3
+
 void xSurfaceInit(uint16 num_surfs);
 void xSurfaceExit();
 void xSurfaceSave(xSurface* ent, xSerial* s);

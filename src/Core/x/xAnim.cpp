@@ -1776,11 +1776,11 @@ void xAnimPlaySetup(xAnimPlay* play, void* object, xAnimTable* table, xModelInst
     play->ModelInst = modelInst;
 
     modelInst->Anim = play;
-    modelInst->Flags |= XMODELINSTANCE_UNK0x4 | XMODELINSTANCE_UNK0x100;
+    modelInst->Flags |= XMODEL_UNK0x4 | XMODEL_UNK0x100;
 
     if (table->MorphIndex != 0)
     {
-        modelInst->Flags |= XMODELINSTANCE_UNK0x80;
+        modelInst->Flags |= XMODEL_UNK0x80;
     }
 
     for (int32 i = 0; i < play->NumSingle; i++)

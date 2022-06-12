@@ -58,3 +58,5 @@ typedef int32 bool32;
 #define STUB_REF(T) { static T _; return _; }
 
 #define FORCEENUMSIZEINT ((int32)((~((uint32)0))>>1))
+
+#define FLOAT_MAX 1e+38f

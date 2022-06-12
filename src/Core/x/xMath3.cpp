@@ -1,5 +1,6 @@
 #include "xMath3.h"
 
+const xVec3 g_O3 = { 0.0f, 0.0f, 0.0f };
 xMat4x3 g_I3;
 
 void xMath3Init() STUB_VOID

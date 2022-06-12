@@ -101,6 +101,7 @@ struct xIsect
 	float32 dist;
 };
 
+extern const xVec3 g_O3;
 extern xMat4x3 g_I3;
 
 void xMath3Init();

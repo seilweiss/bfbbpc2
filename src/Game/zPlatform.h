@@ -148,6 +148,18 @@ struct zPlatform : zEnt
 	float32 pauseDelta;
 };
 
+#define ZPLATFORM_PLATFORM 0
+#define ZPLATFORM_MECH 4
+#define ZPLATFORM_PEN 5
+#define ZPLATFORM_CONVBELT 6
+#define ZPLATFORM_FALLING 7
+#define ZPLATFORM_FR 8
+#define ZPLATFORM_BREAKAWAY 9
+#define ZPLATFORM_SPRINGBOARD 10
+#define ZPLATFORM_TEETER 11
+#define ZPLATFORM_PADDLE 12
+#define ZPLATFORM_FM 13
+
 void zPlatform_Init(void* plat, void* asset);
 void zPlatform_Init(zPlatform* plat, xEntAsset* asset);
 void zPlatform_Setup(zPlatform* plat, xScene*);

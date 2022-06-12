@@ -53,6 +53,11 @@ struct xCollis
 };
 
 #define XCOLLIS_UNK0x1 0x1
+#define XCOLLIS_UNK0x100 0x100
+#define XCOLLIS_UNK0x200 0x200
+#define XCOLLIS_UNK0x400 0x400
+#define XCOLLIS_UNK0x800 0x800
+#define XCOLLIS_UNK0x1000 0x1000
 
 struct xParabola
 {

@@ -35,6 +35,10 @@ struct xScene
 	char* (*id2Name)(uint32);
 };
 
+#define XSCENE_UNK0x1 0x1
+#define XSCENE_UNK0x2 0x2
+#define XSCENE_UNK0x4 0x4
+
 struct xNearFloorPoly
 {
 	xBox box;
@@ -51,6 +55,8 @@ struct xNearFloorPoly
 	void* optr;
 	xModelInstance* mptr;
 };
+
+extern xScene* g_xSceneCur;
 
 typedef void(*xRayHitsGridCallback)(xScene*, xRay3*, xQCData*, xEnt*, void*);
 

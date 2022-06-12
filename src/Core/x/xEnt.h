@@ -59,6 +59,17 @@ struct xEntFrame
 	uint32 mode;
 };
 
+#define XENTFRAME_MODE_0x2 0x2
+#define XENTFRAME_MODE_0x8 0x8
+#define XENTFRAME_MODE_0x20 0x20
+#define XENTFRAME_MODE_0x400 0x400
+#define XENTFRAME_MODE_0x800 0x800
+#define XENTFRAME_MODE_0x1000 0x1000
+#define XENTFRAME_MODE_0x10000 0x10000
+#define XENTFRAME_MODE_0x20000 0x20000
+
+#define XENTCOLLIS_COLLS_COUNT 18
+
 struct xEntCollis
 {
 	uint8 chk;
@@ -72,10 +83,17 @@ struct xEntCollis
 	uint8 stat_sidx;
 	uint8 stat_eidx;
 	uint8 idx;
-	xCollis colls[18];
+	xCollis colls[XENTCOLLIS_COLLS_COUNT];
 	xEntCollisPostCallback post;
 	xEntCollisDepenqCallback depenq;
 };
+
+#define XENTCOLLIS_UNK0x1 0x1
+#define XENTCOLLIS_UNK0x2 0x2
+#define XENTCOLLIS_UNK0x4 0x4
+#define XENTCOLLIS_UNK0x8 0x8
+#define XENTCOLLIS_UNK0x10 0x10
+#define XENTCOLLIS_UNK0x20 0x20
 
 struct xEntShadow
 {
@@ -95,7 +113,16 @@ struct xEntShadow
 
 struct xEnt : xBase
 {
-	struct anim_coll_data;
+	struct anim_coll_data
+	{
+		uint32 flags;
+		uint32 bones;
+		xMat4x3 old_mat;
+		xMat4x3 new_mat;
+		uint32 verts_size;
+		xVec3* verts;
+		xVec3* normals;
+	};
 
 	xEntAsset* asset;
 	uint16 idx;
@@ -135,9 +162,22 @@ struct xEnt : xBase
 	void* user_data;
 };
 
-#define XENT_UNK0x1 0x1
+#define XENT_VISIBLE 0x1
+#define XENT_STACKABLE 0x2
+#define XENT_NOSHADOW 0x40
 #define XENT_UNK0x80 0x80
-#define XENT_UNK0x81 (XENT_UNK0x1 | XENT_UNK0x80)
+#define XENT_UNK0x81 (XENT_VISIBLE | XENT_UNK0x80)
+
+#define XENT_PHYSICS_UNK0x1 0x1
+#define XENT_PHYSICS_UNK0x2 0x2
+#define XENT_PHYSICS_UNK0x4 0x4
+#define XENT_PHYSICS_UNK0x8 0x8
+#define XENT_PHYSICS_UNK0x10 0x10
+#define XENT_PHYSICS_UNK0x20 0x20
+#define XENT_PHYSICS_UNK0x80 0x80
+
+#define XENT_MORE_HITTABLE 0x10
+#define XENT_MORE_ANIMCOLL 0x20
 
 #define XENT_COLLTYPE_NONE 0x0 // none
 #define XENT_COLLTYPE_TRIG 0x1 // trigger (TRIG)
@@ -145,6 +185,15 @@ struct xEnt : xBase
 #define XENT_COLLTYPE_DYN 0x4 // dynamic (PLAT)
 #define XENT_COLLTYPE_NPC 0x8 // npc/enemy (VIL)
 #define XENT_COLLTYPE_PLYR 0x10 // player (PLYR)
+
+#define XENT_ANIMCOLL_UNK0x1 0x1
+#define XENT_ANIMCOLL_UNK0x2 0x2
+#define XENT_ANIMCOLL_UNK0x8 0x8
+
+#define XENT_DRIVEMODE_0 0
+#define XENT_DRIVEMODE_1 1
+
+extern bool32 xent_entent;
 
 void xEntSetTimePassed(float32 sec);
 void xEntSceneInit();
@@ -162,7 +211,7 @@ void xEntRestorePipeline(xModelInstance* model);
 void xEntRestorePipeline(xSurface*, RpAtomic* model);
 void xEntRender(xEnt* ent);
 void xEntUpdate(xEnt* ent, xScene* sc, float32 dt);
-void xEntBeginUpdate(xEnt* ent, float32 dt);
+void xEntBeginUpdate(xEnt* ent, xScene*, float32 dt);
 void xEntEndUpdate(xEnt* ent, xScene* sc, float32 dt);
 void xEntDefaultBoundUpdate(xEnt* ent, xVec3* pos);
 void xEntDefaultTranslate(xEnt* ent, xVec3* dpos, xMat4x3* dmat);
@@ -194,7 +243,7 @@ inline void xEntEnable(xEnt*) STUB_VOID
 
 inline uint32 xEntIsVisible(const xEnt* ent)
 {
-	return (ent->flags & XENT_UNK0x81) == XENT_UNK0x1;
+	return (ent->flags & XENT_UNK0x81) == XENT_VISIBLE;
 }
 
 inline void xEntShow(xEnt*) STUB_VOID
